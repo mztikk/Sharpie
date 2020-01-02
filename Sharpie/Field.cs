@@ -11,12 +11,10 @@
             InitialValue = initialValue;
         }
 
-        public Accessibility Accessibility { get; }
-        public bool ReadOnly { get; }
-        public string Type { get; }
-        public string Name { get; }
-        public string? InitialValue { get; }
-
-        public override string ToString() => Accessibility.ToSharpieString() + (ReadOnly ? " readonly " : " ") + Type + " " + Name + (InitialValue is { } ? " = " + InitialValue : "") + ";";
+        public readonly Accessibility Accessibility;
+        public readonly bool ReadOnly;
+        public readonly string Type;
+        public readonly string Name;
+        public readonly string? InitialValue;
     }
 }

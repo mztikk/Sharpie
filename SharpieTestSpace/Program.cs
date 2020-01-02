@@ -21,10 +21,10 @@ namespace SharpieTestSpace
 
                 await classWriter.Begin();
 
-                classWriter.AddField(Accessibility.Private, true, "object", "_obj");
-                classWriter.AddField(Accessibility.Public, false, "object", "Obj");
-                classWriter.AddField<int>(Accessibility.Public, "n");
-                classWriter.AddField<StreamWriter>(Accessibility.Protected, "_writer");
+                classWriter.Fields.AddField(Accessibility.Private, true, "object", "_obj");
+                classWriter.Fields.AddField(Accessibility.Public, false, "object", "Obj");
+                classWriter.Fields.AddField<int>(Accessibility.Public, "n");
+                classWriter.Fields.AddField<StreamWriter>(Accessibility.Protected, "_writer");
                 await classWriter.AddConstructor();
                 await classWriter.AddConstructor(
                     Accessibility.Public,
