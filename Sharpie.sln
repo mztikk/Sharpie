@@ -5,7 +5,12 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sharpie", "Sharpie\Sharpie.csproj", "{DCC197FB-D9B6-43F5-BFC5-52F03D854D74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpieTestSpace", "SharpieTestSpace\SharpieTestSpace.csproj", "{7D2DEFB7-0BC6-4083-8DE2-5A950371E6F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpieTestSpace", "SharpieTestSpace\SharpieTestSpace.csproj", "{7D2DEFB7-0BC6-4083-8DE2-5A950371E6F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{619B56DE-D59C-468D-8457-E6118CA164D6}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.md = LICENSE.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
