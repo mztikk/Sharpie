@@ -22,12 +22,18 @@ namespace Sharpie
 
         public virtual async Task WriteLine(string s)
         {
+            await Write(s).ConfigureAwait(false);
+            await DirectWriteLine().ConfigureAwait(false);
+        }
+
+        public virtual async Task Write(string s)
+        {
             for (int i = 0; i < IndentationLevel; i++)
             {
                 await DirectWrite(Indent).ConfigureAwait(false);
             }
 
-            await DirectWriteLine(s).ConfigureAwait(false);
+            await DirectWrite(s).ConfigureAwait(false);
         }
 
         protected virtual async Task DirectWriteLine(string s = "")
