@@ -12,6 +12,8 @@ namespace Sharpie
         public readonly FieldWriter Fields;
         public readonly ConstructorWriter Ctors;
 
+        private readonly List<BaseWriter> _bodyWriters = new List<BaseWriter>();
+
         public ClassWriter(IndentedStreamWriter writer, string className) : base(writer)
         {
             Usings = new UsingWriter(writer);
@@ -23,6 +25,9 @@ namespace Sharpie
             Ctors = new ConstructorWriter(writer, className);
 
             ClassName = className;
+
+            _bodyWriters.Add(Fields);
+            _bodyWriters.Add(Ctors);
         }
 
         public Accessibility Accessibility { get; set; } = Accessibility.Public;
@@ -57,18 +62,18 @@ namespace Sharpie
 
         protected override async Task Finish()
         {
-            await Fields.Begin().ConfigureAwait(false);
-            await Fields.End().ConfigureAwait(false);
-            if (Fields.DidWork)
+            BaseWriter prevWriter = _bodyWriters[0];
+            foreach (BaseWriter writer in _bodyWriters)
             {
-                await WriteLine().ConfigureAwait(false);
-            }
+                if (prevWriter.DidWork)
+                {
+                    await WriteLine().ConfigureAwait(false);
+                }
 
-            await Ctors.Begin().ConfigureAwait(false);
-            await Ctors.End().ConfigureAwait(false);
-            if (Ctors.DidWork)
-            {
-                await WriteLine().ConfigureAwait(false);
+                await writer.Begin().ConfigureAwait(false);
+                await writer.End().ConfigureAwait(false);
+
+                prevWriter = writer;
             }
 
             IndentationLevel--;

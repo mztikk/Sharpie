@@ -22,13 +22,19 @@ namespace Sharpie
 
         protected override async Task Finish()
         {
-            foreach (Constructor ctor in _ctors)
+            for (int i = 0; i < _ctors.Count; i++)
             {
-                await WriteLine(ctor.Accessibility.ToSharpieString() + " " + ctor.Name + "(" + string.Join(", ", ctor.Arguments) + ")").ConfigureAwait(false);
+                // new line between ctors (before everyone except the first one)
+                if (i > 0)
+                {
+                    await WriteLine().ConfigureAwait(false);
+                }
+
+                await WriteLine(_ctors[i].Accessibility.ToSharpieString() + " " + _ctors[i].Name + "(" + string.Join(", ", _ctors[i].Arguments) + ")").ConfigureAwait(false);
                 await WriteLine("{").ConfigureAwait(false);
 
                 IndentationLevel++;
-                foreach (string line in ctor.Body.GetLines())
+                foreach (string line in _ctors[i].Body.GetLines())
                 {
                     await WriteLine(line).ConfigureAwait(false);
                 }
