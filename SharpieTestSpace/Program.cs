@@ -38,6 +38,19 @@ namespace SharpieTestSpace
                     + Environment.NewLine +
                     "Obj = obj2;"
                     );
+                classWriter.Ctors.AddConstructor(
+                    Accessibility.Public,
+                    new List<Argument>()
+                    {
+                        new Argument("object", "obj"),
+                        new Argument("object", "obj2")
+                    },
+                    new List<string>()
+                    {
+                        "obj", "obj2"
+                    },
+                    "n = 5;"
+                    );
 
                 classWriter.Properties.AddProperty<string>(Accessibility.Public, "TestPropString");
                 classWriter.Fields.AddField<string>(Accessibility.Private, "_fullPropTest");

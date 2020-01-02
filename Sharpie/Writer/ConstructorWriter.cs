@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Sharpie.Writer
@@ -18,12 +19,17 @@ namespace Sharpie.Writer
 
         public void AddConstructor(Accessibility accessibility = Accessibility.Public) => AddConstructor(accessibility, Array.Empty<Argument>(), string.Empty);
 
+        public void AddConstructor(Accessibility accessibility, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, string body) => AddConstructor(new Constructor(accessibility, _name, baseCtorArguments, arguments, body));
+        public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, IEnumerable<string> thisCtorArguments, string body) => AddConstructor(new Constructor(accessibility, _name, arguments, thisCtorArguments, body));
+
         protected override Task Start() =>
             // NOP
             Task.CompletedTask;
 
         protected override async Task Finish()
         {
+            StringBuilder sb = new StringBuilder();
+
             for (int i = 0; i < _ctors.Count; i++)
             {
                 // new line between ctors (before everyone except the first one)
@@ -32,7 +38,26 @@ namespace Sharpie.Writer
                     await WriteLine().ConfigureAwait(false);
                 }
 
-                await WriteLine(_ctors[i].Accessibility.ToSharpieString() + " " + _ctors[i].Name + "(" + string.Join(", ", _ctors[i].Arguments) + ")").ConfigureAwait(false);
+                sb.Append(_ctors[i].Accessibility.ToSharpieString());
+                sb.Append(" ");
+                sb.Append(_ctors[i].Name);
+                sb.Append("(");
+                sb.Append(string.Join(", ", _ctors[i].Arguments));
+                sb.Append(")");
+                if (_ctors[i].BaseCtorArguments is { })
+                {
+                    sb.Append(" : base(");
+                    sb.Append(string.Join(", ", _ctors[i].BaseCtorArguments));
+                    sb.Append(")");
+                }
+                else if (_ctors[i].ThisCtorArguments is { })
+                {
+                    sb.Append(" : this(");
+                    sb.Append(string.Join(", ", _ctors[i].ThisCtorArguments));
+                    sb.Append(")");
+                }
+                await WriteLine(sb.ToString()).ConfigureAwait(false);
+                sb.Clear();
                 await WriteLine("{").ConfigureAwait(false);
 
                 IndentationLevel++;
@@ -43,6 +68,7 @@ namespace Sharpie.Writer
                 IndentationLevel--;
 
                 await WriteLine("}").ConfigureAwait(false);
+                sb.Clear();
 
                 DidWork = true;
             }
