@@ -32,8 +32,17 @@ namespace Sharpie
             return string.Join(Environment.NewLine, UsingStatements());
         }
 
-        public override async Task Begin() => await WriteLine(GetUsing()).ConfigureAwait(false);
+        public override Task Begin() =>
+            // NOP
+            Task.CompletedTask;
 
-        public override async Task End() => await WriteLine().ConfigureAwait(false);
+        public override async Task End()
+        {
+            if (_usings.Count > 0)
+            {
+                await WriteLine(GetUsing()).ConfigureAwait(false);
+                await WriteLine().ConfigureAwait(false);
+            }
+        }
     }
 }
