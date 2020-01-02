@@ -9,7 +9,7 @@ namespace Sharpie
         protected BaseWriter(IndentedStreamWriter writer) => _writer = writer;
 
         protected bool _started { get; private set; } = false;
-        protected bool _didWork { get; private set; } = false;
+        protected bool _finished { get; private set; } = false;
 
         public async Task Begin()
         {
@@ -24,12 +24,12 @@ namespace Sharpie
 
         public async Task End()
         {
-            if (!_started || _didWork)
+            if (!_started || _finished)
             {
                 return;
             }
 
-            _didWork = true;
+            _finished = true;
             await Finish().ConfigureAwait(false);
         }
 
