@@ -13,7 +13,9 @@ namespace Sharpie
 
         public override bool DidWork { get; protected set; }
 
-        public void AddField(Accessibility accessibility, bool readOnly, string type, string name, string? initialValue = null) => _fields.Add(new Field(accessibility, readOnly, type, name, initialValue));
+        public void AddField(Field field) => _fields.Add(field);
+
+        public void AddField(Accessibility accessibility, bool readOnly, string type, string name, string? initialValue = null) => AddField(new Field(accessibility, readOnly, type, name, initialValue));
 
         public void AddField(Accessibility accessibility, string type, string name) => AddField(accessibility, false, type, name);
 

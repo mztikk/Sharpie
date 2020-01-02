@@ -12,7 +12,9 @@ namespace Sharpie
         public ConstructorWriter(IndentedStreamWriter writer, string name) : base(writer) => _name = name;
         public override bool DidWork { get; protected set; }
 
-        public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, string body) => _ctors.Add(new Constructor(accessibility, _name, arguments, body));
+        public void AddConstructor(Constructor ctor) => _ctors.Add(ctor);
+
+        public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, string body) => AddConstructor(new Constructor(accessibility, _name, arguments, body));
 
         public void AddConstructor(Accessibility accessibility = Accessibility.Public) => AddConstructor(accessibility, Array.Empty<Argument>(), string.Empty);
 
