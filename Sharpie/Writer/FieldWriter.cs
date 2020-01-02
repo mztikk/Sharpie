@@ -52,7 +52,7 @@ namespace Sharpie.Writer
                     sb.Append(field.InitialValue);
                 }
                 sb.Append(";");
-                await WriteLine(sb.ToString()).ConfigureAwait(false);
+                await WriteLineAsync(sb.ToString()).ConfigureAwait(false);
 
                 sb.Clear();
                 DidWork = true;

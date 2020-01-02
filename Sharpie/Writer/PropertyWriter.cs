@@ -31,7 +31,7 @@ namespace Sharpie.Writer
                 // new line between properties (before everyone except the first one)
                 if (i > 0)
                 {
-                    await WriteLine().ConfigureAwait(false);
+                    await WriteLineAsync().ConfigureAwait(false);
                 }
 
                 Property property = _properties[i];
@@ -44,49 +44,49 @@ namespace Sharpie.Writer
 
                 if (property.GetterBody is { } || property.SetterBody is { })
                 {
-                    await WriteLine(sb.ToString()).ConfigureAwait(false);
-                    await WriteLine("{").ConfigureAwait(false);
+                    await WriteLineAsync(sb.ToString()).ConfigureAwait(false);
+                    await WriteLineAsync("{").ConfigureAwait(false);
                     IndentationLevel++;
                     if (property.GetterBody is { })
                     {
                         if (property.GetterAccessibility.HasValue)
                         {
-                            await WriteLine(property.GetterAccessibility.Value.ToSharpieString() + " get").ConfigureAwait(false);
+                            await WriteLineAsync(property.GetterAccessibility.Value.ToSharpieString() + " get").ConfigureAwait(false);
                         }
                         else
                         {
-                            await WriteLine("get").ConfigureAwait(false);
+                            await WriteLineAsync("get").ConfigureAwait(false);
                         }
-                        await WriteLine("{").ConfigureAwait(false);
+                        await WriteLineAsync("{").ConfigureAwait(false);
                         IndentationLevel++;
                         foreach (string line in property.GetterBody.GetLines())
                         {
-                            await WriteLine(line).ConfigureAwait(false);
+                            await WriteLineAsync(line).ConfigureAwait(false);
                         }
                         IndentationLevel--;
-                        await WriteLine("}").ConfigureAwait(false);
+                        await WriteLineAsync("}").ConfigureAwait(false);
                     }
                     if (property.SetterBody is { })
                     {
                         if (property.SetterAccessibility.HasValue)
                         {
-                            await WriteLine(property.SetterAccessibility.Value.ToSharpieString() + " set").ConfigureAwait(false);
+                            await WriteLineAsync(property.SetterAccessibility.Value.ToSharpieString() + " set").ConfigureAwait(false);
                         }
                         else
                         {
-                            await WriteLine("set").ConfigureAwait(false);
+                            await WriteLineAsync("set").ConfigureAwait(false);
                         }
-                        await WriteLine("{").ConfigureAwait(false);
+                        await WriteLineAsync("{").ConfigureAwait(false);
                         IndentationLevel++;
                         foreach (string line in property.SetterBody.GetLines())
                         {
-                            await WriteLine(line).ConfigureAwait(false);
+                            await WriteLineAsync(line).ConfigureAwait(false);
                         }
                         IndentationLevel--;
-                        await WriteLine("}").ConfigureAwait(false);
+                        await WriteLineAsync("}").ConfigureAwait(false);
                     }
                     IndentationLevel--;
-                    await WriteLine("}").ConfigureAwait(false);
+                    await WriteLineAsync("}").ConfigureAwait(false);
                 }
                 else
                 {
@@ -114,7 +114,7 @@ namespace Sharpie.Writer
                         sb.Append(";");
                     }
 
-                    await WriteLine(sb.ToString()).ConfigureAwait(false);
+                    await WriteLineAsync(sb.ToString()).ConfigureAwait(false);
                 }
 
                 sb.Clear();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,11 +14,11 @@ namespace Sharpie.Writer
 
         public void AddMethod(Method method) => _methods.Add(method);
 
-        public void AddMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
+        public void AddMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => AddMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
 
-        public void AddMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(accessibility, false, false, returnType, name, arguments, body);
+        public void AddMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => AddMethod(accessibility, false, false, returnType, name, arguments, body);
 
-        public void AddMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(accessibility, false, async, returnType, name, arguments, body);
+        public void AddMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => AddMethod(accessibility, false, async, returnType, name, arguments, body);
 
         protected override Task Start() =>
             // NOP
@@ -32,7 +33,7 @@ namespace Sharpie.Writer
                 // new line between methods (before everyone except the first one)
                 if (i > 0)
                 {
-                    await WriteLine().ConfigureAwait(false);
+                    await WriteLineAsync().ConfigureAwait(false);
                 }
 
                 sb.Append(_methods[i].Accessibility.ToSharpieString());
@@ -51,18 +52,19 @@ namespace Sharpie.Writer
                 sb.Append("(");
                 sb.Append(string.Join(", ", _methods[i].Arguments));
                 sb.Append(")");
-                await WriteLine(sb.ToString()).ConfigureAwait(false);
+                await WriteLineAsync(sb.ToString()).ConfigureAwait(false);
                 sb.Clear();
-                await WriteLine("{").ConfigureAwait(false);
+                await WriteLineAsync("{").ConfigureAwait(false);
 
                 IndentationLevel++;
-                foreach (string line in _methods[i].Body.GetLines())
-                {
-                    await WriteLine(line).ConfigureAwait(false);
-                }
+                //foreach (string line in _methods[i].Body.GetLines())
+                //{
+                //    await WriteLine(line).ConfigureAwait(false);
+                //}
+                _methods[i].Body(_writer);
                 IndentationLevel--;
 
-                await WriteLine("}").ConfigureAwait(false);
+                await WriteLineAsync("}").ConfigureAwait(false);
 
                 DidWork = true;
             }

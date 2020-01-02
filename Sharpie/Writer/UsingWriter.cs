@@ -34,7 +34,7 @@ namespace Sharpie.Writer
         {
             if (_usings.Count > 0)
             {
-                await WriteLine(GetUsing()).ConfigureAwait(false);
+                await WriteLineAsync(GetUsing()).ConfigureAwait(false);
                 DidWork = true;
             }
         }

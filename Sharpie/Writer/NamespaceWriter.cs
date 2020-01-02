@@ -13,8 +13,8 @@ namespace Sharpie.Writer
         {
             if (Namespace is { })
             {
-                await WriteLine("namespace " + Namespace).ConfigureAwait(false);
-                await WriteLine("{").ConfigureAwait(false);
+                await WriteLineAsync("namespace " + Namespace).ConfigureAwait(false);
+                await WriteLineAsync("{").ConfigureAwait(false);
                 IndentationLevel++;
             }
         }
@@ -24,7 +24,7 @@ namespace Sharpie.Writer
             if (Namespace is { })
             {
                 IndentationLevel--;
-                await WriteLine("}").ConfigureAwait(false);
+                await WriteLineAsync("}").ConfigureAwait(false);
                 DidWork = true;
             }
         }

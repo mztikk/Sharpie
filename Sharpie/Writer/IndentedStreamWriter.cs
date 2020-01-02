@@ -20,32 +20,60 @@ namespace Sharpie.Writer
         // Default 4 spaces
         public string Indent { get; set; } = new string(' ', 4);
 
-        public virtual async Task WriteLine(string s)
+        public virtual async Task WriteLineAsync(string s)
         {
-            await Write(s).ConfigureAwait(false);
-            await DirectWriteLine().ConfigureAwait(false);
+            await WriteAsync(s).ConfigureAwait(false);
+            await DirectWriteLineAsync().ConfigureAwait(false);
         }
 
-        public virtual async Task Write(string s)
+        public virtual async Task WriteAsync(string s)
         {
             for (int i = 0; i < IndentationLevel; i++)
             {
-                await DirectWrite(Indent).ConfigureAwait(false);
+                await DirectWriteAsync(Indent).ConfigureAwait(false);
             }
 
-            await DirectWrite(s).ConfigureAwait(false);
+            await DirectWriteAsync(s).ConfigureAwait(false);
         }
 
-        protected virtual async Task DirectWriteLine(string s = "")
+        protected virtual async Task DirectWriteLineAsync(string s = "")
         {
             await _writer.WriteLineAsync(s).ConfigureAwait(false);
             await _writer.FlushAsync().ConfigureAwait(false);
         }
 
-        protected virtual async Task DirectWrite(string s = "")
+        protected virtual async Task DirectWriteAsync(string s = "")
         {
             await _writer.WriteAsync(s).ConfigureAwait(false);
             await _writer.FlushAsync().ConfigureAwait(false);
+        }
+
+        public virtual void WriteLine(string s)
+        {
+            Write(s);
+            DirectWriteLine();
+        }
+
+        public virtual void Write(string s)
+        {
+            for (int i = 0; i < IndentationLevel; i++)
+            {
+                DirectWrite(Indent);
+            }
+
+            DirectWrite(s);
+        }
+
+        protected virtual void DirectWriteLine(string s = "")
+        {
+            _writer.WriteLine(s);
+            _writer.Flush();
+        }
+
+        protected virtual void DirectWrite(string s)
+        {
+            _writer.Write(s);
+            _writer.Flush();
         }
 
         #region IDisposable Support

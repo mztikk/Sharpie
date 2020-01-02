@@ -54,12 +54,12 @@ namespace Sharpie.Writer
             await Usings.End().ConfigureAwait(false);
             if (Usings.DidWork)
             {
-                await WriteLine().ConfigureAwait(false);
+                await WriteLineAsync().ConfigureAwait(false);
             }
 
             await Namespace.Begin().ConfigureAwait(false);
-            await WriteLine(Accessibility.ToSharpieString() + " class " + ClassName + GetInheritance()).ConfigureAwait(false);
-            await WriteLine("{").ConfigureAwait(false);
+            await WriteLineAsync(Accessibility.ToSharpieString() + " class " + ClassName + GetInheritance()).ConfigureAwait(false);
+            await WriteLineAsync("{").ConfigureAwait(false);
             IndentationLevel++;
         }
 
@@ -70,7 +70,7 @@ namespace Sharpie.Writer
             {
                 if (prevWriter.DidWork)
                 {
-                    await WriteLine().ConfigureAwait(false);
+                    await WriteLineAsync().ConfigureAwait(false);
                 }
 
                 await writer.Begin().ConfigureAwait(false);
@@ -80,7 +80,7 @@ namespace Sharpie.Writer
             }
 
             IndentationLevel--;
-            await WriteLine("}").ConfigureAwait(false);
+            await WriteLineAsync("}").ConfigureAwait(false);
             await Namespace.End().ConfigureAwait(false);
 
             DidWork = true;

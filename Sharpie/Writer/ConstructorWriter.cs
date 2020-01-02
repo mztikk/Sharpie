@@ -35,7 +35,7 @@ namespace Sharpie.Writer
                 // new line between ctors (before everyone except the first one)
                 if (i > 0)
                 {
-                    await WriteLine().ConfigureAwait(false);
+                    await WriteLineAsync().ConfigureAwait(false);
                 }
 
                 sb.Append(_ctors[i].Accessibility.ToSharpieString());
@@ -56,18 +56,18 @@ namespace Sharpie.Writer
                     sb.Append(string.Join(", ", _ctors[i].ThisCtorArguments));
                     sb.Append(")");
                 }
-                await WriteLine(sb.ToString()).ConfigureAwait(false);
+                await WriteLineAsync(sb.ToString()).ConfigureAwait(false);
                 sb.Clear();
-                await WriteLine("{").ConfigureAwait(false);
+                await WriteLineAsync("{").ConfigureAwait(false);
 
                 IndentationLevel++;
                 foreach (string line in _ctors[i].Body.GetLines())
                 {
-                    await WriteLine(line).ConfigureAwait(false);
+                    await WriteLineAsync(line).ConfigureAwait(false);
                 }
                 IndentationLevel--;
 
-                await WriteLine("}").ConfigureAwait(false);
+                await WriteLineAsync("}").ConfigureAwait(false);
                 sb.Clear();
 
                 DidWork = true;

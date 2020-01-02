@@ -57,7 +57,7 @@ namespace SharpieTestSpace
                 classWriter.Properties.AddProperty(new Property(Accessibility.Public, "string", "FullPropTest", null, "return _fullPropTest;", null, "_fullPropTest = value;", null));
                 classWriter.Properties.AddProperty(new Property(Accessibility.Public, "int", "GetterOnlyTest", null, "return n;", null, null, null));
                 classWriter.Properties.AddProperty(new Property(Accessibility.Public, "string", "FullPropTestWithAccess", Accessibility.Public, "return _fullPropTest;", Accessibility.Protected, "_fullPropTest = value;", null));
-                classWriter.Methods.AddMethod(Accessibility.Public, "string", "Get5", Array.Empty<Argument>(), "return \"5\";");
+                classWriter.Methods.AddMethod(Accessibility.Public, "string", "Get5", Array.Empty<Argument>(), (writer) => writer.WriteLine("return \"5\";"));
 
                 await classWriter.End().ConfigureAwait(false);
             }
