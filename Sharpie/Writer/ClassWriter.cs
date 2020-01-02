@@ -12,6 +12,7 @@ namespace Sharpie.Writer
         public readonly FieldWriter Fields;
         public readonly ConstructorWriter Ctors;
         public readonly MethodWriter Methods;
+        public readonly PropertyWriter Properties;
 
         private readonly List<BaseWriter> _bodyWriters = new List<BaseWriter>();
 
@@ -21,12 +22,14 @@ namespace Sharpie.Writer
             Namespace = new NamespaceWriter(writer, nameSpace);
             Fields = new FieldWriter(writer);
             Ctors = new ConstructorWriter(writer, className);
+            Properties = new PropertyWriter(writer);
             Methods = new MethodWriter(writer);
 
             ClassName = className;
 
             _bodyWriters.Add(Fields);
             _bodyWriters.Add(Ctors);
+            _bodyWriters.Add(Properties);
             _bodyWriters.Add(Methods);
         }
 
