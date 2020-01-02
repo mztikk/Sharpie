@@ -26,6 +26,7 @@ namespace Sharpie
         }
 
         public Accessibility Accessibility { get; set; } = Accessibility.Public;
+        public override bool DidWork { get; protected set; }
 
         public void AddBaseClass(string name) => _baseClasses.Add(name);
 
@@ -43,6 +44,10 @@ namespace Sharpie
         {
             await Usings.Begin().ConfigureAwait(false);
             await Usings.End().ConfigureAwait(false);
+            if (Usings.DidWork)
+            {
+                await WriteLine();
+            }
 
             await Namespace.Begin().ConfigureAwait(false);
             await WriteLine(Accessibility.ToSharpieString() + " class " + ClassName + GetInheritance()).ConfigureAwait(false);
@@ -54,13 +59,23 @@ namespace Sharpie
         {
             await Fields.Begin().ConfigureAwait(false);
             await Fields.End().ConfigureAwait(false);
+            if (Fields.DidWork)
+            {
+                await WriteLine();
+            }
 
             await Ctors.Begin().ConfigureAwait(false);
             await Ctors.End().ConfigureAwait(false);
+            if (Ctors.DidWork)
+            {
+                await WriteLine();
+            }
 
             IndentationLevel--;
             await WriteLine("}").ConfigureAwait(false);
             await Namespace.End().ConfigureAwait(false);
+
+            DidWork = true;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Sharpie
         private readonly string _name;
 
         public ConstructorWriter(IndentedStreamWriter writer, string name) : base(writer) => _name = name;
+        public override bool DidWork { get; protected set; }
 
         public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, string body) => _ctors.Add(new Constructor(accessibility, _name, arguments, body));
 
@@ -34,6 +35,8 @@ namespace Sharpie
                 IndentationLevel--;
 
                 await WriteLine("}").ConfigureAwait(false);
+
+                DidWork = true;
             }
         }
     }

@@ -11,6 +11,8 @@ namespace Sharpie
         {
         }
 
+        public override bool DidWork { get; protected set; }
+
         public void AddField(Accessibility accessibility, bool readOnly, string type, string name, string? initialValue = null) => _fields.Add(new Field(accessibility, readOnly, type, name, initialValue));
 
         public void AddField(Accessibility accessibility, string type, string name) => AddField(accessibility, false, type, name);
@@ -28,6 +30,7 @@ namespace Sharpie
             foreach (Field field in _fields)
             {
                 await WriteLine(field.Accessibility.ToSharpieString() + (field.ReadOnly ? " readonly " : " ") + field.Type + " " + field.Name + (field.InitialValue is { } ? " = " + field.InitialValue : "") + ";").ConfigureAwait(false);
+                DidWork = true;
             }
         }
     }

@@ -11,6 +11,8 @@ namespace Sharpie
         protected bool _started { get; private set; } = false;
         protected bool _finished { get; private set; } = false;
 
+        public abstract bool DidWork { get; protected set; }
+
         public async Task Begin()
         {
             if (_started)
@@ -18,6 +20,7 @@ namespace Sharpie
                 return;
             }
 
+            DidWork = false;
             _started = true;
             await Start().ConfigureAwait(false);
         }

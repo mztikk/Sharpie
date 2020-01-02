@@ -12,6 +12,8 @@ namespace Sharpie
         {
         }
 
+        public override bool DidWork { get; protected set; }
+
         public void AddUsing(string name) => _usings.Add(name);
 
         private IEnumerable<string> UsingStatements()
@@ -22,20 +24,19 @@ namespace Sharpie
             }
         }
 
-        public string GetUsing()
-        {
-            if (_usings.Count == 0)
-            {
-                return string.Empty;
-            }
-
-            return string.Join(Environment.NewLine, UsingStatements());
-        }
+        public string GetUsing() => string.Join(Environment.NewLine, UsingStatements());
 
         protected override Task Start() =>
             // NOP
             Task.CompletedTask;
 
-        protected override async Task Finish() => await WriteLine(GetUsing()).ConfigureAwait(false);
+        protected override async Task Finish()
+        {
+            if (_usings.Count > 0)
+            {
+                await WriteLine(GetUsing()).ConfigureAwait(false);
+                DidWork = true;
+            }
+        }
     }
 }

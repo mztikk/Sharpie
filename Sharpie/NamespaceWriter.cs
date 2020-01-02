@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Sharpie
 {
@@ -10,6 +8,7 @@ namespace Sharpie
         {
         }
 
+        public override bool DidWork { get; protected set; }
         public string Namespace { get; set; }
 
         protected override async Task Start()
@@ -23,6 +22,7 @@ namespace Sharpie
         {
             IndentationLevel--;
             await WriteLine("}").ConfigureAwait(false);
+            DidWork = true;
         }
     }
 }
