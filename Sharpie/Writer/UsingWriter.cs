@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Sharpie
+namespace Sharpie.Writer
 {
     public class UsingWriter : BaseWriter
     {

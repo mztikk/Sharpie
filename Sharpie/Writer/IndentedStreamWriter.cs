@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Sharpie
+namespace Sharpie.Writer
 {
     public class IndentedStreamWriter : IDisposable
     {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Sharpie
+namespace Sharpie.Writer
 {
     public class NamespaceWriter : BaseWriter
     {
