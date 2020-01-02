@@ -11,6 +11,7 @@ namespace Sharpie
         public readonly UsingWriter Usings;
         public readonly NamespaceWriter Namespace;
         public readonly FieldWriter Fields;
+        public readonly ConstructorWriter Ctors;
 
         public ClassWriter(IndentedStreamWriter writer, string className) : base(writer)
         {
@@ -20,6 +21,7 @@ namespace Sharpie
                 Namespace = className
             };
             Fields = new FieldWriter(writer);
+            Ctors = new ConstructorWriter(writer, className);
 
             ClassName = className;
         }
@@ -54,29 +56,12 @@ namespace Sharpie
             await Fields.Begin().ConfigureAwait(false);
             await Fields.End().ConfigureAwait(false);
 
+            await Ctors.Begin().ConfigureAwait(false);
+            await Ctors.End().ConfigureAwait(false);
+
             IndentationLevel--;
             await WriteLine("}").ConfigureAwait(false);
             await Namespace.End().ConfigureAwait(false);
         }
-
-        public virtual async Task AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, IEnumerable<string> body)
-        {
-            await WriteLine(accessibility.ToSharpieString() + " " + ClassName + "(" + string.Join(", ", arguments) + ")").ConfigureAwait(false);
-            await WriteLine("{").ConfigureAwait(false);
-
-            IndentationLevel++;
-            foreach (string line in body)
-            {
-                await WriteLine(line).ConfigureAwait(false);
-            }
-            IndentationLevel--;
-
-            await WriteLine("}").ConfigureAwait(false);
-            await WriteLine().ConfigureAwait(false);
-        }
-
-        public virtual async Task AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, string body) => await AddConstructor(accessibility, arguments, body.GetLines()).ConfigureAwait(false);
-
-        public virtual async Task AddConstructor(Accessibility accessibility = Accessibility.Public) => await AddConstructor(accessibility, Enumerable.Empty<Argument>(), Enumerable.Empty<string>()).ConfigureAwait(false);
     }
 }
