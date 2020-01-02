@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Sharpie
@@ -40,7 +39,7 @@ namespace Sharpie
             return " : " + string.Join(", ", _baseClasses);
         }
 
-        public override async Task Begin()
+        protected override async Task Start()
         {
             await Usings.Begin().ConfigureAwait(false);
             await Usings.End().ConfigureAwait(false);
@@ -51,7 +50,7 @@ namespace Sharpie
             IndentationLevel++;
         }
 
-        public override async Task End()
+        protected override async Task Finish()
         {
             await Fields.Begin().ConfigureAwait(false);
             await Fields.End().ConfigureAwait(false);

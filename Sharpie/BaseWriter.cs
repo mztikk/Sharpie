@@ -8,15 +8,34 @@ namespace Sharpie
 
         protected BaseWriter(IndentedStreamWriter writer) => _writer = writer;
 
-        public abstract Task Begin();
+        protected bool _started { get; private set; } = false;
+        protected bool _didWork { get; private set; } = false;
 
-        public abstract Task End();
+        public async Task Begin()
+        {
+            if (_started)
+            {
+                return;
+            }
 
-        //public virtual async Task Run()
-        //{
-        //    await Begin().ConfigureAwait(false);
-        //    await End().ConfigureAwait(false);
-        //}
+            _started = true;
+            await Start().ConfigureAwait(false);
+        }
+
+        public async Task End()
+        {
+            if (!_started || _didWork)
+            {
+                return;
+            }
+
+            _didWork = true;
+            await Finish().ConfigureAwait(false);
+        }
+
+        protected abstract Task Start();
+
+        protected abstract Task Finish();
 
         public async Task WriteLine(string s = "") => await _writer.WriteLine(s).ConfigureAwait(false);
 

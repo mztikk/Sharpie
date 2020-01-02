@@ -19,11 +19,11 @@ namespace Sharpie
 
         public void AddField<T>(Accessibility accessibility, string name) => AddField(accessibility, TypeHelper.GetCSharpTypeName(typeof(T).Name), name);
 
-        public override Task Begin() =>
+        protected override Task Start() =>
             // NOP
             Task.CompletedTask;
 
-        public override async Task End()
+        protected override async Task Finish()
         {
             foreach (Field field in _fields)
             {

@@ -12,14 +12,14 @@ namespace Sharpie
 
         public string Namespace { get; set; }
 
-        public override async Task Begin()
+        protected override async Task Start()
         {
             await WriteLine("namespace " + Namespace).ConfigureAwait(false);
             await WriteLine("{").ConfigureAwait(false);
             IndentationLevel++;
         }
 
-        public override async Task End()
+        protected override async Task Finish()
         {
             IndentationLevel--;
             await WriteLine("}").ConfigureAwait(false);

@@ -15,11 +15,11 @@ namespace Sharpie
 
         public void AddConstructor(Accessibility accessibility = Accessibility.Public) => AddConstructor(accessibility, Array.Empty<Argument>(), string.Empty);
 
-        public override Task Begin() =>
+        protected override Task Start() =>
             // NOP
             Task.CompletedTask;
 
-        public override async Task End()
+        protected override async Task Finish()
         {
             foreach (Constructor ctor in _ctors)
             {
