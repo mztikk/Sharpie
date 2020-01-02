@@ -12,11 +12,11 @@ namespace Sharpie
 
         public abstract Task End();
 
-        public virtual async Task Run()
-        {
-            await Begin().ConfigureAwait(false);
-            await End().ConfigureAwait(false);
-        }
+        //public virtual async Task Run()
+        //{
+        //    await Begin().ConfigureAwait(false);
+        //    await End().ConfigureAwait(false);
+        //}
 
         public async Task WriteLine(string s = "") => await _writer.WriteLine(s).ConfigureAwait(false);
 
