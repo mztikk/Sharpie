@@ -47,7 +47,14 @@ namespace Sharpie.Writer
                     IndentationLevel++;
                     if (property.GetterBody is { })
                     {
-                        await WriteLine("get").ConfigureAwait(false);
+                        if (property.GetterAccessibility.HasValue)
+                        {
+                            await WriteLine(property.GetterAccessibility.Value.ToSharpieString() + " get").ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            await WriteLine("get").ConfigureAwait(false);
+                        }
                         await WriteLine("{").ConfigureAwait(false);
                         IndentationLevel++;
                         foreach (string line in property.GetterBody.GetLines())
@@ -59,7 +66,14 @@ namespace Sharpie.Writer
                     }
                     if (property.SetterBody is { })
                     {
-                        await WriteLine("set").ConfigureAwait(false);
+                        if (property.SetterAccessibility.HasValue)
+                        {
+                            await WriteLine(property.SetterAccessibility.Value.ToSharpieString() + " set").ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            await WriteLine("set").ConfigureAwait(false);
+                        }
                         await WriteLine("{").ConfigureAwait(false);
                         IndentationLevel++;
                         foreach (string line in property.SetterBody.GetLines())
