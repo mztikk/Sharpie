@@ -46,7 +46,7 @@ namespace Sharpie
             await Usings.End().ConfigureAwait(false);
             if (Usings.DidWork)
             {
-                await WriteLine();
+                await WriteLine().ConfigureAwait(false);
             }
 
             await Namespace.Begin().ConfigureAwait(false);
@@ -61,14 +61,14 @@ namespace Sharpie
             await Fields.End().ConfigureAwait(false);
             if (Fields.DidWork)
             {
-                await WriteLine();
+                await WriteLine().ConfigureAwait(false);
             }
 
             await Ctors.Begin().ConfigureAwait(false);
             await Ctors.End().ConfigureAwait(false);
             if (Ctors.DidWork)
             {
-                await WriteLine();
+                await WriteLine().ConfigureAwait(false);
             }
 
             IndentationLevel--;

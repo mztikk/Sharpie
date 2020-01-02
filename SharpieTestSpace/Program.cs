@@ -19,7 +19,7 @@ namespace SharpieTestSpace
                 classWriter.Usings.AddUsing("System.IO");
                 classWriter.AddBaseClass("Object");
 
-                await classWriter.Begin();
+                await classWriter.Begin().ConfigureAwait(false);
 
                 classWriter.Fields.AddField(Accessibility.Private, true, "object", "_obj");
                 classWriter.Fields.AddField(Accessibility.Public, false, "object", "Obj");
@@ -39,7 +39,7 @@ namespace SharpieTestSpace
                     "Obj = obj2;"
                     );
 
-                await classWriter.End();
+                await classWriter.End().ConfigureAwait(false);
             }
         }
     }
