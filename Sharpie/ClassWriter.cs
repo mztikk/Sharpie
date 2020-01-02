@@ -57,6 +57,25 @@ namespace Sharpie
             }
         }
 
+        public static string GetCSharpTypeName(string s) => s switch
+        {
+            "SByte" => "sbyte",
+            "Byte" => "byte",
+            "Int16" => "short",
+            "UInt16" => "ushort",
+            "Int32" => "int",
+            "UInt32" => "uint",
+            "Int64" => "long",
+            "UInt64" => "ulong",
+            "Single" => "float",
+            "Double" => "double",
+            "Boolean" => "bool",
+            "Char" => "char",
+            "String" => "string",
+            "Object" => "object",
+            _ => s,
+        };
+
         public override async Task Begin()
         {
             await Usings.Run().ConfigureAwait(false);
@@ -100,5 +119,9 @@ namespace Sharpie
         }
 
         public virtual async Task AddField(Accessibility accessibility, string type, string name) => await AddField(accessibility, false, type, name).ConfigureAwait(false);
+
+        public virtual async Task AddField<T>(Accessibility accessibility, bool readOnly, string name) => await AddField(accessibility, readOnly, GetCSharpTypeName(typeof(T).Name), name).ConfigureAwait(false);
+
+        public virtual async Task AddField<T>(Accessibility accessibility, string name) => await AddField(accessibility, GetCSharpTypeName(typeof(T).Name), name).ConfigureAwait(false);
     }
 }
