@@ -1,8 +1,10 @@
-﻿namespace Sharpie
+﻿using System;
+
+namespace Sharpie
 {
     public static class TypeHelper
     {
-        public static string GetCSharpTypeName(string s) => s switch
+        public static string CSharpName(this Type t) => t.Name switch
         {
             "SByte" => "sbyte",
             "Byte" => "byte",
@@ -18,7 +20,7 @@
             "Char" => "char",
             "String" => "string",
             "Object" => "object",
-            _ => s,
+            _ => t.Name,
         };
     }
 }

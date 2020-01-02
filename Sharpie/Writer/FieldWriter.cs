@@ -19,9 +19,9 @@ namespace Sharpie.Writer
 
         public void AddField(Accessibility accessibility, string type, string name) => AddField(accessibility, false, type, name);
 
-        public void AddField<T>(Accessibility accessibility, bool readOnly, string name) => AddField(accessibility, readOnly, TypeHelper.GetCSharpTypeName(typeof(T).Name), name);
+        public void AddField<T>(Accessibility accessibility, bool readOnly, string name) => AddField(accessibility, readOnly, typeof(T).CSharpName(), name);
 
-        public void AddField<T>(Accessibility accessibility, string name) => AddField(accessibility, TypeHelper.GetCSharpTypeName(typeof(T).Name), name);
+        public void AddField<T>(Accessibility accessibility, string name) => AddField(accessibility, typeof(T).CSharpName(), name);
 
         protected override Task Start() =>
             // NOP
