@@ -8,20 +8,17 @@ namespace Sharpie.Writer
         private readonly HashSet<string> _baseClasses = new HashSet<string>();
         public readonly string ClassName;
         public readonly UsingWriter Usings;
-        public readonly NamespaceWriter Namespace;
+        protected readonly NamespaceWriter Namespace;
         public readonly FieldWriter Fields;
         public readonly ConstructorWriter Ctors;
         public readonly MethodWriter Methods;
 
         private readonly List<BaseWriter> _bodyWriters = new List<BaseWriter>();
 
-        public ClassWriter(IndentedStreamWriter writer, string className) : base(writer)
+        public ClassWriter(IndentedStreamWriter writer, string className, string? nameSpace = null) : base(writer)
         {
             Usings = new UsingWriter(writer);
-            Namespace = new NamespaceWriter(writer)
-            {
-                Namespace = className
-            };
+            Namespace = new NamespaceWriter(writer, nameSpace);
             Fields = new FieldWriter(writer);
             Ctors = new ConstructorWriter(writer, className);
             Methods = new MethodWriter(writer);

@@ -4,25 +4,29 @@ namespace Sharpie.Writer
 {
     public class NamespaceWriter : BaseWriter
     {
-        public NamespaceWriter(IndentedStreamWriter writer) : base(writer)
-        {
-        }
+        public NamespaceWriter(IndentedStreamWriter writer, string? nameSpace) : base(writer) => Namespace = nameSpace;
 
         public override bool DidWork { get; protected set; }
-        public string Namespace { get; set; }
+        public string? Namespace { get; }
 
         protected override async Task Start()
         {
-            await WriteLine("namespace " + Namespace).ConfigureAwait(false);
-            await WriteLine("{").ConfigureAwait(false);
-            IndentationLevel++;
+            if (Namespace is { })
+            {
+                await WriteLine("namespace " + Namespace).ConfigureAwait(false);
+                await WriteLine("{").ConfigureAwait(false);
+                IndentationLevel++;
+            }
         }
 
         protected override async Task Finish()
         {
-            IndentationLevel--;
-            await WriteLine("}").ConfigureAwait(false);
-            DidWork = true;
+            if (Namespace is { })
+            {
+                IndentationLevel--;
+                await WriteLine("}").ConfigureAwait(false);
+                DidWork = true;
+            }
         }
     }
 }

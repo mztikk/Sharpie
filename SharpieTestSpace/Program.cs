@@ -14,8 +14,7 @@ namespace SharpieTestSpace
             using (FileStream fs = new FileStream("test.cs", FileMode.Create, FileAccess.ReadWrite))
             {
                 IndentedStreamWriter indentedwriter = new IndentedStreamWriter(fs);
-                ClassWriter classWriter = new ClassWriter(indentedwriter, "Test");
-                classWriter.Namespace.Namespace = "SharpieTEst";
+                ClassWriter classWriter = new ClassWriter(indentedwriter, "Test", "SharpieTEst");
                 classWriter.Usings.AddUsing("System");
                 classWriter.Usings.AddUsing("System.IO");
                 classWriter.AddBaseClass("Object");

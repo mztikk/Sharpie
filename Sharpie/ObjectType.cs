@@ -10,17 +10,11 @@ namespace Sharpie
 
     public static class ObjectTypeHelper
     {
-        public static string ToSharpieString(this ObjectType objectType)
+        public static string ToSharpieString(this ObjectType objectType) => objectType switch
         {
-            switch (objectType)
-            {
-                case ObjectType.Class:
-                    return "class";
-                case ObjectType.Struct:
-                    return "struct";
-                default:
-                    throw new ArgumentException();
-            }
-        }
+            ObjectType.Class => "class",
+            ObjectType.Struct => "struct",
+            _ => throw new ArgumentException(),
+        };
     }
 }
