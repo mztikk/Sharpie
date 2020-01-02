@@ -9,6 +9,8 @@ namespace Sharpie
     {
         private readonly HashSet<string> _baseClasses = new HashSet<string>();
 
+        private readonly List<Field> _fields = new List<Field>();
+
         public readonly string ClassName;
 
         public readonly UsingWriter Usings;
@@ -87,6 +89,16 @@ namespace Sharpie
 
         public override async Task End()
         {
+            foreach (Field field in _fields)
+            {
+                await WriteLine(field.ToString()).ConfigureAwait(false);
+            }
+
+            if (_fields.Count > 0)
+            {
+                await WriteLine().ConfigureAwait(false);
+            }
+
             IndentationLevel--;
             await WriteLine("}").ConfigureAwait(false);
             await Namespace.End().ConfigureAwait(false);
@@ -112,16 +124,12 @@ namespace Sharpie
 
         public virtual async Task AddConstructor(Accessibility accessibility = Accessibility.Public) => await AddConstructor(accessibility, Enumerable.Empty<Argument>(), Enumerable.Empty<string>()).ConfigureAwait(false);
 
-        public virtual async Task AddField(Accessibility accessibility, bool readOnly, string type, string name)
-        {
-            await WriteLine(accessibility.ToSharpieString() + (readOnly ? " readonly " : " ") + type + " " + name + ";").ConfigureAwait(false);
-            await WriteLine().ConfigureAwait(false);
-        }
+        public void AddField(Accessibility accessibility, bool readOnly, string type, string name, string? initialValue = null) => _fields.Add(new Field(accessibility, readOnly, type, name, initialValue));
 
-        public virtual async Task AddField(Accessibility accessibility, string type, string name) => await AddField(accessibility, false, type, name).ConfigureAwait(false);
+        public void AddField(Accessibility accessibility, string type, string name) => AddField(accessibility, false, type, name);
 
-        public virtual async Task AddField<T>(Accessibility accessibility, bool readOnly, string name) => await AddField(accessibility, readOnly, GetCSharpTypeName(typeof(T).Name), name).ConfigureAwait(false);
+        public void AddField<T>(Accessibility accessibility, bool readOnly, string name) => AddField(accessibility, readOnly, GetCSharpTypeName(typeof(T).Name), name);
 
-        public virtual async Task AddField<T>(Accessibility accessibility, string name) => await AddField(accessibility, GetCSharpTypeName(typeof(T).Name), name).ConfigureAwait(false);
+        public void AddField<T>(Accessibility accessibility, string name) => AddField(accessibility, GetCSharpTypeName(typeof(T).Name), name);
     }
 }
