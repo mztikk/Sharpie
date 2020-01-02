@@ -16,6 +16,8 @@ namespace Sharpie.Writer
 
         public void AddProperty(Property property) => _properties.Add(property);
 
+        public void AddProperty<T>(Accessibility accessibility, string name) => AddProperty(new Property(accessibility, typeof(T).CSharpName(), name));
+
         protected override Task Start() =>
             // NOP
             Task.CompletedTask;
