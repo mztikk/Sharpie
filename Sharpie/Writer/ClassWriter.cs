@@ -11,6 +11,7 @@ namespace Sharpie.Writer
         public readonly NamespaceWriter Namespace;
         public readonly FieldWriter Fields;
         public readonly ConstructorWriter Ctors;
+        public readonly MethodWriter Methods;
 
         private readonly List<BaseWriter> _bodyWriters = new List<BaseWriter>();
 
@@ -23,11 +24,13 @@ namespace Sharpie.Writer
             };
             Fields = new FieldWriter(writer);
             Ctors = new ConstructorWriter(writer, className);
+            Methods = new MethodWriter(writer);
 
             ClassName = className;
 
             _bodyWriters.Add(Fields);
             _bodyWriters.Add(Ctors);
+            _bodyWriters.Add(Methods);
         }
 
         public Accessibility Accessibility { get; set; } = Accessibility.Public;

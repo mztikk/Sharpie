@@ -40,6 +40,8 @@ namespace SharpieTestSpace
                     "Obj = obj2;"
                     );
 
+                classWriter.Methods.AddMethod(new Method(Accessibility.Public, false, false, "string", "Get5", Array.Empty<Argument>(), "return \"5\";"));
+
                 await classWriter.End().ConfigureAwait(false);
             }
         }
