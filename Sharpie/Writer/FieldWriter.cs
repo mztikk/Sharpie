@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Sharpie.Writer
@@ -29,9 +30,31 @@ namespace Sharpie.Writer
 
         protected override async Task Finish()
         {
+            StringBuilder sb = new StringBuilder();
+
             foreach (Field field in _fields)
             {
-                await WriteLine(field.Accessibility.ToSharpieString() + (field.ReadOnly ? " readonly " : " ") + field.Type + " " + field.Name + (field.InitialValue is { } ? " = " + field.InitialValue : "") + ";").ConfigureAwait(false);
+                sb.Append(field.Accessibility.ToSharpieString());
+                if (field.ReadOnly)
+                {
+                    sb.Append(" readonly ");
+                }
+                else
+                {
+                    sb.Append(" ");
+                }
+                sb.Append(field.Type);
+                sb.Append(" ");
+                sb.Append(field.Name);
+                if (field.InitialValue is { })
+                {
+                    sb.Append(" = ");
+                    sb.Append(field.InitialValue);
+                }
+                sb.Append(";");
+                await WriteLine(sb.ToString()).ConfigureAwait(false);
+
+                sb.Clear();
                 DidWork = true;
             }
         }

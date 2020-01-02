@@ -16,7 +16,7 @@ namespace Sharpie.Writer
 
         public void AddUsing(string name) => _usings.Add(name);
 
-        private IEnumerable<string> UsingStatements()
+        private IEnumerable<string> GetUsingStatements()
         {
             foreach (string item in _usings)
             {
@@ -24,7 +24,7 @@ namespace Sharpie.Writer
             }
         }
 
-        public string GetUsing() => string.Join(Environment.NewLine, UsingStatements());
+        public string GetUsing() => string.Join(Environment.NewLine, GetUsingStatements());
 
         protected override Task Start() =>
             // NOP
