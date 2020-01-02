@@ -22,5 +22,11 @@ namespace Sharpie
             Arguments = arguments;
             Body = body;
         }
+
+        public Method(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, string body)
+            : this(accessibility, false, false, returnType, name, arguments, body) { }
+
+        public Method(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body)
+            : this(accessibility, false, async, returnType, name, arguments, body) { }
     }
 }
