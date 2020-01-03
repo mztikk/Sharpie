@@ -59,10 +59,11 @@ namespace Sharpie.Writer
                         }
                         await WriteLineAsync("{").ConfigureAwait(false);
                         IndentationLevel++;
-                        foreach (string line in property.GetterBody.GetLines())
-                        {
-                            await WriteLineAsync(line).ConfigureAwait(false);
-                        }
+                        //foreach (string line in property.GetterBody.GetLines())
+                        //{
+                        //    await WriteLineAsync(line).ConfigureAwait(false);
+                        //}
+                        property.GetterBody(_writer);
                         IndentationLevel--;
                         await WriteLineAsync("}").ConfigureAwait(false);
                     }
@@ -78,10 +79,11 @@ namespace Sharpie.Writer
                         }
                         await WriteLineAsync("{").ConfigureAwait(false);
                         IndentationLevel++;
-                        foreach (string line in property.SetterBody.GetLines())
-                        {
-                            await WriteLineAsync(line).ConfigureAwait(false);
-                        }
+                        //foreach (string line in property.SetterBody.GetLines())
+                        //{
+                        //    await WriteLineAsync(line).ConfigureAwait(false);
+                        //}
+                        property.SetterBody(_writer);
                         IndentationLevel--;
                         await WriteLineAsync("}").ConfigureAwait(false);
                     }

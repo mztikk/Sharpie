@@ -20,6 +20,12 @@ namespace Sharpie.Writer
 
         public void AddMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => AddMethod(accessibility, false, async, returnType, name, arguments, body);
 
+        public void AddMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
+
+        public void AddMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(accessibility, false, false, returnType, name, arguments, body);
+
+        public void AddMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(accessibility, false, async, returnType, name, arguments, body);
+
         protected override Task Start() =>
             // NOP
             Task.CompletedTask;

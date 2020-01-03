@@ -30,5 +30,14 @@ namespace Sharpie
 
         public Method(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body)
             : this(accessibility, false, async, returnType, name, arguments, body) { }
+
+        public Method(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body)
+            : this(accessibility, Static, async, returnType, name, arguments, StringHelper.StringToCall(body)) { }
+
+        public Method(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, string body)
+            : this(accessibility, false, false, returnType, name, arguments, body) { }
+
+        public Method(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body)
+            : this(accessibility, false, async, returnType, name, arguments, body) { }
     }
 }

@@ -15,9 +15,14 @@ namespace Sharpie.Writer
 
         public void AddConstructor(Constructor ctor) => _ctors.Add(ctor);
 
-        public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, string body) => AddConstructor(new Constructor(accessibility, _name, arguments, body));
+        public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => AddConstructor(new Constructor(accessibility, _name, arguments, body));
 
         public void AddConstructor(Accessibility accessibility = Accessibility.Public) => AddConstructor(accessibility, Array.Empty<Argument>(), string.Empty);
+
+        public void AddConstructor(Accessibility accessibility, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => AddConstructor(new Constructor(accessibility, _name, baseCtorArguments, arguments, body));
+        public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, IEnumerable<string> thisCtorArguments, Action<IndentedStreamWriter> body) => AddConstructor(new Constructor(accessibility, _name, arguments, thisCtorArguments, body));
+
+        public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, string body) => AddConstructor(new Constructor(accessibility, _name, arguments, body));
 
         public void AddConstructor(Accessibility accessibility, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, string body) => AddConstructor(new Constructor(accessibility, _name, baseCtorArguments, arguments, body));
         public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, IEnumerable<string> thisCtorArguments, string body) => AddConstructor(new Constructor(accessibility, _name, arguments, thisCtorArguments, body));
@@ -61,10 +66,11 @@ namespace Sharpie.Writer
                 await WriteLineAsync("{").ConfigureAwait(false);
 
                 IndentationLevel++;
-                foreach (string line in _ctors[i].Body.GetLines())
-                {
-                    await WriteLineAsync(line).ConfigureAwait(false);
-                }
+                //foreach (string line in _ctors[i].Body.GetLines())
+                //{
+                //    await WriteLineAsync(line).ConfigureAwait(false);
+                //}
+                _ctors[i].Body(_writer);
                 IndentationLevel--;
 
                 await WriteLineAsync("}").ConfigureAwait(false);

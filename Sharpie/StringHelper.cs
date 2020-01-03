@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using Sharpie.Writer;
 
 namespace Sharpie
 {
@@ -21,5 +23,13 @@ namespace Sharpie
                 }
             }
         }
+
+        public static Action<IndentedStreamWriter> StringToCall(string s) => (IndentedStreamWriter writer) =>
+                                                                                                                    {
+                                                                                                                        foreach (string line in s.GetLines())
+                                                                                                                        {
+                                                                                                                            writer.WriteLine(line);
+                                                                                                                        }
+                                                                                                                    };
     }
 }
