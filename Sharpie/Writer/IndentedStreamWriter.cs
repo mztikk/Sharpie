@@ -20,7 +20,7 @@ namespace Sharpie.Writer
         // Default 4 spaces
         public string Indent { get; set; } = new string(' ', 4);
 
-        public virtual async Task WriteLineAsync(string s)
+        public virtual async Task WriteLineAsync(string s = "")
         {
             await WriteAsync(s).ConfigureAwait(false);
             await DirectWriteLineAsync().ConfigureAwait(false);
@@ -42,13 +42,13 @@ namespace Sharpie.Writer
             await _writer.FlushAsync().ConfigureAwait(false);
         }
 
-        protected virtual async Task DirectWriteAsync(string s = "")
+        protected virtual async Task DirectWriteAsync(string s)
         {
             await _writer.WriteAsync(s).ConfigureAwait(false);
             await _writer.FlushAsync().ConfigureAwait(false);
         }
 
-        public virtual void WriteLine(string s)
+        public virtual void WriteLine(string s = "")
         {
             Write(s);
             DirectWriteLine();

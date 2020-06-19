@@ -1,89 +1,98 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Sharpie.Writer
 {
-    public class ClassWriter : BaseWriter
+    public class ClassWriter
     {
-        private readonly HashSet<string> _baseClasses = new HashSet<string>();
-        public readonly string ClassName;
-        public readonly UsingWriter Usings;
-        protected readonly NamespaceWriter Namespace;
-        public readonly FieldWriter Fields;
-        public readonly ConstructorWriter Ctors;
-        public readonly MethodWriter Methods;
-        public readonly PropertyWriter Properties;
+        private readonly Class _class;
 
-        private readonly List<BaseWriter> _bodyWriters = new List<BaseWriter>();
-
-        public ClassWriter(IndentedStreamWriter writer, string className, string? nameSpace = null) : base(writer)
-        {
-            Usings = new UsingWriter(writer);
-            Namespace = new NamespaceWriter(writer, nameSpace);
-            Fields = new FieldWriter(writer);
-            Ctors = new ConstructorWriter(writer, className);
-            Properties = new PropertyWriter(writer);
-            Methods = new MethodWriter(writer);
-
-            ClassName = className;
-
-            _bodyWriters.Add(Fields);
-            _bodyWriters.Add(Ctors);
-            _bodyWriters.Add(Properties);
-            _bodyWriters.Add(Methods);
-        }
-
-        public Accessibility Accessibility { get; set; } = Accessibility.Public;
-        public override bool DidWork { get; protected set; }
-
-        public void AddBaseClass(string name) => _baseClasses.Add(name);
+        public ClassWriter(Class c) => _class = c;
 
         private string GetInheritance()
         {
-            if (_baseClasses.Count == 0)
+            if (_class._baseClasses.Count == 0)
             {
                 return string.Empty;
             }
 
-            return " : " + string.Join(", ", _baseClasses);
+            return " : " + string.Join(", ", _class._baseClasses);
         }
 
-        protected override async Task Start()
+        public async Task Write(Stream stream)
         {
-            await Usings.Begin().ConfigureAwait(false);
-            await Usings.End().ConfigureAwait(false);
-            if (Usings.DidWork)
+            var writer = new IndentedStreamWriter(stream);
+
+            var usingWriter = new UsingWriter(writer);
+            var namespaceWriter = new NamespaceWriter(writer, _class.Namespace);
+            var fieldWriter = new FieldWriter(writer);
+            var ctorWriter = new ConstructorWriter(writer, _class.ClassName);
+            var propWriter = new PropertyWriter(writer);
+            var methodWriter = new MethodWriter(writer);
+
+            List<BaseWriter> bodyWriters = new List<BaseWriter>
             {
-                await WriteLineAsync().ConfigureAwait(false);
+                fieldWriter,
+                ctorWriter,
+                propWriter,
+                methodWriter
+            };
+
+            foreach (string? u in _class._usings)
+            {
+                usingWriter.AddUsing(u);
             }
 
-            await Namespace.Begin().ConfigureAwait(false);
-            await WriteLineAsync(Accessibility.ToSharpieString() + " class " + ClassName + GetInheritance()).ConfigureAwait(false);
-            await WriteLineAsync("{").ConfigureAwait(false);
-            IndentationLevel++;
-        }
+            foreach (Field? field in _class._fields)
+            {
+                fieldWriter.AddField(field);
+            }
 
-        protected override async Task Finish()
-        {
-            BaseWriter prevWriter = _bodyWriters[0];
-            foreach (BaseWriter writer in _bodyWriters)
+            foreach (Constructor? ctor in _class._ctors)
+            {
+                ctorWriter.AddConstructor(ctor);
+            }
+
+            foreach (Property? prop in _class._properties)
+            {
+                propWriter.AddProperty(prop);
+            }
+
+            foreach (Method? method in _class._methods)
+            {
+                methodWriter.AddMethod(method);
+            }
+
+            await usingWriter.Begin().ConfigureAwait(false);
+            await usingWriter.End().ConfigureAwait(false);
+            if (usingWriter.DidWork)
+            {
+                await writer.WriteLineAsync().ConfigureAwait(false);
+            }
+
+            await namespaceWriter.Begin().ConfigureAwait(false);
+            await writer.WriteLineAsync(_class.Accessibility.ToSharpieString() + " class " + _class.ClassName + GetInheritance()).ConfigureAwait(false);
+            await writer.WriteLineAsync("{").ConfigureAwait(false);
+            writer.IndentationLevel++;
+
+            BaseWriter prevWriter = bodyWriters[0];
+            foreach (BaseWriter bodyWriter in bodyWriters)
             {
                 if (prevWriter.DidWork)
                 {
-                    await WriteLineAsync().ConfigureAwait(false);
+                    await writer.WriteLineAsync().ConfigureAwait(false);
                 }
 
-                await writer.Begin().ConfigureAwait(false);
-                await writer.End().ConfigureAwait(false);
+                await bodyWriter.Begin().ConfigureAwait(false);
+                await bodyWriter.End().ConfigureAwait(false);
 
-                prevWriter = writer;
+                prevWriter = bodyWriter;
             }
 
-            IndentationLevel--;
-            await WriteLineAsync("}").ConfigureAwait(false);
-            await Namespace.End().ConfigureAwait(false);
-
-            DidWork = true;
+            writer.IndentationLevel--;
+            await writer.WriteLineAsync("}").ConfigureAwait(false);
+            await namespaceWriter.End().ConfigureAwait(false);
         }
     }
 }
