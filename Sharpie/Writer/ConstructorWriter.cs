@@ -11,6 +11,8 @@ namespace Sharpie.Writer
         private readonly string _name;
 
         public ConstructorWriter(IndentedStreamWriter writer, string name) : base(writer) => _name = name;
+        public ConstructorWriter(IndentedStreamWriter writer, string name, IEnumerable<Constructor> ctors) : this(writer, name) => _ctors.AddRange(ctors);
+
         public override bool DidWork { get; protected set; }
 
         public void AddConstructor(Constructor ctor) => _ctors.Add(ctor);

@@ -4,64 +4,36 @@ using System.Threading.Tasks;
 
 namespace Sharpie.Writer
 {
-    public class ClassWriter
+    public static class ClassWriter
     {
-        private readonly Class _class;
-
-        public ClassWriter(Class c) => _class = c;
-
-        private string GetInheritance()
+        private static string GetInheritance(this Class c)
         {
-            if (_class._baseClasses.Count == 0)
+            if (c._baseClasses.Count == 0)
             {
                 return string.Empty;
             }
 
-            return " : " + string.Join(", ", _class._baseClasses);
+            return " : " + string.Join(", ", c._baseClasses);
         }
 
-        public async Task Write(Stream stream)
+        public static async Task Write(Class c, Stream stream)
         {
             var writer = new IndentedStreamWriter(stream);
 
             var usingWriter = new UsingWriter(writer);
-            var namespaceWriter = new NamespaceWriter(writer, _class.Namespace);
-            var fieldWriter = new FieldWriter(writer);
-            var ctorWriter = new ConstructorWriter(writer, _class.ClassName);
-            var propWriter = new PropertyWriter(writer);
-            var methodWriter = new MethodWriter(writer);
+            var namespaceWriter = new NamespaceWriter(writer, c.Namespace);
 
             List<BaseWriter> bodyWriters = new List<BaseWriter>
             {
-                fieldWriter,
-                ctorWriter,
-                propWriter,
-                methodWriter
+                new FieldWriter(writer, c._fields),
+                new ConstructorWriter(writer, c.ClassName, c._ctors),
+                new PropertyWriter(writer, c._properties),
+                new MethodWriter(writer, c._methods)
             };
 
-            foreach (string? u in _class._usings)
+            foreach (string? u in c._usings)
             {
                 usingWriter.AddUsing(u);
-            }
-
-            foreach (Field? field in _class._fields)
-            {
-                fieldWriter.AddField(field);
-            }
-
-            foreach (Constructor? ctor in _class._ctors)
-            {
-                ctorWriter.AddConstructor(ctor);
-            }
-
-            foreach (Property? prop in _class._properties)
-            {
-                propWriter.AddProperty(prop);
-            }
-
-            foreach (Method? method in _class._methods)
-            {
-                methodWriter.AddMethod(method);
             }
 
             await usingWriter.Begin().ConfigureAwait(false);
@@ -72,7 +44,7 @@ namespace Sharpie.Writer
             }
 
             await namespaceWriter.Begin().ConfigureAwait(false);
-            await writer.WriteLineAsync(_class.Accessibility.ToSharpieString() + " class " + _class.ClassName + GetInheritance()).ConfigureAwait(false);
+            await writer.WriteLineAsync(c.Accessibility.ToSharpieString() + " class " + c.ClassName + c.GetInheritance()).ConfigureAwait(false);
             await writer.WriteLineAsync("{").ConfigureAwait(false);
             writer.IndentationLevel++;
 
@@ -93,6 +65,20 @@ namespace Sharpie.Writer
             writer.IndentationLevel--;
             await writer.WriteLineAsync("}").ConfigureAwait(false);
             await namespaceWriter.End().ConfigureAwait(false);
+        }
+
+        public static async Task<string> Write(Class c)
+        {
+            using (var stream = new MemoryStream())
+            {
+                await Write(c, stream).ConfigureAwait(false);
+                stream.Position = 0;
+
+                using (var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
         }
     }
 }

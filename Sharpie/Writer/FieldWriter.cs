@@ -12,6 +12,8 @@ namespace Sharpie.Writer
         {
         }
 
+        public FieldWriter(IndentedStreamWriter writer, IEnumerable<Field> fields) : this(writer) => _fields.AddRange(fields);
+
         public override bool DidWork { get; protected set; }
 
         public void AddField(Field field) => _fields.Add(field);

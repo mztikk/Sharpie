@@ -12,6 +12,8 @@ namespace Sharpie.Writer
         {
         }
 
+        public PropertyWriter(IndentedStreamWriter writer, IEnumerable<Property> properties) : this(writer) => _properties.AddRange(properties);
+
         public override bool DidWork { get; protected set; }
 
         public void AddProperty(Property property) => _properties.Add(property);
@@ -59,10 +61,7 @@ namespace Sharpie.Writer
                         }
                         await WriteLineAsync("{").ConfigureAwait(false);
                         IndentationLevel++;
-                        //foreach (string line in property.GetterBody.GetLines())
-                        //{
-                        //    await WriteLineAsync(line).ConfigureAwait(false);
-                        //}
+
                         property.GetterBody(_writer);
                         IndentationLevel--;
                         await WriteLineAsync("}").ConfigureAwait(false);
@@ -79,10 +78,7 @@ namespace Sharpie.Writer
                         }
                         await WriteLineAsync("{").ConfigureAwait(false);
                         IndentationLevel++;
-                        //foreach (string line in property.SetterBody.GetLines())
-                        //{
-                        //    await WriteLineAsync(line).ConfigureAwait(false);
-                        //}
+
                         property.SetterBody(_writer);
                         IndentationLevel--;
                         await WriteLineAsync("}").ConfigureAwait(false);

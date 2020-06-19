@@ -10,6 +10,8 @@ namespace Sharpie.Writer
         private readonly List<Method> _methods = new List<Method>();
 
         public MethodWriter(IndentedStreamWriter writer) : base(writer) { }
+        public MethodWriter(IndentedStreamWriter writer, IEnumerable<Method> methods) : this(writer) => _methods.AddRange(methods);
+
         public override bool DidWork { get; protected set; }
 
         public void AddMethod(Method method) => _methods.Add(method);
@@ -63,10 +65,7 @@ namespace Sharpie.Writer
                 await WriteLineAsync("{").ConfigureAwait(false);
 
                 IndentationLevel++;
-                //foreach (string line in _methods[i].Body.GetLines())
-                //{
-                //    await WriteLine(line).ConfigureAwait(false);
-                //}
+
                 _methods[i].Body(_writer);
                 IndentationLevel--;
 
