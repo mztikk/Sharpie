@@ -55,5 +55,28 @@ namespace Sharpie.Writer
 
             return this;
         }
+
+        public BodyWriter WriteVariable(string type, string name, string? value = null)
+        {
+            if (value is { })
+            {
+                _writer.WriteLine($"{type} {name} = {value};");
+            }
+            else
+            {
+                _writer.WriteLine($"{type} {name};");
+            }
+
+            return this;
+        }
+
+        public BodyWriter WriteVariable(string name, string? value = null) => WriteVariable("var", name, value);
+
+        public BodyWriter WriteAssignment(string name, string value)
+        {
+            _writer.WriteLine($"{name} = {value};");
+
+            return this;
+        }
     }
 }
