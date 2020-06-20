@@ -36,6 +36,12 @@ namespace Sharpie.Writer
             await Finish().ConfigureAwait(false);
         }
 
+        public async Task Make()
+        {
+            await Begin().ConfigureAwait(false);
+            await End().ConfigureAwait(false);
+        }
+
         protected abstract Task Start();
 
         protected abstract Task Finish();
