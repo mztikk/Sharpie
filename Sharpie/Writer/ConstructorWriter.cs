@@ -70,7 +70,7 @@ namespace Sharpie.Writer
                 IndentationLevel++;
                 //foreach (string line in _ctors[i].Body.GetLines())
                 //{
-                //    await WriteLineAsync(line).ConfigureAwait(false);
+                //    await WriteLineAsync(line);
                 //}
                 _ctors[i].Body(_writer);
                 IndentationLevel--;

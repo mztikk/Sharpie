@@ -16,11 +16,11 @@ namespace Sharpie.Writer
 
         public void AddMethod(Method method) => _methods.Add(method);
 
-        public void AddMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => AddMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
+        public void AddMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => AddMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
 
-        public void AddMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => AddMethod(accessibility, false, false, returnType, name, arguments, body);
+        public void AddMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => AddMethod(accessibility, false, false, returnType, name, arguments, body);
 
-        public void AddMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => AddMethod(accessibility, false, async, returnType, name, arguments, body);
+        public void AddMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => AddMethod(accessibility, false, async, returnType, name, arguments, body);
 
         public void AddMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
 
@@ -66,7 +66,9 @@ namespace Sharpie.Writer
 
                 IndentationLevel++;
 
-                _methods[i].Body(_writer);
+                var bodyWriter = new BodyWriter(_writer);
+                _methods[i].Body(bodyWriter);
+
                 IndentationLevel--;
 
                 await WriteLineAsync("}").ConfigureAwait(false);

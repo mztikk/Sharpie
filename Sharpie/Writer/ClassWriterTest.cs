@@ -235,7 +235,9 @@ namespace Sharpie.Writer
 
                 writer.IndentationLevel++;
 
-                _class._methods[i].Body(writer);
+                var bodyWriter = new BodyWriter(writer);
+
+                _class._methods[i].Body(bodyWriter);
                 writer.IndentationLevel--;
 
                 writer.WriteLine("}");

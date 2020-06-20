@@ -4,7 +4,7 @@ using Sharpie.Writer;
 
 namespace Sharpie
 {
-    public class Class
+    public class Class : IEquatable<Class>
     {
         public Class() : this(Internals.GetIdentifierName()) { }
         public Class(string className) => ClassName = className;
@@ -72,11 +72,11 @@ namespace Sharpie
             return this;
         }
 
-        public Class WithMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => WithMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
+        public Class WithMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => WithMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
 
-        public Class WithMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => WithMethod(accessibility, false, false, returnType, name, arguments, body);
+        public Class WithMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => WithMethod(accessibility, false, false, returnType, name, arguments, body);
 
-        public Class WithMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => WithMethod(accessibility, false, async, returnType, name, arguments, body);
+        public Class WithMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => WithMethod(accessibility, false, async, returnType, name, arguments, body);
 
         public Class WithMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => WithMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
 
@@ -116,5 +116,8 @@ namespace Sharpie
             _baseClasses.Add(className);
             return this;
         }
+
+        public override int GetHashCode() => HashCode.Combine(Namespace, ClassName);
+        public bool Equals(Class other) => Namespace.Equals(other.Namespace) && ClassName.Equals(other.ClassName);
     }
 }

@@ -29,5 +29,11 @@ namespace Sharpie
         /// </summary>
         /// <param name="s">String to turn into callable action</param>
         public static Action<IndentedStreamWriter> StringToCall(string s) => (IndentedStreamWriter writer) => s.GetLines().Call(writer.WriteLine);
+
+        /// <summary>
+        /// Creates an Action that calls <see cref="BodyWriter.WriteLine(string)"/> on every line of <see langword="abstract"/>string
+        /// </summary>
+        /// <param name="s">String to turn into callable action</param>
+        public static Action<BodyWriter> StringToBodyWriter(string s) => (BodyWriter writer) => s.GetLines().Call(writer.WriteLine);
     }
 }
