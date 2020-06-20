@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 
 namespace Sharpie.Writer
@@ -23,7 +22,7 @@ namespace Sharpie.Writer
             var usingWriter = new UsingWriter(writer);
             var namespaceWriter = new NamespaceWriter(writer, c.Namespace);
 
-            List<BaseWriter> bodyWriters = new List<BaseWriter>
+            BaseWriter[] bodyWriters = new BaseWriter[]
             {
                 new FieldWriter(writer, c._fields),
                 new ConstructorWriter(writer, c.ClassName, c._ctors),
