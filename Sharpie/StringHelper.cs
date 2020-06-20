@@ -11,14 +11,9 @@ namespace Sharpie
         {
             using (StringReader reader = new StringReader(s))
             {
-                while (true)
+                string line;
+                while ((line = reader.ReadLine()) is { })
                 {
-                    string line = reader.ReadLine();
-                    if (line is null)
-                    {
-                        break;
-                    }
-
                     yield return line;
                 }
             }
