@@ -104,14 +104,25 @@ namespace Sharpie
             return this;
         }
 
-        public Class WithField(Accessibility accessibility, bool readOnly, string type, string name, string? initialValue = null) => WithField(new Field(accessibility, readOnly, type, name, initialValue));
-        public Class WithField(Accessibility accessibility, string type, string name) => WithField(accessibility, false, type, name);
-        public Class WithField<T>(Accessibility accessibility, bool readOnly, string name) => WithField(accessibility, readOnly, typeof(T).CSharpName(), name);
+        public Class WithField(Accessibility accessibility, bool readOnly, bool isStatic, string type, string name, string? initialValue = null) => WithField(new Field(accessibility, readOnly, isStatic, type, name, initialValue));
+        public Class WithField(Accessibility accessibility, bool isConst, string type, string name, string? initialValue = null) => WithField(new Field(accessibility, isConst, type, name, initialValue));
+        public Class WithField(Accessibility accessibility, string type, string name) => WithField(accessibility, false, false, type, name);
+        public Class WithField<T>(Accessibility accessibility, bool readOnly, string name) => WithField(accessibility, readOnly, false, typeof(T).CSharpName(), name);
         public Class WithField<T>(Accessibility accessibility, string name) => WithField(accessibility, typeof(T).CSharpName(), name);
 
         public Class WithUsing(string usingName)
         {
             _usings.Add(usingName);
+            return this;
+        }
+
+        public Class WithUsings(params string[] usings)
+        {
+            foreach (string? item in usings)
+            {
+                _usings.Add(item);
+            }
+
             return this;
         }
 

@@ -18,11 +18,11 @@ namespace Sharpie.Writer
 
         public void AddField(Field field) => _fields.Add(field);
 
-        public void AddField(Accessibility accessibility, bool readOnly, string type, string name, string? initialValue = null) => AddField(new Field(accessibility, readOnly, type, name, initialValue));
+        public void AddField(Accessibility accessibility, bool readOnly, bool isStatic, string type, string name, string? initialValue = null) => AddField(new Field(accessibility, readOnly, isStatic, type, name, initialValue));
 
-        public void AddField(Accessibility accessibility, string type, string name) => AddField(accessibility, false, type, name);
+        public void AddField(Accessibility accessibility, string type, string name) => AddField(accessibility, false, false, type, name);
 
-        public void AddField<T>(Accessibility accessibility, bool readOnly, string name) => AddField(accessibility, readOnly, typeof(T).CSharpName(), name);
+        public void AddField<T>(Accessibility accessibility, bool readOnly, bool isStatic, string name) => AddField(accessibility, readOnly, isStatic, typeof(T).CSharpName(), name);
 
         public void AddField<T>(Accessibility accessibility, string name) => AddField(accessibility, typeof(T).CSharpName(), name);
 
@@ -36,18 +36,27 @@ namespace Sharpie.Writer
 
             foreach (Field field in _fields)
             {
-                sb.Append(field.Accessibility.ToSharpieString());
+                var fieldDescription = new List<string>
+                {
+                    field.Accessibility.ToSharpieString()
+                };
+                if (field.IsStatic)
+                {
+                    fieldDescription.Add("static");
+                }
                 if (field.ReadOnly)
                 {
-                    sb.Append(" readonly ");
+                    fieldDescription.Add("readonly");
                 }
-                else
+                if (field.IsConst)
                 {
-                    sb.Append(" ");
+                    fieldDescription.Add("const");
                 }
-                sb.Append(field.Type);
-                sb.Append(" ");
-                sb.Append(field.Name);
+                fieldDescription.Add(field.Type);
+                fieldDescription.Add(field.Name);
+
+                sb.Append(string.Join(" ", fieldDescription));
+
                 if (field.InitialValue is { })
                 {
                     sb.Append(" = ");

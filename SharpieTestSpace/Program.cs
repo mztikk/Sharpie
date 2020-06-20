@@ -16,8 +16,8 @@ namespace SharpieTestSpace
                     .WithUsing("System.IO")
                     .WithBaseClass("Object")
                     .SetNamespace("SharpieTEst")
-                    .WithField(Accessibility.Private, true, "object", "_obj")
-                    .WithField(Accessibility.Public, false, "object", "Obj")
+                    .WithField(Accessibility.Private, true, false, "object", "_obj")
+                    .WithField(Accessibility.Public, false, false, "object", "Obj")
                     .WithField<int>(Accessibility.Public, "n")
                     .WithField<StreamWriter>(Accessibility.Protected, "_writer")
                     .WithConstructor()
@@ -75,8 +75,8 @@ namespace SharpieTestSpace
 
                 await classWriter.Begin().ConfigureAwait(false);
 
-                classWriter.Fields.AddField(Accessibility.Private, true, "object", "_obj");
-                classWriter.Fields.AddField(Accessibility.Public, false, "object", "Obj");
+                classWriter.Fields.AddField(Accessibility.Private, true, false, "object", "_obj");
+                classWriter.Fields.AddField(Accessibility.Public, false, false, "object", "Obj");
                 classWriter.Fields.AddField<int>(Accessibility.Public, "n");
                 classWriter.Fields.AddField<StreamWriter>(Accessibility.Protected, "_writer");
                 classWriter.Ctors.AddConstructor();
