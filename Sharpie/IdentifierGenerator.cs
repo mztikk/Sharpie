@@ -8,7 +8,7 @@ namespace Sharpie
         private static readonly HashSet<string> s_usedNames = new HashSet<string>();
         private static readonly object s_usedNamesLocker = new object();
 
-        internal static string Get(int len = 8)
+        public static string Get(int len = 8)
         {
             while (true)
             {
