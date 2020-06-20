@@ -144,7 +144,9 @@ namespace Sharpie.Writer
                         writer.WriteLine("{");
                         writer.IndentationLevel++;
 
-                        property.GetterBody(writer);
+                        var bodyWriter = new BodyWriter(writer);
+                        property.GetterBody(bodyWriter);
+
                         writer.IndentationLevel--;
                         writer.WriteLine("}");
                     }
@@ -161,7 +163,9 @@ namespace Sharpie.Writer
                         writer.WriteLine("{");
                         writer.IndentationLevel++;
 
-                        property.SetterBody(writer);
+                        var bodyWriter = new BodyWriter(writer);
+                        property.SetterBody(bodyWriter);
+
                         writer.IndentationLevel--;
                         writer.WriteLine("}");
                     }

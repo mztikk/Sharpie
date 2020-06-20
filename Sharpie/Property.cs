@@ -9,9 +9,9 @@ namespace Sharpie
         public readonly string Type;
         public readonly string Name;
         public readonly Accessibility? GetterAccessibility;
-        public readonly Action<IndentedStreamWriter>? GetterBody;
+        public readonly Action<BodyWriter>? GetterBody;
         public readonly Accessibility? SetterAccessibility;
-        public readonly Action<IndentedStreamWriter>? SetterBody;
+        public readonly Action<BodyWriter>? SetterBody;
         public readonly string? InitialValue;
 
         public Property(
@@ -19,9 +19,9 @@ namespace Sharpie
             string type,
             string name,
             Accessibility? getterAccessibility,
-            Action<IndentedStreamWriter>? getterBodyAction,
+            Action<BodyWriter>? getterBodyAction,
             Accessibility? setterAccessibility,
-            Action<IndentedStreamWriter>? setterBodyAction,
+            Action<BodyWriter>? setterBodyAction,
             string? initialValue)
         {
             Accessibility = accessibility;
@@ -40,11 +40,11 @@ namespace Sharpie
         public Property(Accessibility accessibility, string type, string name, Accessibility getterAccessibility, Accessibility setterAccessibility)
             : this(accessibility, type, name, getterAccessibility, getterBodyAction: null, setterAccessibility, null, null) { }
 
-        public Property(Accessibility accessibility, string type, string name, Action<IndentedStreamWriter> getterBody, Action<IndentedStreamWriter> setterBody)
+        public Property(Accessibility accessibility, string type, string name, Action<BodyWriter> getterBody, Action<BodyWriter> setterBody)
             : this(accessibility, type, name, null, getterBody, null, setterBody, null) { }
 
         public Property(Accessibility accessibility, string type, string name, string getterBody, string setterBody)
-            : this(accessibility, type, name, null, StringHelper.StringToCall(getterBody), null, StringHelper.StringToCall(setterBody), null) { }
+            : this(accessibility, type, name, null, StringHelper.StringToBodyWriter(getterBody), null, StringHelper.StringToBodyWriter(setterBody), null) { }
 
         public Property(
             Accessibility accessibility,
@@ -60,9 +60,9 @@ namespace Sharpie
                 type,
                 name,
                 getterAccessibility,
-                getterBody is { } ? StringHelper.StringToCall(getterBody) : null,
+                getterBody is { } ? StringHelper.StringToBodyWriter(getterBody) : null,
                 setterAccessibility,
-                setterBody is { } ? StringHelper.StringToCall(setterBody) : null,
+                setterBody is { } ? StringHelper.StringToBodyWriter(setterBody) : null,
                 initialValue)
         { }
     }
