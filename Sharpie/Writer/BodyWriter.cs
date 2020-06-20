@@ -8,15 +8,40 @@ namespace Sharpie.Writer
 
         public BodyWriter(IndentedStreamWriter writer) => _writer = writer;
 
-        public virtual async Task WriteLineAsync(string s = "") => await _writer.WriteLineAsync(s).ConfigureAwait(false);
+        public virtual async Task<BodyWriter> WriteLineAsync(string s = "")
+        {
+            await _writer.WriteLineAsync(s).ConfigureAwait(false);
+            return this;
+        }
 
-        public virtual async Task WriteAsync(string s = "") => await _writer.WriteAsync(s).ConfigureAwait(false);
+        public virtual async Task<BodyWriter> WriteAsync(string s = "")
+        {
+            await _writer.WriteAsync(s).ConfigureAwait(false);
+            return this;
+        }
 
-        public virtual void WriteLine(string s = "") => _writer.WriteLine(s);
+        public virtual BodyWriter WriteLine(string s = "")
+        {
+            _writer.WriteLine(s);
+            return this;
+        }
 
-        public virtual void Write(string s = "") => _writer.Write(s);
+        public virtual BodyWriter Write(string s = "")
+        {
+            _writer.Write(s);
+            return this;
+        }
 
-        public async Task WriteForLoopAsync(ForLoop forLoop) => await ForLoopWriter.WriteAsync(forLoop, _writer).ConfigureAwait(false);
-        public void WriteForLoop(ForLoop forLoop) => ForLoopWriter.Write(forLoop, _writer);
+        public async Task<BodyWriter> WriteForLoopAsync(ForLoop forLoop)
+        {
+            await ForLoopWriter.WriteAsync(forLoop, _writer).ConfigureAwait(false);
+            return this;
+        }
+
+        public BodyWriter WriteForLoop(ForLoop forLoop)
+        {
+            ForLoopWriter.Write(forLoop, _writer);
+            return this;
+        }
     }
 }
