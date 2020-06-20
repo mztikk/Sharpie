@@ -3,7 +3,7 @@ using Sharpie.Writer;
 
 namespace Sharpie
 {
-    public class ForLoop
+    public readonly struct ForLoop
     {
         public readonly string Initializer;
         public readonly string Condition;

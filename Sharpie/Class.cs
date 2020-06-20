@@ -1,52 +1,89 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Sharpie.Writer;
 
 namespace Sharpie
 {
-    public class Class : IEquatable<Class>
+    public readonly struct Class : IEquatable<Class>
     {
-        public Class() : this(Internals.GetIdentifierName()) { }
-        public Class(string className) => ClassName = className;
+        private readonly HashSet<string> _usings;
+        private readonly HashSet<string> _baseClasses;
+        private readonly List<Constructor> _ctors;
+        private readonly List<Method> _methods;
+        private readonly List<Property> _properties;
+        private readonly List<Field> _fields;
 
-        internal readonly HashSet<string> _usings = new HashSet<string>();
-        internal readonly HashSet<string> _baseClasses = new HashSet<string>();
-        internal readonly List<Constructor> _ctors = new List<Constructor>();
-        internal readonly List<Method> _methods = new List<Method>();
-        internal readonly List<Property> _properties = new List<Property>();
-        internal readonly List<Field> _fields = new List<Field>();
+        public readonly Accessibility? Accessibility;
+        public readonly bool Static;
+        public readonly string? Namespace;
+        public readonly string ClassName;
 
-        public Accessibility? Accessibility { get; set; }
-
-        public bool Static { get; set; }
-
-        public string Namespace { get; set; }
-
-        public string ClassName { get; set; }
-
-        public Class SetClassName(string className)
+        public Class(
+            string className,
+            string? nameSpace,
+            Accessibility? accessibility,
+            bool isStatic,
+            IEnumerable<string> usings,
+            IEnumerable<string> baseClasses,
+            IEnumerable<Constructor> ctors,
+            IEnumerable<Method> methods,
+            IEnumerable<Property> properties,
+            IEnumerable<Field> fields)
         {
             ClassName = className;
-            return this;
-        }
-
-        public Class SetNamespace(string namespaceName)
-        {
-            Namespace = namespaceName;
-            return this;
-        }
-
-        public Class WithAccessibility(Accessibility accessibility)
-        {
+            Namespace = nameSpace;
             Accessibility = accessibility;
-            return this;
+            Static = isStatic;
+            _usings = new HashSet<string>(usings);
+            _baseClasses = new HashSet<string>(baseClasses);
+            _ctors = new List<Constructor>(ctors);
+            _methods = new List<Method>(methods);
+            _properties = new List<Property>(properties);
+            _fields = new List<Field>(fields);
         }
 
-        public Class SetStatic(bool isStatic)
-        {
-            Static = isStatic;
-            return this;
-        }
+        public Class(string className) : this(
+            className,
+            null,
+            null,
+            false,
+            Array.Empty<string>(),
+            Array.Empty<string>(),
+            Array.Empty<Constructor>(),
+            Array.Empty<Method>(),
+            Array.Empty<Property>(),
+            Array.Empty<Field>())
+        { }
+
+        //public Class(string className)
+        //{
+        //    ClassName = className;
+        //    _usings = new HashSet<string>();
+        //    _baseClasses = new HashSet<string>();
+        //    _ctors = new List<Constructor>();
+        //    _methods = new List<Method>();
+        //    _properties = new List<Property>();
+        //    _fields = new List<Field>();
+
+        //    Accessibility = null;
+        //    Static = false;
+        //    Namespace = string.Empty;
+        //}
+
+        public ImmutableList<string> Usings => _usings.ToImmutableList();
+        public ImmutableList<string> BaseClasses => _baseClasses.ToImmutableList();
+        public ImmutableList<Constructor> Ctors => _ctors.ToImmutableList();
+        public ImmutableList<Method> Methods => _methods.ToImmutableList();
+        public ImmutableList<Property> Properties => _properties.ToImmutableList();
+        public ImmutableList<Field> Fields => _fields.ToImmutableList();
+
+        public Class SetClassName(string className) => new Class(className, Namespace, Accessibility, Static, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
+
+        public Class SetNamespace(string namespaceName) => new Class(ClassName, namespaceName, Accessibility, Static, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
+        public Class WithAccessibility(Accessibility accessibility) => new Class(ClassName, Namespace, accessibility, Static, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
+
+        public Class SetStatic(bool isStatic) => new Class(ClassName, Namespace, Accessibility, isStatic, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
 
         public Class WithConstructor(Constructor ctor)
         {

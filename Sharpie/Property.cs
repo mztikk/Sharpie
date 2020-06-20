@@ -3,7 +3,7 @@ using Sharpie.Writer;
 
 namespace Sharpie
 {
-    public class Property
+    public readonly struct Property
     {
         public readonly Accessibility Accessibility;
         public readonly string Type;

@@ -1,6 +1,6 @@
 ﻿namespace Sharpie
 {
-    public class Argument
+    public readonly struct Argument
     {
         public Argument(string type, string name)
         {

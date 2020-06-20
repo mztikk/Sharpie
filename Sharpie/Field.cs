@@ -1,6 +1,6 @@
 ﻿namespace Sharpie
 {
-    public class Field
+    public readonly struct Field
     {
         public readonly Accessibility Accessibility;
         public readonly bool ReadOnly;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Text;
 using RFReborn.Extensions;
@@ -14,7 +15,7 @@ namespace Sharpie.Writer
 
         private IEnumerable<string> GetUsingStatements()
         {
-            foreach (string item in _class._usings)
+            foreach (string item in _class.Usings)
             {
                 yield return "using " + item + ";";
             }
@@ -24,19 +25,23 @@ namespace Sharpie.Writer
 
         private string GetInheritance()
         {
-            if (_class._baseClasses.Count == 0)
+            ImmutableList<string>? baseClasses = _class.BaseClasses;
+
+            if (baseClasses.Count == 0)
             {
                 return string.Empty;
             }
 
-            return " : " + string.Join(", ", _class._baseClasses);
+            return " : " + string.Join(", ", baseClasses);
         }
 
         private void WriteFields(IndentedStreamWriter writer)
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach (Field field in _class._fields)
+            ImmutableList<Field>? fields = _class.Fields;
+
+            foreach (Field field in fields)
             {
                 sb.Append(field.Accessibility.ToSharpieString());
                 if (field.ReadOnly)
@@ -66,7 +71,9 @@ namespace Sharpie.Writer
         {
             StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < _class._ctors.Count; i++)
+            ImmutableList<Constructor>? ctors = _class.Ctors;
+
+            for (int i = 0; i < ctors.Count; i++)
             {
                 // new line between ctors (before everyone except the first one)
                 if (i > 0)
@@ -74,22 +81,22 @@ namespace Sharpie.Writer
                     writer.WriteLine();
                 }
 
-                sb.Append(_class._ctors[i].Accessibility.ToSharpieString());
+                sb.Append(ctors[i].Accessibility.ToSharpieString());
                 sb.Append(" ");
-                sb.Append(_class._ctors[i].Name);
+                sb.Append(ctors[i].Name);
                 sb.Append("(");
-                sb.Append(string.Join(", ", _class._ctors[i].Arguments));
+                sb.Append(string.Join(", ", ctors[i].Arguments));
                 sb.Append(")");
-                if (_class._ctors[i].BaseCtorArguments is { })
+                if (ctors[i].BaseCtorArguments is { })
                 {
                     sb.Append(" : base(");
-                    sb.Append(string.Join(", ", _class._ctors[i].BaseCtorArguments));
+                    sb.Append(string.Join(", ", ctors[i].BaseCtorArguments));
                     sb.Append(")");
                 }
-                else if (_class._ctors[i].ThisCtorArguments is { })
+                else if (ctors[i].ThisCtorArguments is { })
                 {
                     sb.Append(" : this(");
-                    sb.Append(string.Join(", ", _class._ctors[i].ThisCtorArguments));
+                    sb.Append(string.Join(", ", ctors[i].ThisCtorArguments));
                     sb.Append(")");
                 }
                 writer.WriteLine(sb.ToString());
@@ -98,7 +105,7 @@ namespace Sharpie.Writer
 
                 writer.IndentationLevel++;
 
-                _class._ctors[i].Body(writer);
+                ctors[i].Body(writer);
                 writer.IndentationLevel--;
 
                 writer.WriteLine("}");
@@ -110,7 +117,9 @@ namespace Sharpie.Writer
         {
             StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < _class._properties.Count; i++)
+            ImmutableList<Property>? properties = _class.Properties;
+
+            for (int i = 0; i < properties.Count; i++)
             {
                 // new line between properties (before everyone except the first one)
                 if (i > 0)
@@ -118,7 +127,7 @@ namespace Sharpie.Writer
                     writer.WriteLine();
                 }
 
-                Property property = _class._properties[i];
+                Property property = properties[i];
 
                 sb.Append(property.Accessibility.ToSharpieString());
                 sb.Append(' ');
@@ -209,7 +218,9 @@ namespace Sharpie.Writer
         {
             StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < _class._methods.Count; i++)
+            ImmutableList<Method>? methods = _class.Methods;
+
+            for (int i = 0; i < methods.Count; i++)
             {
                 // new line between methods (before everyone except the first one)
                 if (i > 0)
@@ -217,21 +228,21 @@ namespace Sharpie.Writer
                     writer.WriteLine();
                 }
 
-                sb.Append(_class._methods[i].Accessibility.ToSharpieString());
-                if (_class._methods[i].Static)
+                sb.Append(methods[i].Accessibility.ToSharpieString());
+                if (methods[i].Static)
                 {
                     sb.Append(" static");
                 }
-                if (_class._methods[i].Async)
+                if (methods[i].Async)
                 {
                     sb.Append(" async");
                 }
                 sb.Append(" ");
-                sb.Append(_class._methods[i].ReturnType);
+                sb.Append(methods[i].ReturnType);
                 sb.Append(" ");
-                sb.Append(_class._methods[i].Name);
+                sb.Append(methods[i].Name);
                 sb.Append("(");
-                sb.Append(string.Join(", ", _class._methods[i].Arguments));
+                sb.Append(string.Join(", ", methods[i].Arguments));
                 sb.Append(")");
                 writer.WriteLine(sb.ToString());
                 sb.Clear();
@@ -241,7 +252,7 @@ namespace Sharpie.Writer
 
                 var bodyWriter = new BodyWriter(writer);
 
-                _class._methods[i].Body(bodyWriter);
+                methods[i].Body(bodyWriter);
                 writer.IndentationLevel--;
 
                 writer.WriteLine("}");
@@ -254,7 +265,7 @@ namespace Sharpie.Writer
             {
                 // Usings
                 writer.WriteLine(GetUsing());
-                if (_class._usings.Any())
+                if (_class.Usings.Any())
                 {
                     writer.WriteLine();
                 }

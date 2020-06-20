@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -8,12 +9,14 @@ namespace Sharpie.Writer
     {
         private static string GetInheritance(this Class c)
         {
-            if (c._baseClasses.Count == 0)
+            ImmutableList<string>? baseClasses = c.BaseClasses;
+
+            if (baseClasses.Count == 0)
             {
                 return string.Empty;
             }
 
-            return " : " + string.Join(", ", c._baseClasses);
+            return " : " + string.Join(", ", baseClasses);
         }
 
         public static async Task Write(Class c, Stream stream)
@@ -25,13 +28,13 @@ namespace Sharpie.Writer
 
             BaseWriter[] bodyWriters = new BaseWriter[]
             {
-                new FieldWriter(writer, c._fields),
-                new ConstructorWriter(writer, c.ClassName, c._ctors),
-                new PropertyWriter(writer, c._properties),
-                new MethodWriter(writer, c._methods)
+                new FieldWriter(writer, c.Fields),
+                new ConstructorWriter(writer, c.ClassName, c.Ctors),
+                new PropertyWriter(writer, c.Properties),
+                new MethodWriter(writer, c.Methods)
             };
 
-            foreach (string? u in c._usings)
+            foreach (string? u in c.Usings)
             {
                 usingWriter.AddUsing(u);
             }

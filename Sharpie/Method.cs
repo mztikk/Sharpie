@@ -4,7 +4,7 @@ using Sharpie.Writer;
 
 namespace Sharpie
 {
-    public class Method
+    public readonly struct Method
     {
         public readonly Accessibility Accessibility;
         public readonly bool Static;

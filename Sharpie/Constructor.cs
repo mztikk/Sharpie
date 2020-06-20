@@ -4,7 +4,7 @@ using Sharpie.Writer;
 
 namespace Sharpie
 {
-    public class Constructor
+    public readonly struct Constructor
     {
         public readonly Accessibility Accessibility;
         public readonly string Name;
@@ -19,6 +19,9 @@ namespace Sharpie
             Name = name;
             Arguments = arguments;
             Body = body;
+
+            BaseCtorArguments = null;
+            ThisCtorArguments = null;
         }
 
         public Constructor(Accessibility accessibility, string name, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) : this(accessibility, name, arguments, body) => BaseCtorArguments = baseCtorArguments;
