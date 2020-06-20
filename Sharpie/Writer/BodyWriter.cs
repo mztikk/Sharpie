@@ -70,7 +70,8 @@ namespace Sharpie.Writer
             return this;
         }
 
-        public BodyWriter WriteVariable(string name, string? value = null) => WriteVariable("var", name, value);
+        public BodyWriter WriteVariable(string name, string value) => WriteVariable("var", name, value);
+        public BodyWriter WriteVariable<T>(string name, string? value = null) => WriteVariable(typeof(T).CSharpName(), name, value);
 
         public BodyWriter WriteAssignment(string name, string value)
         {
