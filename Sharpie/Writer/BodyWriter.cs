@@ -43,5 +43,17 @@ namespace Sharpie.Writer
             ForLoopWriter.Write(forLoop, _writer);
             return this;
         }
+
+        public BodyWriter WriteNullCheck(string paramName)
+        {
+            _writer.WriteLine($"if ({paramName} is null)");
+            _writer.WriteLine("{");
+            _writer.IndentationLevel++;
+            _writer.WriteLine($"throw new ArgumentException(nameof({paramName}));");
+            _writer.IndentationLevel--;
+            _writer.WriteLine("}");
+
+            return this;
+        }
     }
 }
