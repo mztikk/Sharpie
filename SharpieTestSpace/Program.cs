@@ -46,12 +46,12 @@ namespace SharpieTestSpace
                         Accessibility.Public,
                         "string",
                         "FullPropTestWithAccess",
-                        Accessibility.Public,
+                        null,
                         "return _fullPropTest;",
                         Accessibility.Protected,
                         "_fullPropTest = value;",
                         null))
-                    .WithMethod(Accessibility.Public, "string", "Get5", Array.Empty<Argument>(), "return \"5\";");
+                    .WithMethod(Accessibility.Public, "string", "Get5", "return \"5\";");
 
             using (var fs = new FileStream("test_new.cs", FileMode.Create, FileAccess.ReadWrite))
             {
@@ -62,9 +62,7 @@ namespace SharpieTestSpace
 
             using (var fs = new FileStream("test.cs", FileMode.Create, FileAccess.ReadWrite))
             {
-                var writer = new ClassWriter(c);
-
-                await writer.Write(fs);
+                await ClassWriter.Write(c, fs).ConfigureAwait(false);
             }
 
             using (FileStream fs = new FileStream("___test.cs", FileMode.Create, FileAccess.ReadWrite))
@@ -112,7 +110,7 @@ namespace SharpieTestSpace
                 classWriter.Fields.AddField<string>(Accessibility.Private, "_fullPropTest");
                 classWriter.Properties.AddProperty(new Property(Accessibility.Public, "string", "FullPropTest", null, "return _fullPropTest;", null, "_fullPropTest = value;", null));
                 classWriter.Properties.AddProperty(new Property(Accessibility.Public, "int", "GetterOnlyTest", null, "return n;", null, null, null));
-                classWriter.Properties.AddProperty(new Property(Accessibility.Public, "string", "FullPropTestWithAccess", Accessibility.Public, "return _fullPropTest;", Accessibility.Protected, "_fullPropTest = value;", null));
+                classWriter.Properties.AddProperty(new Property(Accessibility.Public, "string", "FullPropTestWithAccess", null, "return _fullPropTest;", Accessibility.Protected, "_fullPropTest = value;", null));
                 classWriter.Methods.AddMethod(Accessibility.Public, "string", "Get5", Array.Empty<Argument>(), "return \"5\";");
 
                 await classWriter.End().ConfigureAwait(false);

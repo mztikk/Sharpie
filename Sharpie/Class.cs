@@ -82,6 +82,8 @@ namespace Sharpie
 
         public Class WithMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, string body) => WithMethod(accessibility, false, false, returnType, name, arguments, body);
 
+        public Class WithMethod(Accessibility accessibility, string returnType, string name, string body) => WithMethod(accessibility, false, false, returnType, name, Array.Empty<Argument>(), body);
+
         public Class WithMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => WithMethod(accessibility, false, async, returnType, name, arguments, body);
 
         public Class WithProperty(Property property)
