@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Sharpie.Writer
@@ -41,8 +42,21 @@ namespace Sharpie.Writer
                 await writer.WriteLineAsync().ConfigureAwait(false);
             }
 
+            var classDescription = new List<string>();
+            if (c.Accessibility.HasValue)
+            {
+                classDescription.Add(c.Accessibility.Value.ToSharpieString());
+            }
+            if (c.Static)
+            {
+                classDescription.Add("static");
+            }
+
+            classDescription.Add("class");
+            classDescription.Add(c.ClassName);
+
             await namespaceWriter.Begin().ConfigureAwait(false);
-            await writer.WriteLineAsync(c.Accessibility.ToSharpieString() + " class " + c.ClassName + c.GetInheritance()).ConfigureAwait(false);
+            await writer.WriteLineAsync(string.Join(" ", classDescription) + c.GetInheritance()).ConfigureAwait(false);
             await writer.WriteLineAsync("{").ConfigureAwait(false);
             writer.IndentationLevel++;
 

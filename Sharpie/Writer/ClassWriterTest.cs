@@ -265,7 +265,7 @@ namespace Sharpie.Writer
                 writer.IndentationLevel++;
 
                 // Class begin
-                writer.WriteLine(_class.Accessibility.ToSharpieString() + " class " + _class.ClassName + GetInheritance());
+                writer.WriteLine(_class.Accessibility.Value.ToSharpieString() + " class " + _class.ClassName + GetInheritance());
                 writer.WriteLine("{");
                 writer.IndentationLevel++;
 

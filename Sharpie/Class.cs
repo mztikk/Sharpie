@@ -16,7 +16,7 @@ namespace Sharpie
         internal readonly List<Property> _properties = new List<Property>();
         internal readonly List<Field> _fields = new List<Field>();
 
-        public Accessibility Accessibility { get; set; }
+        public Accessibility? Accessibility { get; set; }
 
         public bool Static { get; set; }
 
@@ -56,7 +56,7 @@ namespace Sharpie
 
         public Class WithConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => WithConstructor(new Constructor(accessibility, ClassName, arguments, body));
 
-        public Class WithConstructor(Accessibility accessibility = Accessibility.Public) => WithConstructor(accessibility, Array.Empty<Argument>(), string.Empty);
+        public Class WithConstructor(Accessibility accessibility = Sharpie.Accessibility.Public) => WithConstructor(accessibility, Array.Empty<Argument>(), string.Empty);
 
         public Class WithConstructor(Accessibility accessibility, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => WithConstructor(new Constructor(accessibility, ClassName, baseCtorArguments, arguments, body));
         public Class WithConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, IEnumerable<string> thisCtorArguments, Action<IndentedStreamWriter> body) => WithConstructor(new Constructor(accessibility, ClassName, arguments, thisCtorArguments, body));
@@ -83,8 +83,8 @@ namespace Sharpie
         public Class WithMethod(Accessibility accessibility, string name, string body) => WithMethod(accessibility, false, false, "void", name, Array.Empty<Argument>(), body);
         public Class WithMethod(Accessibility accessibility, string name, IEnumerable<Argument> arguments, string body) => WithMethod(accessibility, false, false, "void", name, arguments, body);
         public Class WithMethod(Accessibility accessibility, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => WithMethod(accessibility, false, false, "void", name, arguments, body);
-        public Class WithMethod(string name, string body) => WithMethod(Accessibility.Protected, false, false, "void", name, Array.Empty<Argument>(), body);
-        public Class WithMethod(string name, Action<BodyWriter> body) => WithMethod(Accessibility.Protected, false, false, "void", name, Array.Empty<Argument>(), body);
+        public Class WithMethod(string name, string body) => WithMethod(Sharpie.Accessibility.Protected, false, false, "void", name, Array.Empty<Argument>(), body);
+        public Class WithMethod(string name, Action<BodyWriter> body) => WithMethod(Sharpie.Accessibility.Protected, false, false, "void", name, Array.Empty<Argument>(), body);
         public Class WithMethod(Accessibility accessibility, bool isStatic, string name, string body) => WithMethod(accessibility, isStatic, false, "void", name, Array.Empty<Argument>(), body);
         public Class WithMethod(Accessibility accessibility, bool isStatic, string name, Action<BodyWriter> body) => WithMethod(accessibility, isStatic, false, "void", name, Array.Empty<Argument>(), body);
         public Class WithMethod(Accessibility accessibility, bool isStatic, string name, IEnumerable<Argument> arguments, string body) => WithMethod(accessibility, isStatic, false, "void", name, arguments, body);
