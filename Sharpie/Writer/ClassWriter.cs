@@ -36,8 +36,7 @@ namespace Sharpie.Writer
                 usingWriter.AddUsing(u);
             }
 
-            await usingWriter.Begin().ConfigureAwait(false);
-            await usingWriter.End().ConfigureAwait(false);
+            await usingWriter.Make().ConfigureAwait(false);
             if (usingWriter.DidWork)
             {
                 await writer.WriteLineAsync().ConfigureAwait(false);
@@ -48,16 +47,15 @@ namespace Sharpie.Writer
             await writer.WriteLineAsync("{").ConfigureAwait(false);
             writer.IndentationLevel++;
 
-            BaseWriter prevWriter = bodyWriters[0];
+            BaseWriter? prevWriter = null;
             foreach (BaseWriter bodyWriter in bodyWriters)
             {
-                if (prevWriter.DidWork)
+                if (prevWriter is { } && prevWriter.DidWork)
                 {
                     await writer.WriteLineAsync().ConfigureAwait(false);
                 }
 
-                await bodyWriter.Begin().ConfigureAwait(false);
-                await bodyWriter.End().ConfigureAwait(false);
+                await bodyWriter.Make().ConfigureAwait(false);
 
                 prevWriter = bodyWriter;
             }
