@@ -56,21 +56,6 @@ namespace Sharpie
             Array.Empty<Field>())
         { }
 
-        //public Class(string className)
-        //{
-        //    ClassName = className;
-        //    _usings = new HashSet<string>();
-        //    _baseClasses = new HashSet<string>();
-        //    _ctors = new List<Constructor>();
-        //    _methods = new List<Method>();
-        //    _properties = new List<Property>();
-        //    _fields = new List<Field>();
-
-        //    Accessibility = null;
-        //    Static = false;
-        //    Namespace = string.Empty;
-        //}
-
         public ImmutableList<string> Usings => _usings.ToImmutableList();
         public ImmutableList<string> BaseClasses => _baseClasses.ToImmutableList();
         public ImmutableList<Constructor> Ctors => _ctors.ToImmutableList();
