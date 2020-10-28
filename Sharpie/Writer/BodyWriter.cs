@@ -56,6 +56,8 @@ namespace Sharpie.Writer
             return this;
         }
 
+        public int IndentationLevel { get => _writer.IndentationLevel; set => _writer.IndentationLevel = value; }
+
         public BodyWriter WriteVariable(string type, string name, string? value = null)
         {
             if (value is { })

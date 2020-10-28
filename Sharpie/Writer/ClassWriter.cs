@@ -19,7 +19,7 @@ namespace Sharpie.Writer
             return " : " + string.Join(", ", baseClasses);
         }
 
-        public static async Task Write(Class c, Stream stream)
+        public static async Task WriteAsync(Class c, Stream stream)
         {
             var writer = new IndentedStreamWriter(stream);
 
@@ -39,10 +39,10 @@ namespace Sharpie.Writer
                 usingWriter.AddUsing(u);
             }
 
-            await usingWriter.Make().ConfigureAwait(false);
+            await usingWriter.Make();
             if (usingWriter.DidWork)
             {
-                await writer.WriteLineAsync().ConfigureAwait(false);
+                await writer.WriteLineAsync();
             }
 
             var classDescription = new List<string>();
@@ -58,9 +58,9 @@ namespace Sharpie.Writer
             classDescription.Add("class");
             classDescription.Add(c.ClassName);
 
-            await namespaceWriter.Begin().ConfigureAwait(false);
-            await writer.WriteLineAsync(string.Join(" ", classDescription) + c.GetInheritance()).ConfigureAwait(false);
-            await writer.WriteLineAsync("{").ConfigureAwait(false);
+            await namespaceWriter.Begin();
+            await writer.WriteLineAsync(string.Join(" ", classDescription) + c.GetInheritance());
+            await writer.WriteLineAsync("{");
             writer.IndentationLevel++;
 
             BaseWriter? prevWriter = null;
@@ -68,24 +68,24 @@ namespace Sharpie.Writer
             {
                 if (prevWriter is { } && prevWriter.DidWork)
                 {
-                    await writer.WriteLineAsync().ConfigureAwait(false);
+                    await writer.WriteLineAsync();
                 }
 
-                await bodyWriter.Make().ConfigureAwait(false);
+                await bodyWriter.Make();
 
                 prevWriter = bodyWriter;
             }
 
             writer.IndentationLevel--;
-            await writer.WriteLineAsync("}").ConfigureAwait(false);
-            await namespaceWriter.End().ConfigureAwait(false);
+            await writer.WriteLineAsync("}");
+            await namespaceWriter.End();
         }
 
-        public static async Task<string> Write(Class c)
+        public static async Task<string> WriteAsync(Class c)
         {
             using (var stream = new MemoryStream())
             {
-                await Write(c, stream).ConfigureAwait(false);
+                await WriteAsync(c, stream);
                 stream.Position = 0;
 
                 using (var reader = new StreamReader(stream))

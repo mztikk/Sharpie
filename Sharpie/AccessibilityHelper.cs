@@ -1,17 +1,8 @@
 ﻿using System;
+using Microsoft.CodeAnalysis;
 
 namespace Sharpie
 {
-    public enum Accessibility
-    {
-        Public,
-        Protected,
-        Internal,
-        ProtectedInternal,
-        Private,
-        PrivateProtected
-    }
-
     public static class AccessibilityHelper
     {
         public static string ToSharpieString(this Accessibility accessibility) => accessibility switch
@@ -19,9 +10,8 @@ namespace Sharpie
             Accessibility.Public => "public",
             Accessibility.Protected => "protected",
             Accessibility.Internal => "internal",
-            Accessibility.ProtectedInternal => "protected internal",
+            Accessibility.ProtectedAndInternal => "protected internal",
             Accessibility.Private => "private",
-            Accessibility.PrivateProtected => "private protected",
             _ => throw new ArgumentException(),
         };
     }

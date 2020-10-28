@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Sharpie;
 using Sharpie.Writer;
 
@@ -53,67 +54,10 @@ namespace SharpieTestSpace
                         null))
                     .WithMethod(Accessibility.Public, "string", "Get5", "return \"5\";");
 
-            using (var fs = new FileStream("test_new.cs", FileMode.Create, FileAccess.ReadWrite))
-            {
-                var writer = new ClassWriterTest(c);
-
-                writer.Write(fs);
-            }
 
             using (var fs = new FileStream("test.cs", FileMode.Create, FileAccess.ReadWrite))
             {
-                await ClassWriter.Write(c, fs).ConfigureAwait(false);
-            }
-
-            using (FileStream fs = new FileStream("___test.cs", FileMode.Create, FileAccess.ReadWrite))
-            {
-                IndentedStreamWriter indentedwriter = new IndentedStreamWriter(fs);
-                ___ClassWriter classWriter = new ___ClassWriter(indentedwriter, "Test", "SharpieTEst");
-                classWriter.Usings.AddUsing("System");
-                classWriter.Usings.AddUsing("System.IO");
-                classWriter.AddBaseClass("Object");
-
-                await classWriter.Begin().ConfigureAwait(false);
-
-                classWriter.Fields.AddField(Accessibility.Private, true, false, "object", "_obj");
-                classWriter.Fields.AddField(Accessibility.Public, false, false, "object", "Obj");
-                classWriter.Fields.AddField<int>(Accessibility.Public, "n");
-                classWriter.Fields.AddField<StreamWriter>(Accessibility.Protected, "_writer");
-                classWriter.Ctors.AddConstructor();
-                classWriter.Ctors.AddConstructor(
-                    Accessibility.Public,
-                    new List<Argument>()
-                    {
-                        new Argument("object", "obj"),
-                        new Argument("object", "obj2")
-                    },
-
-                    "_obj = obj;"
-                    + Environment.NewLine +
-                    "Obj = obj2;"
-                    );
-                classWriter.Ctors.AddConstructor(
-                    Accessibility.Public,
-                    new List<Argument>()
-                    {
-                        new Argument("object", "obj"),
-                        new Argument("object", "obj2")
-                    },
-                    new List<string>()
-                    {
-                        "obj", "obj2"
-                    },
-                    "n = 5;"
-                    );
-
-                classWriter.Properties.AddProperty<string>(Accessibility.Public, "TestPropString");
-                classWriter.Fields.AddField<string>(Accessibility.Private, "_fullPropTest");
-                classWriter.Properties.AddProperty(new Property(Accessibility.Public, "string", "FullPropTest", null, "return _fullPropTest;", null, "_fullPropTest = value;", null));
-                classWriter.Properties.AddProperty(new Property(Accessibility.Public, "int", "GetterOnlyTest", null, "return n;", null, null, null));
-                classWriter.Properties.AddProperty(new Property(Accessibility.Public, "string", "FullPropTestWithAccess", null, "return _fullPropTest;", Accessibility.Protected, "_fullPropTest = value;", null));
-                classWriter.Methods.AddMethod(Accessibility.Public, "string", "Get5", Array.Empty<Argument>(), "return \"5\";");
-
-                await classWriter.End().ConfigureAwait(false);
+                await ClassWriter.WriteAsync(c, fs).ConfigureAwait(false);
             }
         }
     }

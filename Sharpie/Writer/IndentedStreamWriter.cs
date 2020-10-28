@@ -20,54 +20,92 @@ namespace Sharpie.Writer
         // Default 4 spaces
         public string Indent { get; set; } = new string(' ', 4);
 
+        private bool _indented = false;
+
         public virtual async Task WriteLineAsync(string s = "")
         {
-            await WriteAsync(s).ConfigureAwait(false);
-            await DirectWriteLineAsync().ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(s))
+            {
+                await WriteAsync(s);
+            }
+
+            await DirectWriteLineAsync();
         }
 
         public virtual async Task WriteAsync(string s)
         {
-            for (int i = 0; i < IndentationLevel; i++)
-            {
-                await DirectWriteAsync(Indent).ConfigureAwait(false);
-            }
+            await WriteIndentAsync();
 
-            await DirectWriteAsync(s).ConfigureAwait(false);
+            await DirectWriteAsync(s);
         }
 
         protected virtual async Task DirectWriteLineAsync(string s = "")
         {
-            await _writer.WriteLineAsync(s).ConfigureAwait(false);
-            await _writer.FlushAsync().ConfigureAwait(false);
+            await _writer.WriteLineAsync(s);
+            await _writer.FlushAsync();
+
+            _indented = false;
         }
 
         protected virtual async Task DirectWriteAsync(string s)
         {
-            await _writer.WriteAsync(s).ConfigureAwait(false);
-            await _writer.FlushAsync().ConfigureAwait(false);
+            await _writer.WriteAsync(s);
+            await _writer.FlushAsync();
         }
 
         public virtual void WriteLine(string s = "")
         {
-            Write(s);
+            if (!string.IsNullOrWhiteSpace(s))
+            {
+                Write(s);
+            }
+
             DirectWriteLine();
         }
 
         public virtual void Write(string s)
         {
+            WriteIndent();
+
+            DirectWrite(s);
+        }
+
+        protected virtual void WriteIndent()
+        {
+            if (_indented)
+            {
+                return;
+            }
+
             for (int i = 0; i < IndentationLevel; i++)
             {
                 DirectWrite(Indent);
             }
 
-            DirectWrite(s);
+            _indented = true;
+        }
+
+        protected virtual async Task WriteIndentAsync()
+        {
+            if (_indented)
+            {
+                return;
+            }
+
+            for (int i = 0; i < IndentationLevel; i++)
+            {
+                await DirectWriteAsync(Indent);
+            }
+
+            _indented = true;
         }
 
         protected virtual void DirectWriteLine(string s = "")
         {
             _writer.WriteLine(s);
             _writer.Flush();
+
+            _indented = false;
         }
 
         protected virtual void DirectWrite(string s)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using RFReborn.Extensions;
+//using RFReborn.Extensions;
 using Sharpie.Writer;
 
 namespace Sharpie
@@ -28,12 +28,24 @@ namespace Sharpie
         /// Creates an Action that calls <see cref="IndentedStreamWriter.WriteLine(string)"/> on every line of <see langword="abstract"/>string
         /// </summary>
         /// <param name="s">String to turn into callable action</param>
-        public static Action<IndentedStreamWriter> StringToCall(string s) => (IndentedStreamWriter writer) => s.GetLines().Call(writer.WriteLine);
+        public static Action<IndentedStreamWriter> StringToCall(string s) => (IndentedStreamWriter writer) =>
+        {
+            foreach (string? line in s.GetLines())
+            {
+                writer.WriteLine(line);
+            }
+        };
 
         /// <summary>
         /// Creates an Action that calls <see cref="BodyWriter.WriteLine(string)"/> on every line of <see langword="abstract"/>string
         /// </summary>
         /// <param name="s">String to turn into callable action</param>
-        public static Action<BodyWriter> StringToBodyWriter(string s) => (BodyWriter writer) => s.GetLines().Call(writer.WriteLine);
+        public static Action<BodyWriter> StringToBodyWriter(string s) => (BodyWriter writer) =>
+        {
+            foreach (string? line in s.GetLines())
+            {
+                writer.WriteLine(line);
+            }
+        };
     }
 }
