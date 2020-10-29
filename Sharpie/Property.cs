@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.CodeAnalysis;
 using Sharpie.Writer;
 
 namespace Sharpie
