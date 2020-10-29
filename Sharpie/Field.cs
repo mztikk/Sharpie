@@ -1,4 +1,6 @@
-﻿namespace Sharpie
+﻿using Microsoft.CodeAnalysis;
+
+namespace Sharpie
 {
     public readonly struct Field
     {
