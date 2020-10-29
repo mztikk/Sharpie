@@ -56,6 +56,18 @@ namespace Sharpie.Writer
             return this;
         }
 
+        public async Task<BodyWriter> WriteIfAsync(If @if)
+        {
+            await IfWriter.WriteAsync(@if, _writer).ConfigureAwait(false);
+            return this;
+        }
+
+        public BodyWriter WriteIfLoop(If @if)
+        {
+            IfWriter.Write(@if, _writer);
+            return this;
+        }
+
         public BodyWriter WriteNullCheck(string paramName)
         {
             _writer.WriteLine($"if ({paramName} is null)");
