@@ -44,6 +44,18 @@ namespace Sharpie.Writer
             return this;
         }
 
+        public async Task<BodyWriter> WriteForEachLoopAsync(ForEachLoop forEachLoop)
+        {
+            await ForEachLoopWriter.WriteAsync(forEachLoop, _writer).ConfigureAwait(false);
+            return this;
+        }
+
+        public BodyWriter WriteForEachLoop(ForEachLoop forEachLoop)
+        {
+            ForEachLoopWriter.Write(forEachLoop, _writer);
+            return this;
+        }
+
         public BodyWriter WriteNullCheck(string paramName)
         {
             _writer.WriteLine($"if ({paramName} is null)");
