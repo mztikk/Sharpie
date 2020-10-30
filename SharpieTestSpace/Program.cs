@@ -52,7 +52,19 @@ namespace SharpieTestSpace
                         Accessibility.Protected,
                         "_fullPropTest = value;",
                         null))
-                    .WithMethod(Accessibility.Public, "string", "Get5", "return \"5\";");
+                    .WithMethod(Accessibility.Public, "string", "Get5", "return \"5\";")
+                    .WithMethod(new Method(Accessibility.Public, "string", "Switch5", Array.Empty<Argument>(), (bodyWriter) =>
+                    {
+                        bodyWriter.WriteSwitchCaseStatement(new SwitchCaseStatement("n", new CaseStatement[] {
+                            new CaseStatement("0", "return 0;"),
+                            new CaseStatement("1", "return 1;"),
+                            new CaseStatement("2", "return 2;"),
+                            new CaseStatement("3", "return 3;"),
+                            new CaseStatement("4", "return 4;"),
+                            new CaseStatement("5", "return 5;"),
+                        },
+                        "throw new ArgumentOutOfRangeException();"));
+                    }));
 
 
             using (var fs = new FileStream("test.cs", FileMode.Create, FileAccess.ReadWrite))

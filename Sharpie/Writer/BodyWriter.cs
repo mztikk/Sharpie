@@ -68,6 +68,42 @@ namespace Sharpie.Writer
             return this;
         }
 
+        public async Task<BodyWriter> WriteSwitchCaseStatementAsync(SwitchCaseStatement switchCaseStatement)
+        {
+            await SwitchCaseStatementWriter.WriteAsync(switchCaseStatement, _writer).ConfigureAwait(false);
+            return this;
+        }
+
+        public BodyWriter WriteSwitchCaseStatement(SwitchCaseStatement switchCaseStatement)
+        {
+            SwitchCaseStatementWriter.Write(switchCaseStatement, _writer);
+            return this;
+        }
+
+        public async Task<BodyWriter> WriteBreakAsync()
+        {
+            await _writer.WriteLineAsync("break;");
+            return this;
+        }
+
+        public BodyWriter WriteBreak()
+        {
+            _writer.WriteLine("break;");
+            return this;
+        }
+
+        public async Task<BodyWriter> WriteReturnAsync(string returnValue)
+        {
+            await _writer.WriteLineAsync($"return {returnValue};");
+            return this;
+        }
+
+        public BodyWriter WriteReturn(string returnValue)
+        {
+            _writer.WriteLine($"return {returnValue};");
+            return this;
+        }
+
         public BodyWriter WriteNullCheck(string paramName)
         {
             _writer.WriteLine($"if ({paramName} is null)");
