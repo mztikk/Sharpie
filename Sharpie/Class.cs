@@ -17,6 +17,7 @@ namespace Sharpie
 
         public readonly Accessibility? Accessibility;
         public readonly bool Static;
+        public readonly bool Partial;
         public readonly string? Namespace;
         public readonly string ClassName;
 
@@ -25,6 +26,7 @@ namespace Sharpie
             string? nameSpace,
             Accessibility? accessibility,
             bool isStatic,
+            bool isPartial,
             IEnumerable<string> usings,
             IEnumerable<string> baseClasses,
             IEnumerable<Constructor> ctors,
@@ -36,6 +38,7 @@ namespace Sharpie
             Namespace = nameSpace;
             Accessibility = accessibility;
             Static = isStatic;
+            Partial = isPartial;
             _usings = new HashSet<string>(usings);
             _baseClasses = new HashSet<string>(baseClasses);
             _ctors = new List<Constructor>(ctors);
@@ -48,6 +51,7 @@ namespace Sharpie
             className,
             null,
             null,
+            false,
             false,
             Array.Empty<string>(),
             Array.Empty<string>(),
@@ -64,12 +68,13 @@ namespace Sharpie
         public ImmutableList<Property> Properties => _properties.ToImmutableList();
         public ImmutableList<Field> Fields => _fields.ToImmutableList();
 
-        public Class SetClassName(string className) => new Class(className, Namespace, Accessibility, Static, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
+        public Class SetClassName(string className) => new Class(className, Namespace, Accessibility, Static, Partial, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
 
-        public Class SetNamespace(string namespaceName) => new Class(ClassName, namespaceName, Accessibility, Static, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
-        public Class WithAccessibility(Accessibility accessibility) => new Class(ClassName, Namespace, accessibility, Static, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
+        public Class SetNamespace(string namespaceName) => new Class(ClassName, namespaceName, Accessibility, Static, Partial, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
+        public Class WithAccessibility(Accessibility accessibility) => new Class(ClassName, Namespace, accessibility, Static, Partial, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
 
-        public Class SetStatic(bool isStatic) => new Class(ClassName, Namespace, Accessibility, isStatic, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
+        public Class SetStatic(bool isStatic) => new Class(ClassName, Namespace, Accessibility, isStatic, Partial, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
+        public Class SetPartial(bool isPartial) => new Class(ClassName, Namespace, Accessibility, Static, isPartial, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
 
         public Class WithConstructor(Constructor ctor)
         {

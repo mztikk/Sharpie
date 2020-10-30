@@ -54,6 +54,10 @@ namespace Sharpie.Writer
             {
                 classDescription.Add("static");
             }
+            if (c.Partial)
+            {
+                classDescription.Add("partial");
+            }
 
             classDescription.Add("class");
             classDescription.Add(c.ClassName);
