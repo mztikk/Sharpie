@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Sharpie.Writer;
 
 namespace Sharpie
@@ -6,9 +7,9 @@ namespace Sharpie
     public readonly struct If
     {
         public readonly string Condition;
-        public readonly Action<BodyWriter> Body;
+        public readonly Func<BodyWriter, Task> Body;
 
-        public If(string condition, Action<BodyWriter> body)
+        public If(string condition, Func<BodyWriter, Task> body)
         {
             Condition = condition;
             Body = body;

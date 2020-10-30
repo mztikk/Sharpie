@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Sharpie.Writer;
 
 namespace Sharpie
@@ -8,9 +9,9 @@ namespace Sharpie
     {
         public readonly string Expression;
         public readonly IEnumerable<CaseStatement> CaseStatements;
-        public readonly Action<BodyWriter>? DefaultCaseBody;
+        public readonly Func<BodyWriter, Task>? DefaultCaseBody;
 
-        public SwitchCaseStatement(string expression, IEnumerable<CaseStatement> caseStatements, Action<BodyWriter>? defaultCaseBodyAction)
+        public SwitchCaseStatement(string expression, IEnumerable<CaseStatement> caseStatements, Func<BodyWriter, Task>? defaultCaseBodyAction)
         {
             Expression = expression;
             CaseStatements = caseStatements;
@@ -24,9 +25,9 @@ namespace Sharpie
     public readonly struct CaseStatement
     {
         public readonly string Case;
-        public readonly Action<BodyWriter> Body;
+        public readonly Func<BodyWriter, Task> Body;
 
-        public CaseStatement(string @case, Action<BodyWriter> body)
+        public CaseStatement(string @case, Func<BodyWriter, Task> body)
         {
             Case = @case;
             Body = body;

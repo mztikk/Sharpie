@@ -16,7 +16,7 @@ namespace Sharpie.Writer
             {
                 await writer.WriteLineAsync($"case {@case.Case}:");
                 writer.IndentationLevel++;
-                @case.Body(bodyWriter);
+                await @case.Body(bodyWriter);
                 writer.IndentationLevel--;
             }
 
@@ -24,7 +24,7 @@ namespace Sharpie.Writer
             {
                 await writer.WriteLineAsync("default:");
                 writer.IndentationLevel++;
-                switchCaseStatement.DefaultCaseBody(bodyWriter);
+                await switchCaseStatement.DefaultCaseBody(bodyWriter);
                 writer.IndentationLevel--;
             }
 
@@ -32,6 +32,7 @@ namespace Sharpie.Writer
             await writer.WriteLineAsync("}");
         }
 
+        [System.Obsolete("Use Async", true)]
         public static void Write(SwitchCaseStatement switchCaseStatement, IndentedStreamWriter writer)
         {
             writer.WriteLine($"switch ({switchCaseStatement.Expression})");

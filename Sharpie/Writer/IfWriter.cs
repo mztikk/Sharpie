@@ -11,12 +11,13 @@ namespace Sharpie.Writer
             writer.IndentationLevel++;
 
             var bodyWriter = new BodyWriter(writer);
-            @if.Body(bodyWriter);
+            await @if.Body(bodyWriter);
 
             writer.IndentationLevel--;
             await writer.WriteLineAsync("}").ConfigureAwait(false);
         }
 
+        [System.Obsolete("Use Async", true)]
         public static void Write(If @if, IndentedStreamWriter writer)
         {
             writer.WriteLine($"if ({@if.Condition})");

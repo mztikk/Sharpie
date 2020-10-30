@@ -53,9 +53,9 @@ namespace SharpieTestSpace
                         "_fullPropTest = value;",
                         null))
                     .WithMethod(Accessibility.Public, "string", "Get5", "return \"5\";")
-                    .WithMethod(new Method(Accessibility.Public, "string", "Switch5", Array.Empty<Argument>(), (bodyWriter) =>
+                    .WithMethod(new Method(Accessibility.Public, "string", "Switch5", Array.Empty<Argument>(), async (bodyWriter) =>
                     {
-                        bodyWriter.WriteSwitchCaseStatement(new SwitchCaseStatement("n", new CaseStatement[] {
+                        await bodyWriter.WriteSwitchCaseStatementAsync(new SwitchCaseStatement("n", new CaseStatement[] {
                             new CaseStatement("0", "return 0;"),
                             new CaseStatement("1", "return 1;"),
                             new CaseStatement("2", "return 2;"),
