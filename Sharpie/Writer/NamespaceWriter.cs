@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Sharpie.Writer
+﻿namespace Sharpie.Writer
 {
     public class NamespaceWriter : BaseWriter
     {
@@ -9,22 +7,22 @@ namespace Sharpie.Writer
         public override bool DidWork { get; protected set; }
         public string? Namespace { get; }
 
-        protected override async Task Start()
+        protected override void Start()
         {
             if (Namespace is { })
             {
-                await WriteLineAsync("namespace " + Namespace).ConfigureAwait(false);
-                await WriteLineAsync("{").ConfigureAwait(false);
+                WriteLine("namespace " + Namespace);
+                WriteLine("{");
                 IndentationLevel++;
             }
         }
 
-        protected override async Task Finish()
+        protected override void Finish()
         {
             if (Namespace is { })
             {
                 IndentationLevel--;
-                await WriteLineAsync("}").ConfigureAwait(false);
+                WriteLine("}");
                 DidWork = true;
             }
         }

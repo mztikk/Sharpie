@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 
 namespace Sharpie.Writer
@@ -21,11 +20,9 @@ namespace Sharpie.Writer
 
         public void AddProperty<T>(Accessibility accessibility, string name) => AddProperty(new Property(accessibility, typeof(T).CSharpName(), name));
 
-        protected override Task Start() =>
-            // NOP
-            Task.CompletedTask;
+        protected override void Start() { }
 
-        protected override async Task Finish()
+        protected override void Finish()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -34,7 +31,7 @@ namespace Sharpie.Writer
                 // new line between properties (before everyone except the first one)
                 if (i > 0)
                 {
-                    await WriteLineAsync().ConfigureAwait(false);
+                    WriteLine();
                 }
 
                 Property property = _properties[i];
@@ -47,49 +44,49 @@ namespace Sharpie.Writer
 
                 if (property.GetterBody is { } || property.SetterBody is { })
                 {
-                    await WriteLineAsync(sb.ToString()).ConfigureAwait(false);
-                    await WriteLineAsync("{").ConfigureAwait(false);
+                    WriteLine(sb.ToString());
+                    WriteLine("{");
                     IndentationLevel++;
                     if (property.GetterBody is { })
                     {
                         if (property.GetterAccessibility.HasValue)
                         {
-                            await WriteLineAsync(property.GetterAccessibility.Value.ToSharpieString() + " get").ConfigureAwait(false);
+                            WriteLine(property.GetterAccessibility.Value.ToSharpieString() + " get");
                         }
                         else
                         {
-                            await WriteLineAsync("get").ConfigureAwait(false);
+                            WriteLine("get");
                         }
-                        await WriteLineAsync("{").ConfigureAwait(false);
+                        WriteLine("{");
                         IndentationLevel++;
 
                         var bodyWriter = new BodyWriter(_writer);
                         property.GetterBody(bodyWriter);
 
                         IndentationLevel--;
-                        await WriteLineAsync("}").ConfigureAwait(false);
+                        WriteLine("}");
                     }
                     if (property.SetterBody is { })
                     {
                         if (property.SetterAccessibility.HasValue)
                         {
-                            await WriteLineAsync(property.SetterAccessibility.Value.ToSharpieString() + " set").ConfigureAwait(false);
+                            WriteLine(property.SetterAccessibility.Value.ToSharpieString() + " set");
                         }
                         else
                         {
-                            await WriteLineAsync("set").ConfigureAwait(false);
+                            WriteLine("set");
                         }
-                        await WriteLineAsync("{").ConfigureAwait(false);
+                        WriteLine("{");
                         IndentationLevel++;
 
                         var bodyWriter = new BodyWriter(_writer);
                         property.SetterBody(bodyWriter);
 
                         IndentationLevel--;
-                        await WriteLineAsync("}").ConfigureAwait(false);
+                        WriteLine("}");
                     }
                     IndentationLevel--;
-                    await WriteLineAsync("}").ConfigureAwait(false);
+                    WriteLine("}");
                 }
                 else
                 {
@@ -117,7 +114,7 @@ namespace Sharpie.Writer
                         sb.Append(";");
                     }
 
-                    await WriteLineAsync(sb.ToString()).ConfigureAwait(false);
+                    WriteLine(sb.ToString());
                 }
 
                 sb.Clear();

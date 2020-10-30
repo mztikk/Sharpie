@@ -161,7 +161,16 @@ namespace Sharpie
         }
 
         //public override int GetHashCode() => HashCode.Combine(Namespace, ClassName);
-        public override int GetHashCode() => Namespace.GetHashCode() ^ ClassName.GetHashCode();
-        public bool Equals(Class other) => Namespace.Equals(other.Namespace) && ClassName.Equals(other.ClassName);
+        public override int GetHashCode()
+        {
+            if (Namespace is { })
+            {
+                return Namespace.GetHashCode() ^ ClassName.GetHashCode();
+            }
+
+            return ClassName.GetHashCode();
+        }
+
+        public bool Equals(Class other) => Namespace?.Equals(other.Namespace) == true && ClassName.Equals(other.ClassName);
     }
 }

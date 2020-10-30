@@ -30,11 +30,9 @@ namespace Sharpie.Writer
         public void AddConstructor(Accessibility accessibility, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, string body) => AddConstructor(new Constructor(accessibility, _name, baseCtorArguments, arguments, body));
         public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, IEnumerable<string> thisCtorArguments, string body) => AddConstructor(new Constructor(accessibility, _name, arguments, thisCtorArguments, body));
 
-        protected override Task Start() =>
-            // NOP
-            Task.CompletedTask;
+        protected override void Start() { }
 
-        protected override async Task Finish()
+        protected override void Finish()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -43,7 +41,7 @@ namespace Sharpie.Writer
                 // new line between ctors (before everyone except the first one)
                 if (i > 0)
                 {
-                    await WriteLineAsync().ConfigureAwait(false);
+                    WriteLine();
                 }
 
                 sb.Append(_ctors[i].Accessibility.ToSharpieString());
@@ -64,19 +62,19 @@ namespace Sharpie.Writer
                     sb.Append(string.Join(", ", _ctors[i].ThisCtorArguments));
                     sb.Append(")");
                 }
-                await WriteLineAsync(sb.ToString()).ConfigureAwait(false);
+                WriteLine(sb.ToString());
                 sb.Clear();
-                await WriteLineAsync("{").ConfigureAwait(false);
+                WriteLine("{");
 
                 IndentationLevel++;
                 //foreach (string line in _ctors[i].Body.GetLines())
                 //{
-                //    await WriteLineAsync(line);
+                //    WriteLine(line);
                 //}
                 _ctors[i].Body(_writer);
                 IndentationLevel--;
 
-                await WriteLineAsync("}").ConfigureAwait(false);
+                WriteLine("}");
                 sb.Clear();
 
                 DidWork = true;

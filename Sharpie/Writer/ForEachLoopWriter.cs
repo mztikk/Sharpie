@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Sharpie.Writer
 {
     internal static class ForEachLoopWriter
     {
+        [Obsolete("Use sync", true)]
         public static async Task WriteAsync(ForEachLoop forEachLoop, IndentedStreamWriter writer)
         {
             await writer.WriteLineAsync($"foreach ({forEachLoop.Item} in {forEachLoop.Collection})");

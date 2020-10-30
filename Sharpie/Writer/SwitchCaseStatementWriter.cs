@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Sharpie.Writer
 {
     internal static class SwitchCaseStatementWriter
     {
+        [Obsolete("Use sync", true)]
         public static async Task WriteAsync(SwitchCaseStatement switchCaseStatement, IndentedStreamWriter writer)
         {
             await writer.WriteLineAsync($"switch ({switchCaseStatement.Expression})");

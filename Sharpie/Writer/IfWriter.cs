@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Sharpie.Writer
 {
     internal static class IfWriter
     {
+        [Obsolete("Use sync", true)]
         public static async Task WriteAsync(If @if, IndentedStreamWriter writer)
         {
             await writer.WriteLineAsync($"if ({@if.Condition})");

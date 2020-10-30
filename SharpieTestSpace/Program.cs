@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Sharpie;
 using Sharpie.Writer;
@@ -10,7 +9,7 @@ namespace SharpieTestSpace
 {
     internal class Program
     {
-        private static async Task Main(string[] args)
+        private static void Main(string[] args)
         {
             Class c = new Class("Test")
                     .WithUsing("System")
@@ -69,7 +68,7 @@ namespace SharpieTestSpace
 
             using (var fs = new FileStream("test.cs", FileMode.Create, FileAccess.ReadWrite))
             {
-                await ClassWriter.WriteAsync(c, fs).ConfigureAwait(false);
+                ClassWriter.Write(c, fs);
             }
         }
     }

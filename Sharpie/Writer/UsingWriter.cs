@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Sharpie.Writer
 {
@@ -26,17 +25,15 @@ namespace Sharpie.Writer
 
         public string GetUsing() => string.Join(Environment.NewLine, GetUsingStatements());
 
-        protected override Task Start() =>
-            // NOP
-            Task.CompletedTask;
-
-        protected override async Task Finish()
+        protected override void Finish()
         {
             if (_usings.Count > 0)
             {
-                await WriteLineAsync(GetUsing()).ConfigureAwait(false);
+                WriteLine(GetUsing());
                 DidWork = true;
             }
         }
+
+        protected override void Start() { }
     }
 }

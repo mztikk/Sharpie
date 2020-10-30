@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Sharpie.Writer
 {
@@ -32,6 +33,7 @@ namespace Sharpie.Writer
             return this;
         }
 
+        [Obsolete("Use sync", true)]
         public async Task<BodyWriter> WriteForLoopAsync(ForLoop forLoop)
         {
             await ForLoopWriter.WriteAsync(forLoop, _writer).ConfigureAwait(false);
@@ -44,6 +46,7 @@ namespace Sharpie.Writer
             return this;
         }
 
+        [Obsolete("Use sync", true)]
         public async Task<BodyWriter> WriteForEachLoopAsync(ForEachLoop forEachLoop)
         {
             await ForEachLoopWriter.WriteAsync(forEachLoop, _writer).ConfigureAwait(false);
@@ -56,6 +59,7 @@ namespace Sharpie.Writer
             return this;
         }
 
+        [Obsolete("Use sync", true)]
         public async Task<BodyWriter> WriteIfAsync(If @if)
         {
             await IfWriter.WriteAsync(@if, _writer).ConfigureAwait(false);
@@ -68,6 +72,7 @@ namespace Sharpie.Writer
             return this;
         }
 
+        [Obsolete("Use sync", true)]
         public async Task<BodyWriter> WriteSwitchCaseStatementAsync(SwitchCaseStatement switchCaseStatement)
         {
             await SwitchCaseStatementWriter.WriteAsync(switchCaseStatement, _writer).ConfigureAwait(false);

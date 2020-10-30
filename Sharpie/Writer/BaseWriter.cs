@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Sharpie.Writer
 {
@@ -13,7 +14,7 @@ namespace Sharpie.Writer
 
         public abstract bool DidWork { get; protected set; }
 
-        public async Task Begin()
+        public void Begin()
         {
             if (_started)
             {
@@ -22,10 +23,10 @@ namespace Sharpie.Writer
 
             DidWork = false;
             _started = true;
-            await Start().ConfigureAwait(false);
+            Start();
         }
 
-        public async Task End()
+        public void End()
         {
             if (!_started || _finished)
             {
@@ -33,20 +34,21 @@ namespace Sharpie.Writer
             }
 
             _finished = true;
-            await Finish().ConfigureAwait(false);
+            Finish();
         }
 
-        public async Task Make()
+        public void Make()
         {
-            await Begin().ConfigureAwait(false);
-            await End().ConfigureAwait(false);
+            Begin();
+            End();
         }
 
-        protected abstract Task Start();
+        protected abstract void Start();
 
-        protected abstract Task Finish();
+        protected abstract void Finish();
 
-        public async Task WriteLineAsync(string s = "") => await _writer.WriteLineAsync(s).ConfigureAwait(false);
+        [Obsolete("Use sync", true)]
+        public async Task WriteLineAsync(string s = "") => await _writer.WriteLineAsync(s);
 
         public void WriteLine(string s = "") => _writer.WriteLine(s);
 

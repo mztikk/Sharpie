@@ -29,11 +29,9 @@ namespace Sharpie.Writer
 
         public void AddMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(accessibility, false, async, returnType, name, arguments, body);
 
-        protected override Task Start() =>
-            // NOP
-            Task.CompletedTask;
+        protected override void Start() { }
 
-        protected override async Task Finish()
+        protected override void Finish()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -42,7 +40,7 @@ namespace Sharpie.Writer
                 // new line between methods (before everyone except the first one)
                 if (i > 0)
                 {
-                    await WriteLineAsync().ConfigureAwait(false);
+                    WriteLine();
                 }
 
                 sb.Append(_methods[i].Accessibility.ToSharpieString());
@@ -61,9 +59,9 @@ namespace Sharpie.Writer
                 sb.Append("(");
                 sb.Append(string.Join(", ", _methods[i].Arguments));
                 sb.Append(")");
-                await WriteLineAsync(sb.ToString()).ConfigureAwait(false);
+                WriteLine(sb.ToString());
                 sb.Clear();
-                await WriteLineAsync("{").ConfigureAwait(false);
+                WriteLine("{");
 
                 IndentationLevel++;
 
@@ -72,7 +70,7 @@ namespace Sharpie.Writer
 
                 IndentationLevel--;
 
-                await WriteLineAsync("}").ConfigureAwait(false);
+                WriteLine("}");
 
                 DidWork = true;
             }

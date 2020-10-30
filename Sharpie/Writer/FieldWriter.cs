@@ -27,11 +27,9 @@ namespace Sharpie.Writer
 
         public void AddField<T>(Accessibility accessibility, string name) => AddField(accessibility, typeof(T).CSharpName(), name);
 
-        protected override Task Start() =>
-            // NOP
-            Task.CompletedTask;
+        protected override void Start() { }
 
-        protected override async Task Finish()
+        protected override void Finish()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -64,7 +62,7 @@ namespace Sharpie.Writer
                     sb.Append(field.InitialValue);
                 }
                 sb.Append(";");
-                await WriteLineAsync(sb.ToString()).ConfigureAwait(false);
+                WriteLine(sb.ToString());
 
                 sb.Clear();
                 DidWork = true;
