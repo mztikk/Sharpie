@@ -22,6 +22,7 @@ namespace Sharpie.Writer
 
         private bool _indented = false;
 
+        [Obsolete("Use sync", true)]
         public virtual async Task WriteLineAsync(string s = "")
         {
             if (!string.IsNullOrWhiteSpace(s))
@@ -32,6 +33,7 @@ namespace Sharpie.Writer
             await DirectWriteLineAsync();
         }
 
+        [Obsolete("Use sync", true)]
         public virtual async Task WriteAsync(string s)
         {
             await WriteIndentAsync();
@@ -39,6 +41,7 @@ namespace Sharpie.Writer
             await DirectWriteAsync(s);
         }
 
+        [Obsolete("Use sync", true)]
         protected virtual async Task DirectWriteLineAsync(string s = "")
         {
             await _writer.WriteLineAsync(s);
@@ -47,6 +50,7 @@ namespace Sharpie.Writer
             _indented = false;
         }
 
+        [Obsolete("Use sync", true)]
         protected virtual async Task DirectWriteAsync(string s)
         {
             await _writer.WriteAsync(s);
@@ -85,6 +89,7 @@ namespace Sharpie.Writer
             _indented = true;
         }
 
+        [Obsolete("Use sync", true)]
         protected virtual async Task WriteIndentAsync()
         {
             if (_indented)

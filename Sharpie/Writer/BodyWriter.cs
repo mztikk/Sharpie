@@ -9,12 +9,14 @@ namespace Sharpie.Writer
 
         public BodyWriter(IndentedStreamWriter writer) => _writer = writer;
 
+        [Obsolete("Use sync", true)]
         public virtual async Task<BodyWriter> WriteLineAsync(string s = "")
         {
             await _writer.WriteLineAsync(s).ConfigureAwait(false);
             return this;
         }
 
+        [Obsolete("Use sync", true)]
         public virtual async Task<BodyWriter> WriteAsync(string s = "")
         {
             await _writer.WriteAsync(s).ConfigureAwait(false);
@@ -85,6 +87,7 @@ namespace Sharpie.Writer
             return this;
         }
 
+        [Obsolete("Use sync", true)]
         public async Task<BodyWriter> WriteBreakAsync()
         {
             await _writer.WriteLineAsync("break;");
@@ -97,6 +100,7 @@ namespace Sharpie.Writer
             return this;
         }
 
+        [Obsolete("Use sync", true)]
         public async Task<BodyWriter> WriteReturnAsync(string returnValue)
         {
             await _writer.WriteLineAsync($"return {returnValue};");
