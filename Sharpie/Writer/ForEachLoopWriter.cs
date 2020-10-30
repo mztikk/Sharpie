@@ -11,13 +11,12 @@ namespace Sharpie.Writer
             writer.IndentationLevel++;
 
             var bodyWriter = new BodyWriter(writer);
-            await forEachLoop.Body(bodyWriter);
+            forEachLoop.Body(bodyWriter);
 
             writer.IndentationLevel--;
             await writer.WriteLineAsync("}").ConfigureAwait(false);
         }
 
-        [System.Obsolete("Use Async", true)]
         public static void Write(ForEachLoop forEachLoop, IndentedStreamWriter writer)
         {
             writer.WriteLine($"foreach ({forEachLoop.Item} in {forEachLoop.Collection})");

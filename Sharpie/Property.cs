@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Sharpie.Writer;
 
@@ -11,9 +10,9 @@ namespace Sharpie
         public readonly string Type;
         public readonly string Name;
         public readonly Accessibility? GetterAccessibility;
-        public readonly Func<BodyWriter, Task>? GetterBody;
+        public readonly Action<BodyWriter>? GetterBody;
         public readonly Accessibility? SetterAccessibility;
-        public readonly Func<BodyWriter, Task>? SetterBody;
+        public readonly Action<BodyWriter>? SetterBody;
         public readonly string? InitialValue;
 
         public Property(
@@ -21,9 +20,9 @@ namespace Sharpie
             string type,
             string name,
             Accessibility? getterAccessibility,
-            Func<BodyWriter, Task>? getterBodyAction,
+            Action<BodyWriter>? getterBodyAction,
             Accessibility? setterAccessibility,
-            Func<BodyWriter, Task>? setterBodyAction,
+            Action<BodyWriter>? setterBodyAction,
             string? initialValue)
         {
             Accessibility = accessibility;
@@ -42,7 +41,7 @@ namespace Sharpie
         public Property(Accessibility accessibility, string type, string name, Accessibility getterAccessibility, Accessibility setterAccessibility)
             : this(accessibility, type, name, getterAccessibility, getterBodyAction: null, setterAccessibility, null, null) { }
 
-        public Property(Accessibility accessibility, string type, string name, Func<BodyWriter, Task> getterBody, Func<BodyWriter, Task> setterBody)
+        public Property(Accessibility accessibility, string type, string name, Action<BodyWriter> getterBody, Action<BodyWriter> setterBody)
             : this(accessibility, type, name, null, getterBody, null, setterBody, null) { }
 
         public Property(Accessibility accessibility, string type, string name, string getterBody, string setterBody)

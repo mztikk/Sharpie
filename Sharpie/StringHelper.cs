@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 //using RFReborn.Extensions;
 using Sharpie.Writer;
 
@@ -41,11 +40,11 @@ namespace Sharpie
         /// Creates an Action that calls <see cref="BodyWriter.WriteLine(string)"/> on every line of <see langword="abstract"/>string
         /// </summary>
         /// <param name="s">String to turn into callable action</param>
-        public static Func<BodyWriter, Task> StringToBodyWriter(string s) => async (BodyWriter writer) =>
+        public static Action<BodyWriter> StringToBodyWriter(string s) => (BodyWriter writer) =>
         {
             foreach (string? line in s.GetLines())
             {
-                await writer.WriteLineAsync(line);
+                writer.WriteLine(line);
             }
         };
     }

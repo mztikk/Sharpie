@@ -17,11 +17,11 @@ namespace Sharpie.Writer
 
         public void AddMethod(Method method) => _methods.Add(method);
 
-        public void AddMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, Func<BodyWriter, Task> body) => AddMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
+        public void AddMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => AddMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
 
-        public void AddMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, Func<BodyWriter, Task> body) => AddMethod(accessibility, false, false, returnType, name, arguments, body);
+        public void AddMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => AddMethod(accessibility, false, false, returnType, name, arguments, body);
 
-        public void AddMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, Func<BodyWriter, Task> body) => AddMethod(accessibility, false, async, returnType, name, arguments, body);
+        public void AddMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => AddMethod(accessibility, false, async, returnType, name, arguments, body);
 
         public void AddMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
 
@@ -68,7 +68,7 @@ namespace Sharpie.Writer
                 IndentationLevel++;
 
                 var bodyWriter = new BodyWriter(_writer);
-                await _methods[i].Body(bodyWriter);
+                _methods[i].Body(bodyWriter);
 
                 IndentationLevel--;
 

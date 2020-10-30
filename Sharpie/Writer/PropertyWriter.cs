@@ -64,7 +64,7 @@ namespace Sharpie.Writer
                         IndentationLevel++;
 
                         var bodyWriter = new BodyWriter(_writer);
-                        await property.GetterBody(bodyWriter);
+                        property.GetterBody(bodyWriter);
 
                         IndentationLevel--;
                         await WriteLineAsync("}").ConfigureAwait(false);
@@ -83,7 +83,7 @@ namespace Sharpie.Writer
                         IndentationLevel++;
 
                         var bodyWriter = new BodyWriter(_writer);
-                        await property.SetterBody(bodyWriter);
+                        property.SetterBody(bodyWriter);
 
                         IndentationLevel--;
                         await WriteLineAsync("}").ConfigureAwait(false);
