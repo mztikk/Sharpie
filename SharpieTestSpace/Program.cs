@@ -34,10 +34,11 @@ namespace SharpieTestSpace
                         new List<Argument>()
                         {
                             new Argument("object", "obj"),
-                            new Argument("object", "obj2")
+                            new Argument("object", "obj2"),
+                            new Argument("int", "n"),
                         },
                         new List<string>() { "obj", "obj2" },
-                        "n = 5;")
+                        "this.n = n;")
                     .WithProperty<string>(Accessibility.Public, "TestPropString")
                     .WithField<string>(Accessibility.Private, "_fullPropTest")
                     .WithProperty(new Property(Accessibility.Public, "string", "FullPropTest", null, "return _fullPropTest;", null, "_fullPropTest = value;", null))
@@ -52,15 +53,15 @@ namespace SharpieTestSpace
                         "_fullPropTest = value;",
                         null))
                     .WithMethod(Accessibility.Public, "string", "Get5", "return \"5\";")
-                    .WithMethod(new Method(Accessibility.Public, "string", "Switch5", Array.Empty<Argument>(), (bodyWriter) =>
+                    .WithMethod(new Method(Accessibility.Public, "string", "Switch5", new Argument[] { new Argument("int", "n", "5")}, (bodyWriter) =>
                     {
                         bodyWriter.WriteSwitchCaseStatement(new SwitchCaseStatement("n", new CaseStatement[] {
-                            new CaseStatement("0", "return 0;"),
-                            new CaseStatement("1", "return 1;"),
-                            new CaseStatement("2", "return 2;"),
-                            new CaseStatement("3", "return 3;"),
-                            new CaseStatement("4", "return 4;"),
-                            new CaseStatement("5", "return 5;"),
+                            new CaseStatement("0", "return \"0\";"),
+                            new CaseStatement("1", "return \"1\";"),
+                            new CaseStatement("2", "return \"2\";"),
+                            new CaseStatement("3", "return \"3\";"),
+                            new CaseStatement("4", "return \"4\";"),
+                            new CaseStatement("5", "return \"5\";"),
                         },
                         "throw new ArgumentOutOfRangeException();"));
                     }));
