@@ -58,7 +58,7 @@ namespace Sharpie.Writer
                 sb.Append("(");
                 sb.Append(string.Join(", ", _methods[i].Arguments));
                 sb.Append(")");
-                WriteLine(sb.ToString());
+                WriteLine(sb.ToString().Trim());
                 sb.Clear();
                 WriteLine("{");
 

@@ -12,6 +12,7 @@ namespace Sharpie
             Accessibility.Internal => "internal",
             Accessibility.ProtectedAndInternal => "protected internal",
             Accessibility.Private => "private",
+            Accessibility.NotApplicable => "",
             _ => throw new ArgumentException(),
         };
     }
