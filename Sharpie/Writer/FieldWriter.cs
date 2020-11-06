@@ -14,8 +14,6 @@ namespace Sharpie.Writer
 
         public FieldWriter(IndentedStreamWriter writer, IEnumerable<Field> fields) : this(writer) => _fields.AddRange(fields);
 
-        public override bool DidWork { get; protected set; }
-
         public void AddField(Field field) => _fields.Add(field);
 
         public void AddField(Accessibility accessibility, bool readOnly, bool isStatic, string type, string name, string? initialValue = null) => AddField(new Field(accessibility, readOnly, isStatic, type, name, initialValue));
@@ -26,9 +24,9 @@ namespace Sharpie.Writer
 
         public void AddField<T>(Accessibility accessibility, string name) => AddField(accessibility, typeof(T).CSharpName(), name);
 
-        protected override void Start() { }
+        protected override bool Start() => false;
 
-        protected override void Finish()
+        protected override bool Finish()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -64,8 +62,9 @@ namespace Sharpie.Writer
                 WriteLine(sb.ToString());
 
                 sb.Clear();
-                DidWork = true;
             }
+
+            return _fields.Count > 0;
         }
     }
 }

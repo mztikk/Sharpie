@@ -11,8 +11,6 @@ namespace Sharpie.Writer
         {
         }
 
-        public override bool DidWork { get; protected set; }
-
         public void AddUsing(string name) => _usings.Add(name);
 
         private IEnumerable<string> GetUsingStatements()
@@ -25,15 +23,16 @@ namespace Sharpie.Writer
 
         public string GetUsing() => string.Join(Environment.NewLine, GetUsingStatements());
 
-        protected override void Finish()
+        protected override bool Finish()
         {
             if (_usings.Count > 0)
             {
                 WriteLine(GetUsing());
-                DidWork = true;
             }
+
+            return _usings.Count > 0;
         }
 
-        protected override void Start() { }
+        protected override bool Start() => false;
     }
 }

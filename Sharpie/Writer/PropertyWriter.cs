@@ -14,15 +14,13 @@ namespace Sharpie.Writer
 
         public PropertyWriter(IndentedStreamWriter writer, IEnumerable<Property> properties) : this(writer) => _properties.AddRange(properties);
 
-        public override bool DidWork { get; protected set; }
-
         public void AddProperty(Property property) => _properties.Add(property);
 
         public void AddProperty<T>(Accessibility accessibility, string name) => AddProperty(new Property(accessibility, typeof(T).CSharpName(), name));
 
-        protected override void Start() { }
+        protected override bool Start() => false;
 
-        protected override void Finish()
+        protected override bool Finish()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -118,8 +116,9 @@ namespace Sharpie.Writer
                 }
 
                 sb.Clear();
-                DidWork = true;
             }
+
+            return _properties.Count > 0;
         }
     }
 }

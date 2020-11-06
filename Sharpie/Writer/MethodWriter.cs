@@ -12,8 +12,6 @@ namespace Sharpie.Writer
         public MethodWriter(IndentedStreamWriter writer) : base(writer) { }
         public MethodWriter(IndentedStreamWriter writer, IEnumerable<Method> methods) : this(writer) => _methods.AddRange(methods);
 
-        public override bool DidWork { get; protected set; }
-
         public void AddMethod(Method method) => _methods.Add(method);
 
         public void AddMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => AddMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
@@ -28,9 +26,9 @@ namespace Sharpie.Writer
 
         public void AddMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(accessibility, false, async, returnType, name, arguments, body);
 
-        protected override void Start() { }
+        protected override bool Start() => false;
 
-        protected override void Finish()
+        protected override bool Finish()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -70,9 +68,9 @@ namespace Sharpie.Writer
                 IndentationLevel--;
 
                 WriteLine("}");
-
-                DidWork = true;
             }
+
+            return _methods.Count > 0;
         }
     }
 }

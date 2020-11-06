@@ -41,8 +41,7 @@ namespace Sharpie.Writer
                 usingWriter.AddUsing(u);
             }
 
-            usingWriter.Make();
-            if (usingWriter.DidWork)
+            if (usingWriter.Make())
             {
                 await writer.WriteLineAsync();
             }
@@ -70,14 +69,15 @@ namespace Sharpie.Writer
             writer.IndentationLevel++;
 
             BaseWriter? prevWriter = null;
+            bool prevWroteSomething = false;
             foreach (BaseWriter bodyWriter in bodyWriters)
             {
-                if (prevWriter is { } && prevWriter.DidWork)
+                if (prevWriter is { } && prevWroteSomething)
                 {
                     await writer.WriteLineAsync();
                 }
 
-                bodyWriter.Make();
+                prevWroteSomething = bodyWriter.Make();
 
                 prevWriter = bodyWriter;
             }
@@ -122,8 +122,7 @@ namespace Sharpie.Writer
                 usingWriter.AddUsing(u);
             }
 
-            usingWriter.Make();
-            if (usingWriter.DidWork)
+            if (usingWriter.Make())
             {
                 writer.WriteLine();
             }
@@ -151,14 +150,15 @@ namespace Sharpie.Writer
             writer.IndentationLevel++;
 
             BaseWriter? prevWriter = null;
+            bool prevWroteSomething = false;
             foreach (BaseWriter bodyWriter in bodyWriters)
             {
-                if (prevWriter is { } && prevWriter.DidWork)
+                if (prevWriter is { } && prevWroteSomething)
                 {
                     writer.WriteLine();
                 }
 
-                bodyWriter.Make();
+                prevWroteSomething = bodyWriter.Make();
 
                 prevWriter = bodyWriter;
             }

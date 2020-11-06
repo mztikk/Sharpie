@@ -9,48 +9,46 @@ namespace Sharpie.Writer
 
         protected BaseWriter(IndentedStreamWriter writer) => _writer = writer;
 
-        protected bool _started { get; private set; } = false;
-        protected bool _finished { get; private set; } = false;
+        /// <summary>
+        /// Returns <see langword="true"/> if it wrote anything; <see langword="false"/> otherwise
+        /// </summary>
+        /// <returns></returns>
+        public bool Begin() => Start();
 
-        public abstract bool DidWork { get; protected set; }
+        /// <summary>
+        /// Returns <see langword="true"/> if it wrote anything; <see langword="false"/> otherwise
+        /// </summary>
+        /// <returns></returns>
+        public bool End() => Finish();
 
-        public void Begin()
+        /// <summary>
+        /// Returns <see langword="true"/> if it wrote anything; <see langword="false"/> otherwise
+        /// </summary>
+        /// <returns></returns>
+        public bool Make()
         {
-            if (_started)
-            {
-                return;
-            }
+            bool begin = Begin();
+            bool end = End();
 
-            DidWork = false;
-            _started = true;
-            Start();
+            return begin || end;
         }
 
-        public void End()
-        {
-            if (!_started || _finished)
-            {
-                return;
-            }
+        /// <summary>
+        /// Should return <see langword="true"/> if it wrote anything; <see langword="false"/> otherwise
+        /// </summary>
+        /// <returns></returns>
+        protected abstract bool Start();
 
-            _finished = true;
-            Finish();
-        }
-
-        public void Make()
-        {
-            Begin();
-            End();
-        }
-
-        protected abstract void Start();
-
-        protected abstract void Finish();
+        /// <summary>
+        /// Should return <see langword="true"/> if it wrote anything; <see langword="false"/> otherwise
+        /// </summary>
+        /// <returns></returns>
+        protected abstract bool Finish();
 
         [Obsolete("Use sync", true)]
         public async Task WriteLineAsync(string s = "") => await _writer.WriteLineAsync(s);
 
-        public void WriteLine(string s = "") => _writer.WriteLine(s);
+        protected void WriteLine(string s = "") => _writer.WriteLine(s);
 
         public int IndentationLevel
         {

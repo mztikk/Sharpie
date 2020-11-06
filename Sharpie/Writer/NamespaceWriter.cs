@@ -4,27 +4,33 @@
     {
         public NamespaceWriter(IndentedStreamWriter writer, string? nameSpace) : base(writer) => Namespace = nameSpace;
 
-        public override bool DidWork { get; protected set; }
         public string? Namespace { get; }
 
-        protected override void Start()
+        protected override bool Start()
         {
             if (Namespace is { })
             {
                 WriteLine("namespace " + Namespace);
                 WriteLine("{");
                 IndentationLevel++;
+
+                return true;
             }
+
+            return false;
         }
 
-        protected override void Finish()
+        protected override bool Finish()
         {
             if (Namespace is { })
             {
                 IndentationLevel--;
                 WriteLine("}");
-                DidWork = true;
+
+                return true;
             }
+
+            return false;
         }
     }
 }

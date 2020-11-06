@@ -13,8 +13,6 @@ namespace Sharpie.Writer
         public ConstructorWriter(IndentedStreamWriter writer, string name) : base(writer) => _name = name;
         public ConstructorWriter(IndentedStreamWriter writer, string name, IEnumerable<Constructor> ctors) : this(writer, name) => _ctors.AddRange(ctors);
 
-        public override bool DidWork { get; protected set; }
-
         public void AddConstructor(Constructor ctor) => _ctors.Add(ctor);
 
         public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => AddConstructor(new Constructor(accessibility, _name, arguments, body));
@@ -29,9 +27,9 @@ namespace Sharpie.Writer
         public void AddConstructor(Accessibility accessibility, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, string body) => AddConstructor(new Constructor(accessibility, _name, baseCtorArguments, arguments, body));
         public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, IEnumerable<string> thisCtorArguments, string body) => AddConstructor(new Constructor(accessibility, _name, arguments, thisCtorArguments, body));
 
-        protected override void Start() { }
+        protected override bool Start() => false;
 
-        protected override void Finish()
+        protected override bool Finish()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -75,9 +73,9 @@ namespace Sharpie.Writer
 
                 WriteLine("}");
                 sb.Clear();
-
-                DidWork = true;
             }
+
+            return _ctors.Count > 0;
         }
     }
 }
