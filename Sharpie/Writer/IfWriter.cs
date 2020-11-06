@@ -30,6 +30,22 @@ namespace Sharpie.Writer
 
             writer.IndentationLevel--;
             writer.WriteLine("}");
+
+            foreach (ElseIf elseIf in @if.ElseIfs)
+            {
+                writer.WriteLine($"else if ({elseIf.Condition})");
+                writer.OpenBrackets();
+                elseIf.Body(bodyWriter);
+                writer.CloseBrackets();
+            }
+
+            if (@if.ElseBody is { })
+            {
+                writer.WriteLine("else");
+                writer.OpenBrackets();
+                @if.ElseBody(bodyWriter);
+                writer.CloseBrackets();
+            }
         }
     }
 }

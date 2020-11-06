@@ -74,6 +74,18 @@ namespace Sharpie.Writer
             DirectWrite(s);
         }
 
+        public virtual void OpenBrackets()
+        {
+            WriteLine("{");
+            IndentationLevel++;
+        }
+
+        public virtual void CloseBrackets()
+        {
+            IndentationLevel--;
+            WriteLine("}");
+        }
+
         protected virtual void WriteIndent()
         {
             if (_indented)
