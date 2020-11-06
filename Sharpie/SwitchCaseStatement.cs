@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Sharpie.Writer;
 
 namespace Sharpie
@@ -7,13 +8,13 @@ namespace Sharpie
     public readonly struct SwitchCaseStatement
     {
         public readonly string Expression;
-        public readonly IEnumerable<CaseStatement> CaseStatements;
+        public readonly ImmutableArray<CaseStatement> CaseStatements;
         public readonly Action<BodyWriter>? DefaultCaseBody;
 
         public SwitchCaseStatement(string expression, IEnumerable<CaseStatement> caseStatements, Action<BodyWriter>? defaultCaseBodyAction)
         {
             Expression = expression;
-            CaseStatements = caseStatements;
+            CaseStatements = caseStatements.ToImmutableArray();
             DefaultCaseBody = defaultCaseBodyAction;
         }
 

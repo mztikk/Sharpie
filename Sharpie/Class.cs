@@ -61,12 +61,12 @@ namespace Sharpie
             Array.Empty<Field>())
         { }
 
-        public ImmutableList<string> Usings => _usings.ToImmutableList();
-        public ImmutableList<string> BaseClasses => _baseClasses.ToImmutableList();
-        public ImmutableList<Constructor> Ctors => _ctors.ToImmutableList();
-        public ImmutableList<Method> Methods => _methods.ToImmutableList();
-        public ImmutableList<Property> Properties => _properties.ToImmutableList();
-        public ImmutableList<Field> Fields => _fields.ToImmutableList();
+        public ImmutableArray<string> Usings => _usings.ToImmutableArray();
+        public ImmutableArray<string> BaseClasses => _baseClasses.ToImmutableArray();
+        public ImmutableArray<Constructor> Ctors => _ctors.ToImmutableArray();
+        public ImmutableArray<Method> Methods => _methods.ToImmutableArray();
+        public ImmutableArray<Property> Properties => _properties.ToImmutableArray();
+        public ImmutableArray<Field> Fields => _fields.ToImmutableArray();
 
         public Class SetClassName(string className) => new Class(className, Namespace, Accessibility, Static, Partial, _usings, _baseClasses, _ctors, _methods, _properties, _fields);
 

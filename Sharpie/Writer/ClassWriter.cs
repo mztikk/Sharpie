@@ -10,9 +10,9 @@ namespace Sharpie.Writer
     {
         private static string GetInheritance(this Class c)
         {
-            ImmutableList<string>? baseClasses = c.BaseClasses;
+            ImmutableArray<string>? baseClasses = c.BaseClasses;
 
-            if (baseClasses.Count == 0)
+            if (baseClasses?.Length == 0)
             {
                 return string.Empty;
             }

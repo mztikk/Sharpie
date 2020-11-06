@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Sharpie.Writer;
 
@@ -12,7 +13,7 @@ namespace Sharpie
         public readonly bool Async;
         public readonly string ReturnType;
         public readonly string Name;
-        public readonly IEnumerable<Argument> Arguments;
+        public readonly ImmutableArray<Argument> Arguments;
         public readonly Action<BodyWriter> Body;
 
         public Method(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body)
@@ -22,7 +23,7 @@ namespace Sharpie
             Async = async;
             ReturnType = returnType;
             Name = name;
-            Arguments = arguments;
+            Arguments = arguments.ToImmutableArray();
             Body = body;
         }
 
