@@ -150,5 +150,12 @@ namespace Sharpie.Writer
 
             return this;
         }
+
+        public BodyWriter WriteReturnSwitchExpression(SwitchCaseExpression switchCaseExpression)
+        {
+            _writer.Write("return ");
+            SwitchCaseExpressionWriter.Write(switchCaseExpression, _writer);
+            return this;
+        }
     }
 }

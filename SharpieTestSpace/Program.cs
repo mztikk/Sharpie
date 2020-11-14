@@ -64,6 +64,18 @@ namespace SharpieTestSpace
                             new CaseStatement("5", "return \"5\";"),
                          },
                          "throw new ArgumentOutOfRangeException();"));
+                     }))
+                     .WithMethod(new Method(Accessibility.Public, "string", "SwitchExpression5", new Argument[] { new Argument("int", "n", "5") }, (bodyWriter) =>
+                     {
+                         bodyWriter.WriteReturnSwitchExpression(new SwitchCaseExpression("n", new CaseExpression[] {
+                            new CaseExpression("0", "\"0\""),
+                            new CaseExpression("1", "\"1\""),
+                            new CaseExpression("2", "\"2\""),
+                            new CaseExpression("3", "\"3\""),
+                            new CaseExpression("4", "\"4\""),
+                            new CaseExpression("5", "\"5\""),
+                         },
+                         "throw new ArgumentOutOfRangeException()"));
                      }));
 
 
