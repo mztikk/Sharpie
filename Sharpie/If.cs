@@ -24,6 +24,7 @@ namespace Sharpie
         public If(string condition, Action<BodyWriter> body) : this(condition, body, Array.Empty<ElseIf>(), null) { }
         public If(string condition, string body, Action<BodyWriter>? elseBody) : this(condition, StringHelper.StringToBodyWriter(body), Array.Empty<ElseIf>(), elseBody) { }
         public If(string condition, string body, IEnumerable<ElseIf> elseIfs) : this(condition, StringHelper.StringToBodyWriter(body), elseIfs, null) { }
+        public If(string condition, Action<BodyWriter> body, Action<BodyWriter> elseBody) : this(condition, body, Array.Empty<ElseIf>(), elseBody) { }
     }
 
     public readonly struct ElseIf
