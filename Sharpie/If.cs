@@ -18,6 +18,8 @@ namespace Sharpie
 
         public IfStatement(params If[] ifs) : this(ifs, elseBodyWriter: null) { }
         public IfStatement(IEnumerable<If> ifs, string elseBody) : this(ifs, StringHelper.StringToBodyWriter(elseBody)) { }
+        public IfStatement(If @if, Action<BodyWriter>? elseBodyWriter) : this(new If[] { @if }, elseBodyWriter) { }
+        public IfStatement(If @if, string elseBody) : this(new If[] { @if }, elseBody) { }
     }
 
     public readonly struct If
