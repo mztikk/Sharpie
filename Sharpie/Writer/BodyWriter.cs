@@ -68,9 +68,9 @@ namespace Sharpie.Writer
             return this;
         }
 
-        public BodyWriter WriteIf(If @if)
+        public BodyWriter WriteIf(IfStatement ifStatement)
         {
-            IfWriter.Write(@if, _writer);
+            IfWriter.Write(ifStatement, _writer);
             return this;
         }
 

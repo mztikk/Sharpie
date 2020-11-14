@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Sharpie.Writer
@@ -19,31 +21,38 @@ namespace Sharpie.Writer
             await writer.WriteLineAsync("}").ConfigureAwait(false);
         }
 
-        public static void Write(If @if, IndentedStreamWriter writer)
+        public static void Write(IfStatement ifStatement, IndentedStreamWriter writer)
         {
-            writer.WriteLine($"if ({@if.Condition})");
-            writer.WriteLine("{");
-            writer.IndentationLevel++;
-
-            var bodyWriter = new BodyWriter(writer);
-            @if.Body(bodyWriter);
-
-            writer.IndentationLevel--;
-            writer.WriteLine("}");
-
-            foreach (ElseIf elseIf in @if.ElseIfs)
+            if (ifStatement.Ifs.Any())
             {
-                writer.WriteLine($"else if ({elseIf.Condition})");
+                If @if = ifStatement.Ifs.First();
+                IEnumerable<If> elseIfs = ifStatement.Ifs.Skip(1);
+
+                writer.WriteLine($"if ({@if.Condition})");
                 writer.OpenBrackets();
-                elseIf.Body(bodyWriter);
+                @if.Body(new BodyWriter(writer));
+                writer.CloseBrackets();
+
+                foreach (If elseIf in elseIfs)
+                {
+                    writer.WriteLine($"if ({elseIf.Condition})");
+                    writer.OpenBrackets();
+                    elseIf.Body(new BodyWriter(writer));
+                    writer.CloseBrackets();
+                }
+            }
+            else
+            {
+                writer.WriteLine("if (false)");
+                writer.OpenBrackets();
                 writer.CloseBrackets();
             }
 
-            if (@if.ElseBody is { })
+            if (ifStatement.ElseBody is { })
             {
                 writer.WriteLine("else");
                 writer.OpenBrackets();
-                @if.ElseBody(bodyWriter);
+                ifStatement.ElseBody(new BodyWriter(writer));
                 writer.CloseBrackets();
             }
         }
