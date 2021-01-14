@@ -9,8 +9,12 @@ namespace SharpieTestSpace
 {
     internal class Program
     {
+
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private static void Main(string[] args)
         {
+            var inlineAttribute = new Sharpie.Attribute("System.Runtime.CompilerServices.MethodImpl", new string[] { "System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining" });
+
             Class c = new Class("Test")
                     .WithUsing("System")
                     .WithUsing("System.IO")
@@ -76,7 +80,7 @@ namespace SharpieTestSpace
                             new CaseExpression("5", "\"5\""),
                          },
                          "throw new ArgumentOutOfRangeException()"));
-                     }));
+                     }).WithAttribute(inlineAttribute));
 
 
             using (var fs = new FileStream("test.cs", FileMode.Create, FileAccess.ReadWrite))
