@@ -5,6 +5,8 @@ namespace Sharpie.Writer
 {
     public class BodyWriter
     {
+        public static Action<BodyWriter> Empty = (writer) => { };
+
         private readonly IndentedStreamWriter _writer;
 
         public BodyWriter(IndentedStreamWriter writer) => _writer = writer;
