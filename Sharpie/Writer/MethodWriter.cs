@@ -40,6 +40,18 @@ namespace Sharpie.Writer
                     WriteLine();
                 }
 
+                foreach (Attribute attribute in _methods[i].Attributes)
+                {
+                    if (attribute.Parameters.Length > 0)
+                    {
+                        WriteLine($"[{attribute.Name}({string.Join(",", attribute.Parameters)})]");
+                    }
+                    else
+                    {
+                        WriteLine($"[{attribute.Name}]");
+                    }
+                }
+
                 sb.Append(_methods[i].Accessibility.ToSharpieString());
                 if (_methods[i].Static)
                 {
