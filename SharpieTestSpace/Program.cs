@@ -10,7 +10,6 @@ namespace SharpieTestSpace
     internal class Program
     {
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         private static void Main(string[] args)
         {
             var inlineAttribute = new Sharpie.Attribute("System.Runtime.CompilerServices.MethodImpl", new string[] { "System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining" });
