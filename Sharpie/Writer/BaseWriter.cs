@@ -49,6 +49,7 @@ namespace Sharpie.Writer
         public async Task WriteLineAsync(string s = "") => await _writer.WriteLineAsync(s);
 
         protected void WriteLine(string s = "") => _writer.WriteLine(s);
+        protected void Write(string s) => _writer.Write(s);
 
         public int IndentationLevel
         {
