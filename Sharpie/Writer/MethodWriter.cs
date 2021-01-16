@@ -12,18 +12,25 @@ namespace Sharpie.Writer
         public MethodWriter(IndentedStreamWriter writer) : base(writer) { }
         public MethodWriter(IndentedStreamWriter writer, IEnumerable<Method> methods) : this(writer) => _methods.AddRange(methods);
 
+        [Obsolete("Use Class API", true)]
         public void AddMethod(Method method) => _methods.Add(method);
 
+        [Obsolete("Use Class API", true)]
         public void AddMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => AddMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
 
+        [Obsolete("Use Class API", true)]
         public void AddMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => AddMethod(accessibility, false, false, returnType, name, arguments, body);
 
+        [Obsolete("Use Class API", true)]
         public void AddMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => AddMethod(accessibility, false, async, returnType, name, arguments, body);
 
+        [Obsolete("Use Class API", true)]
         public void AddMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
 
+        [Obsolete("Use Class API", true)]
         public void AddMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(accessibility, false, false, returnType, name, arguments, body);
 
+        [Obsolete("Use Class API", true)]
         public void AddMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => AddMethod(accessibility, false, async, returnType, name, arguments, body);
 
         protected override bool Start() => false;
