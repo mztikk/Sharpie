@@ -82,17 +82,17 @@ namespace Sharpie
             return this;
         }
 
-        public Class WithConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => WithConstructor(new Constructor(accessibility, ClassName, arguments, body));
+        public Class WithConstructor(Accessibility accessibility, IEnumerable<Parameter> parameters, Action<IndentedStreamWriter> body) => WithConstructor(new Constructor(accessibility, ClassName, parameters, body));
 
-        public Class WithConstructor(Accessibility accessibility = Microsoft.CodeAnalysis.Accessibility.Public) => WithConstructor(accessibility, Array.Empty<Argument>(), string.Empty);
+        public Class WithConstructor(Accessibility accessibility = Microsoft.CodeAnalysis.Accessibility.Public) => WithConstructor(accessibility, Array.Empty<Parameter>(), string.Empty);
 
-        public Class WithConstructor(Accessibility accessibility, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => WithConstructor(new Constructor(accessibility, ClassName, baseCtorArguments, arguments, body));
-        public Class WithConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, IEnumerable<string> thisCtorArguments, Action<IndentedStreamWriter> body) => WithConstructor(new Constructor(accessibility, ClassName, arguments, thisCtorArguments, body));
+        public Class WithConstructor(Accessibility accessibility, IEnumerable<string> baseCtorparameters, IEnumerable<Parameter> parameters, Action<IndentedStreamWriter> body) => WithConstructor(new Constructor(accessibility, ClassName, baseCtorparameters, parameters, body));
+        public Class WithConstructor(Accessibility accessibility, IEnumerable<Parameter> parameters, IEnumerable<string> thisCtorparameters, Action<IndentedStreamWriter> body) => WithConstructor(new Constructor(accessibility, ClassName, parameters, thisCtorparameters, body));
 
-        public Class WithConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, string body) => WithConstructor(new Constructor(accessibility, ClassName, arguments, body));
+        public Class WithConstructor(Accessibility accessibility, IEnumerable<Parameter> parameters, string body) => WithConstructor(new Constructor(accessibility, ClassName, parameters, body));
 
-        public Class WithConstructor(Accessibility accessibility, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, string body) => WithConstructor(new Constructor(accessibility, ClassName, baseCtorArguments, arguments, body));
-        public Class WithConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, IEnumerable<string> thisCtorArguments, string body) => WithConstructor(new Constructor(accessibility, ClassName, arguments, thisCtorArguments, body));
+        public Class WithConstructor(Accessibility accessibility, IEnumerable<string> baseCtorparameters, IEnumerable<Parameter> parameters, string body) => WithConstructor(new Constructor(accessibility, ClassName, baseCtorparameters, parameters, body));
+        public Class WithConstructor(Accessibility accessibility, IEnumerable<Parameter> parameters, IEnumerable<string> thisCtorparameters, string body) => WithConstructor(new Constructor(accessibility, ClassName, parameters, thisCtorparameters, body));
 
         public Class WithMethod(Method method)
         {
@@ -100,23 +100,23 @@ namespace Sharpie
             return this;
         }
 
-        public Class WithMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => WithMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
-        public Class WithMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => WithMethod(accessibility, false, false, returnType, name, arguments, body);
-        public Class WithMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => WithMethod(accessibility, false, async, returnType, name, arguments, body);
-        public Class WithMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => WithMethod(new Method(accessibility, Static, async, returnType, name, arguments, body));
-        public Class WithMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, string body) => WithMethod(accessibility, false, false, returnType, name, arguments, body);
-        public Class WithMethod(Accessibility accessibility, string returnType, string name, string body) => WithMethod(accessibility, false, false, returnType, name, Array.Empty<Argument>(), body);
-        public Class WithMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body) => WithMethod(accessibility, false, async, returnType, name, arguments, body);
-        public Class WithMethod(Accessibility accessibility, string name, Action<BodyWriter> body) => WithMethod(accessibility, false, false, "void", name, Array.Empty<Argument>(), body);
-        public Class WithMethod(Accessibility accessibility, string name, string body) => WithMethod(accessibility, false, false, "void", name, Array.Empty<Argument>(), body);
-        public Class WithMethod(Accessibility accessibility, string name, IEnumerable<Argument> arguments, string body) => WithMethod(accessibility, false, false, "void", name, arguments, body);
-        public Class WithMethod(Accessibility accessibility, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => WithMethod(accessibility, false, false, "void", name, arguments, body);
-        public Class WithMethod(string name, string body) => WithMethod(Microsoft.CodeAnalysis.Accessibility.Protected, false, false, "void", name, Array.Empty<Argument>(), body);
-        public Class WithMethod(string name, Action<BodyWriter> body) => WithMethod(Microsoft.CodeAnalysis.Accessibility.Protected, false, false, "void", name, Array.Empty<Argument>(), body);
-        public Class WithMethod(Accessibility accessibility, bool isStatic, string name, string body) => WithMethod(accessibility, isStatic, false, "void", name, Array.Empty<Argument>(), body);
-        public Class WithMethod(Accessibility accessibility, bool isStatic, string name, Action<BodyWriter> body) => WithMethod(accessibility, isStatic, false, "void", name, Array.Empty<Argument>(), body);
-        public Class WithMethod(Accessibility accessibility, bool isStatic, string name, IEnumerable<Argument> arguments, string body) => WithMethod(accessibility, isStatic, false, "void", name, arguments, body);
-        public Class WithMethod(Accessibility accessibility, bool isStatic, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body) => WithMethod(accessibility, isStatic, false, "void", name, arguments, body);
+        public Class WithMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Parameter> parameters, Action<BodyWriter> body) => WithMethod(new Method(accessibility, Static, async, returnType, name, parameters, body));
+        public Class WithMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Parameter> parameters, Action<BodyWriter> body) => WithMethod(accessibility, false, false, returnType, name, parameters, body);
+        public Class WithMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Parameter> parameters, Action<BodyWriter> body) => WithMethod(accessibility, false, async, returnType, name, parameters, body);
+        public Class WithMethod(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Parameter> parameters, string body) => WithMethod(new Method(accessibility, Static, async, returnType, name, parameters, body));
+        public Class WithMethod(Accessibility accessibility, string returnType, string name, IEnumerable<Parameter> parameters, string body) => WithMethod(accessibility, false, false, returnType, name, parameters, body);
+        public Class WithMethod(Accessibility accessibility, string returnType, string name, string body) => WithMethod(accessibility, false, false, returnType, name, Array.Empty<Parameter>(), body);
+        public Class WithMethod(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Parameter> parameters, string body) => WithMethod(accessibility, false, async, returnType, name, parameters, body);
+        public Class WithMethod(Accessibility accessibility, string name, Action<BodyWriter> body) => WithMethod(accessibility, false, false, "void", name, Array.Empty<Parameter>(), body);
+        public Class WithMethod(Accessibility accessibility, string name, string body) => WithMethod(accessibility, false, false, "void", name, Array.Empty<Parameter>(), body);
+        public Class WithMethod(Accessibility accessibility, string name, IEnumerable<Parameter> parameters, string body) => WithMethod(accessibility, false, false, "void", name, parameters, body);
+        public Class WithMethod(Accessibility accessibility, string name, IEnumerable<Parameter> parameters, Action<BodyWriter> body) => WithMethod(accessibility, false, false, "void", name, parameters, body);
+        public Class WithMethod(string name, string body) => WithMethod(Microsoft.CodeAnalysis.Accessibility.Protected, false, false, "void", name, Array.Empty<Parameter>(), body);
+        public Class WithMethod(string name, Action<BodyWriter> body) => WithMethod(Microsoft.CodeAnalysis.Accessibility.Protected, false, false, "void", name, Array.Empty<Parameter>(), body);
+        public Class WithMethod(Accessibility accessibility, bool isStatic, string name, string body) => WithMethod(accessibility, isStatic, false, "void", name, Array.Empty<Parameter>(), body);
+        public Class WithMethod(Accessibility accessibility, bool isStatic, string name, Action<BodyWriter> body) => WithMethod(accessibility, isStatic, false, "void", name, Array.Empty<Parameter>(), body);
+        public Class WithMethod(Accessibility accessibility, bool isStatic, string name, IEnumerable<Parameter> parameters, string body) => WithMethod(accessibility, isStatic, false, "void", name, parameters, body);
+        public Class WithMethod(Accessibility accessibility, bool isStatic, string name, IEnumerable<Parameter> parameters, Action<BodyWriter> body) => WithMethod(accessibility, isStatic, false, "void", name, parameters, body);
 
         public Class WithProperty(Property property)
         {

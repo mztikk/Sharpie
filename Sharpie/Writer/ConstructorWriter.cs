@@ -13,19 +13,27 @@ namespace Sharpie.Writer
         public ConstructorWriter(IndentedStreamWriter writer, string name) : base(writer) => _name = name;
         public ConstructorWriter(IndentedStreamWriter writer, string name, IEnumerable<Constructor> ctors) : this(writer, name) => _ctors.AddRange(ctors);
 
+        [Obsolete("Use Class API", true)]
         public void AddConstructor(Constructor ctor) => _ctors.Add(ctor);
 
-        public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => AddConstructor(new Constructor(accessibility, _name, arguments, body));
+        [Obsolete("Use Class API", true)]
+        public void AddConstructor(Accessibility accessibility, IEnumerable<Parameter> arguments, Action<IndentedStreamWriter> body) => AddConstructor(new Constructor(accessibility, _name, arguments, body));
 
-        public void AddConstructor(Accessibility accessibility = Accessibility.Public) => AddConstructor(accessibility, Array.Empty<Argument>(), string.Empty);
+        [Obsolete("Use Class API", true)]
+        public void AddConstructor(Accessibility accessibility = Accessibility.Public) => AddConstructor(accessibility, Array.Empty<Parameter>(), string.Empty);
 
-        public void AddConstructor(Accessibility accessibility, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) => AddConstructor(new Constructor(accessibility, _name, baseCtorArguments, arguments, body));
-        public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, IEnumerable<string> thisCtorArguments, Action<IndentedStreamWriter> body) => AddConstructor(new Constructor(accessibility, _name, arguments, thisCtorArguments, body));
+        [Obsolete("Use Class API", true)]
+        public void AddConstructor(Accessibility accessibility, IEnumerable<string> BaseCtorParameters, IEnumerable<Parameter> arguments, Action<IndentedStreamWriter> body) => AddConstructor(new Constructor(accessibility, _name, BaseCtorParameters, arguments, body));
+        [Obsolete("Use Class API", true)]
+        public void AddConstructor(Accessibility accessibility, IEnumerable<Parameter> arguments, IEnumerable<string> ThisCtorParameters, Action<IndentedStreamWriter> body) => AddConstructor(new Constructor(accessibility, _name, arguments, ThisCtorParameters, body));
 
-        public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, string body) => AddConstructor(new Constructor(accessibility, _name, arguments, body));
+        [Obsolete("Use Class API", true)]
+        public void AddConstructor(Accessibility accessibility, IEnumerable<Parameter> arguments, string body) => AddConstructor(new Constructor(accessibility, _name, arguments, body));
 
-        public void AddConstructor(Accessibility accessibility, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, string body) => AddConstructor(new Constructor(accessibility, _name, baseCtorArguments, arguments, body));
-        public void AddConstructor(Accessibility accessibility, IEnumerable<Argument> arguments, IEnumerable<string> thisCtorArguments, string body) => AddConstructor(new Constructor(accessibility, _name, arguments, thisCtorArguments, body));
+        [Obsolete("Use Class API", true)]
+        public void AddConstructor(Accessibility accessibility, IEnumerable<string> BaseCtorParameters, IEnumerable<Parameter> arguments, string body) => AddConstructor(new Constructor(accessibility, _name, BaseCtorParameters, arguments, body));
+        [Obsolete("Use Class API", true)]
+        public void AddConstructor(Accessibility accessibility, IEnumerable<Parameter> arguments, IEnumerable<string> ThisCtorParameters, string body) => AddConstructor(new Constructor(accessibility, _name, arguments, ThisCtorParameters, body));
 
         protected override bool Start() => false;
 
@@ -45,18 +53,18 @@ namespace Sharpie.Writer
                 sb.Append(" ");
                 sb.Append(_ctors[i].Name);
                 sb.Append("(");
-                sb.Append(string.Join(", ", _ctors[i].Arguments));
+                sb.Append(string.Join(", ", _ctors[i].Parameters));
                 sb.Append(")");
-                if (_ctors[i].BaseCtorArguments is { })
+                if (_ctors[i].BaseCtorParameters is { })
                 {
                     sb.Append(" : base(");
-                    sb.Append(string.Join(", ", _ctors[i].BaseCtorArguments));
+                    sb.Append(string.Join(", ", _ctors[i].BaseCtorParameters));
                     sb.Append(")");
                 }
-                else if (_ctors[i].ThisCtorArguments is { })
+                else if (_ctors[i].ThisCtorParameters is { })
                 {
                     sb.Append(" : this(");
-                    sb.Append(string.Join(", ", _ctors[i].ThisCtorArguments));
+                    sb.Append(string.Join(", ", _ctors[i].ThisCtorParameters));
                     sb.Append(")");
                 }
                 WriteLine(sb.ToString());
@@ -64,10 +72,7 @@ namespace Sharpie.Writer
                 WriteLine("{");
 
                 IndentationLevel++;
-                //foreach (string line in _ctors[i].Body.GetLines())
-                //{
-                //    WriteLine(line);
-                //}
+
                 _ctors[i].Body(_writer);
                 IndentationLevel--;
 

@@ -13,7 +13,7 @@ namespace Sharpie
         public readonly bool Async;
         public readonly string ReturnType;
         public readonly string Name;
-        public readonly ImmutableArray<Argument> Arguments;
+        public readonly ImmutableArray<Parameter> Parameters;
         public readonly ImmutableArray<Attribute> Attributes;
         public readonly Action<BodyWriter> Body;
 
@@ -22,7 +22,7 @@ namespace Sharpie
                       bool async,
                       string returnType,
                       string name,
-                      IEnumerable<Argument> arguments,
+                      IEnumerable<Parameter> parameters,
                       IEnumerable<Attribute> attributes,
                       Action<BodyWriter> body)
         {
@@ -31,28 +31,28 @@ namespace Sharpie
             Async = async;
             ReturnType = returnType;
             Name = name;
-            Arguments = arguments.ToImmutableArray();
+            Parameters = parameters.ToImmutableArray();
             Attributes = attributes.ToImmutableArray();
             Body = body;
         }
 
-        public Method(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body)
-            : this(accessibility, Static, async, returnType, name, arguments, Array.Empty<Attribute>(), body) { }
+        public Method(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Parameter> parameters, Action<BodyWriter> body)
+            : this(accessibility, Static, async, returnType, name, parameters, Array.Empty<Attribute>(), body) { }
 
-        public Method(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body)
-            : this(accessibility, false, false, returnType, name, arguments, body) { }
+        public Method(Accessibility accessibility, string returnType, string name, IEnumerable<Parameter> parameters, Action<BodyWriter> body)
+            : this(accessibility, false, false, returnType, name, parameters, body) { }
 
-        public Method(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, Action<BodyWriter> body)
-            : this(accessibility, false, async, returnType, name, arguments, body) { }
+        public Method(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Parameter> parameters, Action<BodyWriter> body)
+            : this(accessibility, false, async, returnType, name, parameters, body) { }
 
-        public Method(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body)
-            : this(accessibility, Static, async, returnType, name, arguments, StringHelper.StringToBodyWriter(body)) { }
+        public Method(Accessibility accessibility, bool Static, bool async, string returnType, string name, IEnumerable<Parameter> parameters, string body)
+            : this(accessibility, Static, async, returnType, name, parameters, StringHelper.StringToBodyWriter(body)) { }
 
-        public Method(Accessibility accessibility, string returnType, string name, IEnumerable<Argument> arguments, string body)
-            : this(accessibility, false, false, returnType, name, arguments, body) { }
+        public Method(Accessibility accessibility, string returnType, string name, IEnumerable<Parameter> parameters, string body)
+            : this(accessibility, false, false, returnType, name, parameters, body) { }
 
-        public Method(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Argument> arguments, string body)
-            : this(accessibility, false, async, returnType, name, arguments, body) { }
+        public Method(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Parameter> parameters, string body)
+            : this(accessibility, false, async, returnType, name, parameters, body) { }
 
         public Method WithAttribute(Attribute attribute)
         {
@@ -61,7 +61,7 @@ namespace Sharpie
                 attribute
             };
 
-            return new Method(Accessibility, Static, Async, ReturnType, Name, Arguments, attributes, Body);
+            return new Method(Accessibility, Static, Async, ReturnType, Name, Parameters, attributes, Body);
         }
     }
 }

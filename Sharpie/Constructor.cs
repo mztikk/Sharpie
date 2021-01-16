@@ -10,34 +10,34 @@ namespace Sharpie
     {
         public readonly Accessibility Accessibility;
         public readonly string Name;
-        public readonly ImmutableArray<Argument> Arguments;
+        public readonly ImmutableArray<Parameter> Parameters;
         public readonly Action<IndentedStreamWriter> Body;
-        public readonly ImmutableArray<string>? BaseCtorArguments;
-        public readonly ImmutableArray<string>? ThisCtorArguments;
+        public readonly ImmutableArray<string>? BaseCtorParameters;
+        public readonly ImmutableArray<string>? ThisCtorParameters;
 
-        public Constructor(Accessibility accessibility, string name, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body)
+        public Constructor(Accessibility accessibility, string name, IEnumerable<Parameter> parameters, Action<IndentedStreamWriter> body)
         {
             Accessibility = accessibility;
             Name = name;
-            Arguments = arguments.ToImmutableArray();
+            Parameters = parameters.ToImmutableArray();
             Body = body;
 
-            BaseCtorArguments = null;
-            ThisCtorArguments = null;
+            BaseCtorParameters = null;
+            ThisCtorParameters = null;
         }
 
-        public Constructor(Accessibility accessibility, string name, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, Action<IndentedStreamWriter> body) : this(accessibility, name, arguments, body) => BaseCtorArguments = baseCtorArguments.ToImmutableArray();
+        public Constructor(Accessibility accessibility, string name, IEnumerable<string> baseCtorParameters, IEnumerable<Parameter> parameters, Action<IndentedStreamWriter> body) : this(accessibility, name, parameters, body) => BaseCtorParameters = baseCtorParameters.ToImmutableArray();
 
-        public Constructor(Accessibility accessibility, string name, IEnumerable<Argument> arguments, IEnumerable<string> thisCtorArguments, Action<IndentedStreamWriter> body) : this(accessibility, name, arguments, body) => ThisCtorArguments = thisCtorArguments.ToImmutableArray();
+        public Constructor(Accessibility accessibility, string name, IEnumerable<Parameter> parameters, IEnumerable<string> thisCtorparameters, Action<IndentedStreamWriter> body) : this(accessibility, name, parameters, body) => ThisCtorParameters = thisCtorparameters.ToImmutableArray();
 
         public Constructor(Accessibility accessibility, string name)
-            : this(accessibility, name, Array.Empty<Argument>(), IndentedStreamWriter.NopWriter) { }
+            : this(accessibility, name, Array.Empty<Parameter>(), IndentedStreamWriter.NopWriter) { }
 
-        public Constructor(Accessibility accessibility, string name, IEnumerable<Argument> arguments, string body)
-            : this(accessibility, name, arguments, StringHelper.StringToCall(body)) { }
+        public Constructor(Accessibility accessibility, string name, IEnumerable<Parameter> parameters, string body)
+            : this(accessibility, name, parameters, StringHelper.StringToCall(body)) { }
 
-        public Constructor(Accessibility accessibility, string name, IEnumerable<string> baseCtorArguments, IEnumerable<Argument> arguments, string body) : this(accessibility, name, arguments, body) => BaseCtorArguments = baseCtorArguments.ToImmutableArray();
+        public Constructor(Accessibility accessibility, string name, IEnumerable<string> baseCtorparameters, IEnumerable<Parameter> parameters, string body) : this(accessibility, name, parameters, body) => BaseCtorParameters = baseCtorparameters.ToImmutableArray();
 
-        public Constructor(Accessibility accessibility, string name, IEnumerable<Argument> arguments, IEnumerable<string> thisCtorArguments, string body) : this(accessibility, name, arguments, body) => ThisCtorArguments = thisCtorArguments.ToImmutableArray();
+        public Constructor(Accessibility accessibility, string name, IEnumerable<Parameter> parameters, IEnumerable<string> thisCtorparameters, string body) : this(accessibility, name, parameters, body) => ThisCtorParameters = thisCtorparameters.ToImmutableArray();
     }
 }
