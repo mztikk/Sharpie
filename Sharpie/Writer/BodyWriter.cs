@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Sharpie.Writer.Loops.For;
+using Sharpie.Writer.Loops.ForEach;
 
 namespace Sharpie.Writer
 {

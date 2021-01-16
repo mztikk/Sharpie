@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Sharpie.Writer
+namespace Sharpie.Writer.Loops.ForEach
 {
     internal static class ForEachLoopWriter
     {
@@ -21,15 +21,15 @@ namespace Sharpie.Writer
 
         public static void Write(ForEachLoop forEachLoop, IndentedStreamWriter writer)
         {
-            writer.WriteLine($"foreach ({forEachLoop.Item} in {forEachLoop.Collection})");
-            writer.WriteLine("{");
-            writer.IndentationLevel++;
+            var forEachLoopHeadWriter = new ForEachLoopHeadWriter(writer, forEachLoop);
+            forEachLoopHeadWriter.Make();
 
-            var bodyWriter = new BodyWriter(writer);
-            forEachLoop.Body(bodyWriter);
+            writer.OpenBrackets();
 
-            writer.IndentationLevel--;
-            writer.WriteLine("}");
+            var forEachLoopBodyWriter = new ForEachLoopBodyWriter(writer, forEachLoop);
+            forEachLoopBodyWriter.Make();
+
+            writer.CloseBrackets();
         }
     }
 }
