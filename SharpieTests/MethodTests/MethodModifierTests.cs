@@ -7,14 +7,8 @@ using Sharpie.Writer.Methods;
 namespace SharpieTests.MethodTests
 {
     [TestClass]
-    public class MethodModifierTests : BaseSharpieTest
+    public class MethodModifierTests : BaseMethodTest
     {
-        private Method GetStaticMethod() => new Method(Microsoft.CodeAnalysis.Accessibility.Public, true, false, "void", "StaticMethod", Array.Empty<Parameter>(), string.Empty);
-        private Method GetNonStaticMethod() => new Method(Microsoft.CodeAnalysis.Accessibility.Public, false, false, "void", "NonStaticMethod", Array.Empty<Parameter>(), string.Empty);
-
-        private Method GetPublicMethod() => new Method(Microsoft.CodeAnalysis.Accessibility.Public, true, false, "void", "StaticMethod", Array.Empty<Parameter>(), string.Empty);
-        private Method GetPrivateMethod() => new Method(Microsoft.CodeAnalysis.Accessibility.Private, false, false, "void", "NonStaticMethod", Array.Empty<Parameter>(), string.Empty);
-
         [TestMethod]
         public void ContainsStatic() => Contains(GetStaticMethod, "static");
         [TestMethod]
