@@ -51,6 +51,9 @@ namespace Sharpie.Writer
         protected void WriteLine(string s = "") => _writer.WriteLine(s);
         protected void Write(string s) => _writer.Write(s);
 
+        protected void OpenBrackets() => _writer.OpenBrackets();
+        protected void CloseBrackets() => _writer.CloseBrackets();
+
         public int IndentationLevel
         {
             get => _writer.IndentationLevel;
