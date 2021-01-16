@@ -10,5 +10,9 @@ namespace SharpieTests.MethodTests
 
         protected static Method GetPublicMethod() => new Method(Microsoft.CodeAnalysis.Accessibility.Public, true, false, "void", "StaticMethod", Array.Empty<Parameter>(), string.Empty);
         protected static Method GetPrivateMethod() => new Method(Microsoft.CodeAnalysis.Accessibility.Private, false, false, "void", "NonStaticMethod", Array.Empty<Parameter>(), string.Empty);
+
+        protected static Method GetStaticAsyncMethod() => new Method(Microsoft.CodeAnalysis.Accessibility.Public, true, true, "void", "StaticMethod", Array.Empty<Parameter>(), string.Empty);
+
+        protected static Func<Method> GetMethodFactoryForName(string name) => () => new Method(Microsoft.CodeAnalysis.Accessibility.Public, true, true, "void", name, Array.Empty<Parameter>(), string.Empty);
     }
 }
