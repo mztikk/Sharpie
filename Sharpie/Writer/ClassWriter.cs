@@ -143,8 +143,8 @@ namespace Sharpie.Writer
 
             namespaceWriter.Begin();
             writer.WriteLine(string.Join(" ", classDescription) + c.GetInheritance());
-            writer.WriteLine("{");
-            writer.IndentationLevel++;
+
+            writer.OpenBrackets();
 
             BaseWriter? prevWriter = null;
             bool prevWroteSomething = false;
@@ -160,8 +160,8 @@ namespace Sharpie.Writer
                 prevWriter = bodyWriter;
             }
 
-            writer.IndentationLevel--;
-            writer.WriteLine("}");
+            writer.CloseBrackets();
+
             namespaceWriter.End();
         }
 
