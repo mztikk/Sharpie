@@ -107,7 +107,6 @@ namespace Sharpie.Writer
         {
             var writer = new IndentedStreamWriter(stream);
 
-            var usingWriter = new UsingWriter(writer);
             var namespaceWriter = new NamespaceWriter(writer, c.Namespace);
 
             BaseWriter[] bodyWriters = new BaseWriter[]
@@ -118,10 +117,7 @@ namespace Sharpie.Writer
                 new MethodWriter(writer, c.Methods)
             };
 
-            foreach (string? u in c.Usings)
-            {
-                usingWriter.AddUsing(u);
-            }
+            var usingWriter = new UsingWriter(writer, c.Usings);
 
             if (usingWriter.Make())
             {
