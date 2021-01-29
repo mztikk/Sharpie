@@ -111,6 +111,12 @@ namespace Sharpie.Writer
             return this;
         }
 
+        public BodyWriter WriteReturn()
+        {
+            _writer.Write("return ");
+            return this;
+        }
+
         public BodyWriter WriteReturn(string returnValue)
         {
             _writer.WriteLine($"return {returnValue};");
@@ -155,11 +161,12 @@ namespace Sharpie.Writer
             return this;
         }
 
-        public BodyWriter WriteReturnSwitchExpression(SwitchCaseExpression switchCaseExpression)
+        public BodyWriter WriteSwitchExpression(SwitchCaseExpression switchCaseExpression)
         {
-            _writer.Write("return ");
             SwitchCaseExpressionWriter.Write(switchCaseExpression, _writer);
             return this;
         }
+
+        public BodyWriter WriteReturnSwitchExpression(SwitchCaseExpression switchCaseExpression) => WriteReturn().WriteSwitchExpression(switchCaseExpression);
     }
 }
