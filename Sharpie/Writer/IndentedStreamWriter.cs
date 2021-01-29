@@ -74,6 +74,12 @@ namespace Sharpie.Writer
             DirectWrite(s);
         }
 
+        public virtual IDisposable UseBrackets()
+        {
+            OpenBrackets();
+            return new DisposableAction(CloseBrackets);
+        }
+
         public virtual void OpenBrackets()
         {
             WriteLine("{");
