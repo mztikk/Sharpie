@@ -69,14 +69,13 @@ namespace Sharpie.Writer
                 }
                 WriteLine(sb.ToString());
                 sb.Clear();
-                WriteLine("{");
 
-                IndentationLevel++;
+                OpenBrackets();
 
                 _ctors[i].Body(_writer);
-                IndentationLevel--;
 
-                WriteLine("}");
+                CloseBrackets();
+
                 sb.Clear();
             }
 

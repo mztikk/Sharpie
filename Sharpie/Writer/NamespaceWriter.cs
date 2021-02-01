@@ -11,8 +11,7 @@
             if (Namespace is { })
             {
                 WriteLine("namespace " + Namespace);
-                WriteLine("{");
-                IndentationLevel++;
+                OpenBrackets();
 
                 return true;
             }
@@ -24,8 +23,7 @@
         {
             if (Namespace is { })
             {
-                IndentationLevel--;
-                WriteLine("}");
+                CloseBrackets();
 
                 return true;
             }

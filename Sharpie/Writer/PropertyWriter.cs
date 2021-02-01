@@ -43,8 +43,7 @@ namespace Sharpie.Writer
                 if (property.GetterBody is { } || property.SetterBody is { })
                 {
                     WriteLine(sb.ToString());
-                    WriteLine("{");
-                    IndentationLevel++;
+                    OpenBrackets();
                     if (property.GetterBody is { })
                     {
                         if (property.GetterAccessibility.HasValue)
@@ -55,14 +54,12 @@ namespace Sharpie.Writer
                         {
                             WriteLine("get");
                         }
-                        WriteLine("{");
-                        IndentationLevel++;
+                        OpenBrackets();
 
                         var bodyWriter = new BodyWriter(_writer);
                         property.GetterBody(bodyWriter);
 
-                        IndentationLevel--;
-                        WriteLine("}");
+                        CloseBrackets();
                     }
                     if (property.SetterBody is { })
                     {
@@ -74,17 +71,14 @@ namespace Sharpie.Writer
                         {
                             WriteLine("set");
                         }
-                        WriteLine("{");
-                        IndentationLevel++;
+                        OpenBrackets();
 
                         var bodyWriter = new BodyWriter(_writer);
                         property.SetterBody(bodyWriter);
 
-                        IndentationLevel--;
-                        WriteLine("}");
+                        CloseBrackets();
                     }
-                    IndentationLevel--;
-                    WriteLine("}");
+                    CloseBrackets();
                 }
                 else
                 {
