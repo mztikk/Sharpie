@@ -13,9 +13,9 @@
     <PackageProjectUrl>https://github.com/mztikk/Sharpie</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mztikk/Sharpie</RepositoryUrl>
     <Authors>mztikk</Authors>
-    <Version>0.6.1.1</Version>
+    <Version>0.6.1.2</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>0.6.1.1</AssemblyVersion>
+    <AssemblyVersion>0.6.1.2</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
