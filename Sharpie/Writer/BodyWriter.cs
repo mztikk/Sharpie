@@ -165,6 +165,24 @@ namespace Sharpie.Writer
             return this;
         }
 
+        public BodyWriter WriteTernaryConditional(string condition, string consequent, string alternative)
+        {
+            _writer.Write(condition);
+            _writer.Write(" ? ");
+            _writer.Write(consequent);
+            _writer.Write(" : ");
+            _writer.Write(alternative);
+
+            return this;
+        }
+
+        public BodyWriter EndStatement()
+        {
+            _writer.WriteLine(";");
+
+            return this;
+        }
+
         public BodyWriter WriteReturnSwitchExpression(SwitchCaseExpression switchCaseExpression) => WriteReturn().WriteSwitchExpression(switchCaseExpression);
     }
 }
