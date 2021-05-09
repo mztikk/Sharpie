@@ -94,6 +94,13 @@ namespace Sharpie
         public Class WithConstructor(Accessibility accessibility, IEnumerable<string> baseCtorparameters, IEnumerable<Parameter> parameters, string body) => WithConstructor(new Constructor(accessibility, ClassName, baseCtorparameters, parameters, body));
         public Class WithConstructor(Accessibility accessibility, IEnumerable<Parameter> parameters, IEnumerable<string> thisCtorparameters, string body) => WithConstructor(new Constructor(accessibility, ClassName, parameters, thisCtorparameters, body));
 
+        public Class WithMethods(IEnumerable<Method> methods)
+        {
+            _methods.AddRange(methods);
+
+            return this;
+        }
+
         public Class WithMethod(Method method)
         {
             _methods.Add(method);
