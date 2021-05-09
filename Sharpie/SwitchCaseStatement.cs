@@ -18,7 +18,7 @@ namespace Sharpie
             DefaultCaseBody = defaultCaseBodyAction;
         }
 
-        public SwitchCaseStatement(string expression, IEnumerable<CaseStatement> caseStatements, string defaultCaseBody) : this(expression, caseStatements, StringHelper.StringToBodyWriter(defaultCaseBody)) { }
+        public SwitchCaseStatement(string expression, IEnumerable<CaseStatement> caseStatements, string? defaultCaseBody) : this(expression, caseStatements, defaultCaseBody is { } ? StringHelper.StringToBodyWriter(defaultCaseBody) : null) { }
         public SwitchCaseStatement(string expression, IEnumerable<CaseStatement> caseStatements) : this(expression, caseStatements, defaultCaseBodyAction: null) { }
     }
 
