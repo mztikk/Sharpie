@@ -54,7 +54,6 @@ namespace Sharpie
         public Method(Accessibility accessibility, bool async, string returnType, string name, IEnumerable<Parameter> parameters, string body)
             : this(accessibility, false, async, returnType, name, parameters, body) { }
 
-
         public Method WithAttribute(Attribute attribute)
         {
             var attributes = new List<Attribute>(Attributes)
