@@ -79,6 +79,7 @@ namespace SharpieTestSpace
                             new CaseExpression("5", "\"5\""),
                          },
                          "throw new ArgumentOutOfRangeException()"));
+                         bodyWriter.WriteReturn().WriteObjectInitializer("Test", new Dictionary<string, string>() { ["FullPropTest"] = "\"abc\"", ["FullPropTestWithAccess"] = "\"def\"" }).EndStatement();
                      }).WithAttribute(inlineAttribute));
 
 

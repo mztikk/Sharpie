@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Sharpie.Writer.Loops.For;
 using Sharpie.Writer.Loops.ForEach;
@@ -179,6 +180,20 @@ namespace Sharpie.Writer
         public BodyWriter EndStatement()
         {
             _writer.WriteLine(";");
+
+            return this;
+        }
+
+        public BodyWriter WriteObjectInitializer(string type, Dictionary<string, string> properties)
+        {
+            _writer.WriteLine($"new {type} {{");
+            _writer.IndentationLevel++;
+            foreach (KeyValuePair<string, string> property in properties)
+            {
+                _writer.WriteLine($"{property.Key} = {property.Value},");
+            }
+            _writer.IndentationLevel--;
+            _writer.Write("}");
 
             return this;
         }
